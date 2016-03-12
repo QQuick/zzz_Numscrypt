@@ -1,0 +1,9 @@
+*.nogit
+*.pyc
+*.npp
+**.__pycache__/
+dist/
+Numscrypt.egg-info/
+Numscrypt/development/attic/
+Numcrypt/development/docs/
+Numscrypt/development/experiments/
