@@ -5,4 +5,5 @@ A VERY uncertain attempt to port a microscopic part of NumPy to Transcrypt using
 What's new
 ==========
 
+Changes package name to lowercase
 Modest beginning made with ndarray + autotest for it

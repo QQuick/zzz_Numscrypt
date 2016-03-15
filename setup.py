@@ -23,7 +23,7 @@ setup (
 	license = 'Apache 2.0',
 	author = 'Jacques de Hooge',
 	author_email = 'jacques.de.hooge@qquick.org',
-	packages = ['Numscrypt'],
+	packages = ['numscrypt'],
 	include_package_data = True,
 	classifiers = [
 		'Development Status :: 1 - Planning',

@@ -3,8 +3,6 @@ from org.transcrypt.stubs.browser import __pragma__
 import itertools
 import base
 
-__pragma__ ('alias', 'js_from', 'from')
-
 ns_itemsizes = {
 	'int32': 4,
 	'float64': 8
