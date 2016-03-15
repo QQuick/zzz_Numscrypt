@@ -3,7 +3,7 @@ global-exclude *.pyc .gitignore
 
 prune .git
 prune dist
-prune Numscrypt.egg-info
-prune Numscrypt/development/attic
-prune Numscrypt/development/docs
-prune Numscrypt/development/experiments
+prune numscrypt.egg-info
+prune numscrypt/development/attic
+prune numscrypt/development/docs
+prune numscrypt/development/experiments

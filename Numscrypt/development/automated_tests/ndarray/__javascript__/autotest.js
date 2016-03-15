@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2016-03-14 14:47:45
+// Transcrypt'ed from Python, 2016-03-15 10:54:53
 function autotest () {
 	var __all__ = {};
 	var __world__ = __all__;
@@ -103,7 +103,7 @@ function autotest () {
 					var __Envir__ = __class__ ('__Envir__', [object], {
 						get __init__ () {return __get__ (this, function (self) {
 							self.transpilerName = 'transcrypt';
-							self.transpilerVersion = '3.5.118';
+							self.transpilerVersion = '3.5.120';
 							self.targetSubDir = '__javascript__';
 						});}
 					});
@@ -933,9 +933,9 @@ function f() { /** ... */ }
 					var run = function (autoTester) {
 						var a = num.array (list ([list ([list ([0, 1, 2, 3]), list ([4, 5, 6, 7]), list ([8, 9, 10, 12])]), list ([list ([100, 101, 102, 103]), list ([104, 105, 106, 107]), list ([108, 109, 110, 112])])]));
 						autoTester.check (a.tolist ());
-						var z = num.zeros (tuple (list ([4, 3, 2])), 'int32');
+						var z = num.zeros (tuple ([4, 3, 2]), 'int32');
 						autoTester.check (z.tolist ());
-						var z = num.ones (tuple (list ([1, 2, 3])));
+						var z = num.ones (tuple ([1, 2, 3]));
 						autoTester.check (z.astype ('int32').tolist ());
 						var z = num.identity (3, 'int32');
 						autoTester.check (z.tolist ());
@@ -1078,7 +1078,7 @@ function f() { /** ... */ }
 							}
 						});},
 						get dump () {return __get__ (this, function (self, filePrename) {
-							var __iter0__ = tuple (list ([false, true]));
+							var __iter0__ = tuple ([false, true]);
 							for (var __index0__ = 0; __index0__ < __iter0__.length; __index0__++) {
 								var minified = __iter0__ [__index0__];
 								var miniInfix = (minified ? '.min' : '');
@@ -1104,7 +1104,7 @@ function f() { /** ... */ }
 								var referenceItem = __left0__ [1][1];
 								if (testItem != referenceItem) {
 									document.getElementById (self.messageDivId).innerHTML = '<div style="color: {}"><b>Test failed</b></div>'.format (errorColor);
-									var __iter1__ = tuple (list ([tuple (list ([self.referenceBuffer, self.referenceDivId, okColor])), tuple (list ([self.testBuffer, self.testDivId, errorColor]))]));
+									var __iter1__ = tuple ([tuple ([self.referenceBuffer, self.referenceDivId, okColor]), tuple ([self.testBuffer, self.testDivId, errorColor])]);
 									for (var __index1__ = 0; __index1__ < __iter1__.length; __index1__++) {
 										var __left0__ = __iter1__ [__index1__];
 										var buffer = __left0__ [0];

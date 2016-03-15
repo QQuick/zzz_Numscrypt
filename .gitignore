@@ -3,7 +3,7 @@
 *.npp
 **.__pycache__/
 dist/
-Numscrypt.egg-info/
-Numscrypt/development/attic/
-Numcrypt/development/docs/
-Numscrypt/development/experiments/
+numscrypt.egg-info/
+numscrypt/development/attic/
+numcrypt/development/docs/
+numscrypt/development/experiments/
