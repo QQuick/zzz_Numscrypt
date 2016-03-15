@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.append ('Numscrypt')
+sys.path.append ('numscrypt')
 import base
 
 from setuptools import setup
