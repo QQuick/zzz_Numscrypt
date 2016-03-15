@@ -16,7 +16,7 @@ setup (
 	description = 'Purely experimental attempt to port a microscopic part of NumPy to Transcrypt using JS typed arrays',
 	long_description = (
 		read ('README.rst') + '\n\n' +
-		read ('Numscrypt/license_reference.txt')
+		read ('numscrypt/license_reference.txt')
 	),
 	keywords = ['transcrypt', 'numscrypt', 'numpy', 'browser'],
 	url = 'https://github.com/JdeH/Numscrypt',	
