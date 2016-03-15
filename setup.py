@@ -1,4 +1,8 @@
 import os
+import sys
+
+sys.path.append ('Numscrypt')
+import base
 
 from setuptools import setup
 
@@ -8,13 +12,13 @@ def read (*paths):
 
 setup (
 	name = 'Numscrypt',
-	version = '0.0.0',
-	description = 'Purely experimental, overly optimistic attempt to port a microscopic part of NumPy to Transcrypt using JS typed arrays',
+	version = base.ns_version,
+	description = 'Purely experimental attempt to port a microscopic part of NumPy to Transcrypt using JS typed arrays',
 	long_description = (
 		read ('README.rst') + '\n\n' +
 		read ('Numscrypt/license_reference.txt')
 	),
-	keywords = ['transcrypt', 'numpy', 'browser'],
+	keywords = ['transcrypt', 'numscrypt', 'numpy', 'browser'],
 	url = 'https://github.com/JdeH/Numscrypt',	
 	license = 'Apache 2.0',
 	author = 'Jacques de Hooge',

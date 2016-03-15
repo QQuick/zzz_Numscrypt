@@ -18,7 +18,7 @@ def copyWebsite (projRelPath, webRelPath, static = False, subdirs = False):
 
 os.chdir (distributionDir)
 
-# os.system ('uploadPython')
+os.system ('uploadPython')
 
 os.system ('git add .')
 os.system ('git commit -m"{}"'.format (input ('Description of commit: ')))
