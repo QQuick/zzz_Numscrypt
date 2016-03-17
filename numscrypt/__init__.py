@@ -1,7 +1,7 @@
 from org.transcrypt.stubs.browser import __pragma__
 	
 import itertools
-import base
+import numscrypt.base
 
 ns_itemsizes = {
 	'int32': 4,
@@ -13,9 +13,9 @@ ns_ctors = {
 	'float64': Float64Array
 }
 
-def ns_length (shape, unit = 1):
-	result = unit
-	for dim in shape:
+def ns_length (shape):
+	result = shape [0]
+	for dim in shape [1 : ]:
 		result *= dim
 	return result
 	
@@ -43,17 +43,8 @@ class ndarray:
 						
 		self.strides = itertools.chain ([self.itemsize * skip for skip in self.ns_skips], [self.itemsize])
 			
-		self.nbytes = ns_length (self.shape, self.itemsize)
-		
-	def transpose (self, *axes):
-		if axes:													# If any axes permutation is given explicitly
-			if Array.isArray (axes [0]):							# 	If the axes passed in array rather than separate params
-				axes = axes [0]										# 	The axes are the array
-		else:													# Else
-			axes = itertools.chain (range (1, len (shape)), [0])	#	Rotate axes to the left
-						
-		self.shape = [self.shape [axes [i]] for i in ndim]
-		self.strides = [self.strides [axes [i]] for i in ndim]
+		self.ns_length = ns_length (self.shape)
+		self.nbytes = self.ns_length * self.itemsize
 		
 	def astype (self, dtype):
 		return ndarray (self.shape, dtype, ns_ctors [dtype] .js_from (self.data))
@@ -99,6 +90,74 @@ class ndarray:
 						
 		return '[' + result + ']'
 		
+	def transpose (self, *axes):
+		if axes:													# If any axes permutation is given explicitly
+			if Array.isArray (axes [0]):							# 	If the axes passed in array rather than separate params
+				axes = axes [0]										# 	The axes are the array
+		else:													# Else
+			axes = itertools.chain (range (1, len (shape)), [0])	#	Rotate axes to the left
+						
+		self.shape = [self.shape [axes [i]] for i in ndim]
+		self.strides = [self.strides [axes [i]] for i in ndim]
+		
+	def __add__ (self, other):
+		result = empty (self.shape, self.dtype)
+		r, s, o = result.data, self.data, other.data
+		__pragma__ ('js', '''
+for (var i = 0; i < self.data.length; i++) {{
+	r [i] = s [i] + o [i];
+}}
+		''')
+		return result
+		
+	def __sub__ (self, other):
+		result = empty (self.shape, self.dtype)
+		r, s, o = result.data, self.data, other.data
+		__pragma__ ('js', '''
+for (var i = 0; i < self.data.length; i++) {{
+	r [i] = s [i] - o [i];
+}}
+		''')
+		return result
+		
+	def __mul__ (self, other):
+		result = empty (self.shape, self.dtype)
+		r, s, o = result.data, self.data, other.data
+		__pragma__ ('js', '''
+for (var i = 0; i < self.data.length; i++) {{
+	r [i] = s [i] * o [i];
+}}
+		''')
+		return result
+		
+	def __div__ (self, other):
+		result = empty (self.shape, self.dtype)
+		r, s, o = result.data, self.data, other.data
+		__pragma__ ('js', '''
+for (var i = 0; i < self.data.length; i++) {{
+	r [i] = s [i] / o [i];
+}}
+		''')
+		return result
+		
+	def __matmul__ (self, other):
+		result = zeros ((self.shape [0], other.shape [1]), self.dtype)
+		r, s, o = result.data, self.data, other.data
+		nrows, ncols, nterms  = self.shape [0], other.shape [1], self.shape [1]
+		console.log (777, nrows, ncols, nterms, 888)
+		__pragma__ ('js', '''
+for (var irow = 0; irow < nrows; irow++) {{
+	for (var icol = 0; icol < ncols; icol++) {{
+		for (var iterm = 0; iterm < nterms; iterm++) {{
+			console.log (irow, icol, iterm);
+			r [irow * ncols + icol] += s [irow * nterms + iterm] * o [iterm * ncols + icol];
+		}}
+	}}
+}}
+		''')
+		# r (nrows x ncols) [irow, icol] = s (nrows x nterms) [irow, iterm]  * o (nterms x ncols) [iterm, icol] 
+		return result
+		
 def array (obj, dtype = 'float64', copy = True):
 	if obj.__class__ == ndarray:
 		return ndarray (
@@ -128,24 +187,26 @@ def array (obj, dtype = 'float64', copy = True):
 			ns_ctors [dtype] .js_from (flatten (obj))
 		)
 		
-def zeros (shape, dtype = 'float64'):
+def empty (shape, dtype = 'float64'):
 	return ndarray (
 		shape,
 		dtype,
-		__new__ (ns_ctors [dtype] (ns_length (shape))) .fill (0)
+		__new__ (ns_ctors [dtype] (ns_length (shape)))
 	)
+		
+def zeros (shape, dtype = 'float64'):
+	result = empty (shape, dtype)
+	result.data.fill (0)
+	return result
 	
 def ones (shape, dtype = 'float64'):
-	print (__new__ (ns_ctors [dtype] (7) .fill (3)))
-	return ndarray (
-		shape,
-		dtype,
-		__new__ (ns_ctors [dtype] (ns_length (shape))) .fill (1)
-	)
+	result = empty (shape, dtype)
+	result.data.fill (1)
+	return result
 	
 def identity (n, dtype = 'float64'):
-	return array (
-		[[1 if icol == irow else 0 for icol in range (n)] for irow in range (n)],
-		dtype
-	)
+	result = zeros ((n, n), dtype)
+	for i in range (n):
+		result.data [i * result.shape [1] + i] = 1
+	return result
 	

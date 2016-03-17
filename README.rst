@@ -1,11 +1,29 @@
 EXPERIMENTAL
 
-A VERY uncertain attempt to port a microscopic part of NumPy to Transcrypt using JS typed arrays. Don't base any expectations upon this!
+An attempt to port a microscopically Small Sane Subset of NumPy to Transcrypt using JS typed arrays.
+While some attention is paid to speed, e.g. by using inline JavaScript for inner loops, that is currently not the main focus.
+
+Parts of the code can later be replaced by things like asm.js and simd.js, or, better even, GPGPU code.
+There's not yet a clear winner in this area.
+This implementation is usable as a skeleton to try out those new technologies in parts of the code where speed matters most.
+
+It may seem attractive to compile everything from C++ to asm.js, but the downloads would become very bulky and the readability approaching zero.
+Or wouldn't it?
+Forking and experimenting highly encouraged!!!
+
+As with Transcrypt, the eventual goal is not to completely copy a desktop programming environment.
+Rather a lean and mean subset is sought that can still be very useful, e.g. for science demo's in the browser.
+
+Jacques de Hooge
 
 What's new
 ==========
 
+Overloaded operators added for +, -, \*, / and @, not yet mixable with scalars + autotest
 Setup adapted to Linux' case sensitivity
 Dependencies added to setup.py
 Changes package name to lowercase
 Modest beginning made with ndarray + autotest for it
+
+
+

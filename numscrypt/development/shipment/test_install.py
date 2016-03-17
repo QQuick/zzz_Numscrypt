@@ -20,7 +20,8 @@ def copyCode (relPath):
 
 	os.system ('xcopy /Y {} {}'.format (
 		getAbsPath (appRootDir, relPath) .replace ('/', '\\'),
-		getAbsPath (sitepackagesDir, 'org/transcrypt/numscrypt/{}'.format (relDir)) .replace ('/', '\\')
+		getAbsPath (sitepackagesDir, 'numscrypt/{}'.format (relDir)) .replace ('/', '\\')
 	))
 
 copyCode ('__init__.py')
+copyCode ('base.py')
