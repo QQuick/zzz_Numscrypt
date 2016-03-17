@@ -19,11 +19,11 @@ Jacques de Hooge
 What's new
 ==========
 
-Overloaded operators added for +, -, \*, / and @, not yet mixable with scalars + autotest
-Setup adapted to Linux' case sensitivity
-Dependencies added to setup.py
-Changes package name to lowercase
-Modest beginning made with ndarray + autotest for it
+- Overloaded operators added for +, -, \*, / and @, not yet mixable with scalars + autotest
+- Setup adapted to Linux' case sensitivity
+- Dependencies added to setup.py
+- Changes package name to lowercase
+- Modest beginning made with ndarray + autotest for it
 
 
 
