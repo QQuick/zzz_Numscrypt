@@ -8,7 +8,6 @@ Table of Contents:
 	:numbered:
 	:maxdepth: 2
 	
-	what_why
 	installation_use
 	supported_constructs
 

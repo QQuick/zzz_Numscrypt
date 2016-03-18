@@ -14,7 +14,12 @@ Forking and experimenting highly encouraged!!
 As with Transcrypt, the eventual goal is not to completely copy a desktop programming environment.
 Rather a lean and mean subset is sought that can still be very useful, e.g. for science demo's in the browser.
 
-Jacques de Hooge
+Jacques de Hooge, Rotterdam, Netherlands
+
+.. figure:: http://www.transcrypt.org/illustrations/numscrypt_logo_white_small.png
+	:alt: Logo
+	
+	**The first computers were used... to compute**
 
 What's new
 ==========
