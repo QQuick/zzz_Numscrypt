@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. Systematic code examples: a guided tour of Numscrypt &mdash; Transcrypt 0.0.16 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.16',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Transcrypt 0.0.16 documentation" href="index.html" />
+    <link rel="prev" title="1. Getting started" href="installation_use.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installation_use.html" title="1. Getting started"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.16 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="systematic-code-examples-a-guided-tour-of-numscrypt">
+<h1>2. Systematic code examples: a guided tour of Numscrypt<a class="headerlink" href="#systematic-code-examples-a-guided-tour-of-numscrypt" title="Permalink to this headline">¶</a></h1>
+<p>One ready-to-run code example is worth more than ten lengthy descriptions. The <em>autotest and demo suite</em>, that is part of the distribution, is a collection of sourcecode fragments called <em>testlets</em>. These testlets are used for automated regression testing of Numscrypt against CPython.
+Since they systematically cover all the library constructs, they are also very effective as a learning tool. The testlets are arranged alphabetically by subject.</p>
+<div class="literal-block-wrapper container" id="autotest-numcrypt-autotest-demo-suite">
+<div class="code-block-caption"><span class="caption-text">Autotest: Numcrypt autotest demo suite</span><a class="headerlink" href="#autotest-numcrypt-autotest-demo-suite" title="Permalink to this code">¶</a></div>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.transcrypt.autotester</span>
+
+<span class="kn">import</span> <span class="nn">basics</span>
+
+<span class="n">autoTester</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="n">transcrypt</span><span class="o">.</span><span class="n">autotester</span><span class="o">.</span><span class="n">AutoTester</span> <span class="p">()</span>
+
+<span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">basics</span><span class="p">,</span> <span class="s">&#39;basics&#39;</span><span class="p">)</span>
+
+<span class="n">autoTester</span><span class="o">.</span><span class="n">done</span> <span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="basics-creating-and-using-arrays">
+<h2>2.1. Basics: creating and using arrays<a class="headerlink" href="#basics-creating-and-using-arrays" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper container" id="testlet-basics">
+<div class="code-block-caption"><span class="caption-text">Testlet: basics</span><a class="headerlink" href="#testlet-basics" title="Permalink to this code">¶</a></div>
+<div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
+from org.transcrypt.stubs.browser import __main__, __envir__, __pragma__
+
+if __envir__.executor_name == __envir__.transpiler_name:
+    import numscrypt as num
+
+__pragma__ (&#39;skip&#39;)
+import numpy as num     # Bundling: import has to be known compile time
+__pragma__ (&#39;noskip&#39;)
+
+def run (autoTester):
+    z = num.zeros ((4, 3, 2), &#39;int32&#39;)
+    autoTester.check (&#39;Zeros&#39;, z.tolist (), &#39;&lt;br&gt;&#39;)
+    
+    o = num.ones ((1, 2, 3))
+    autoTester.check (&#39;Ones&#39;, o.astype (&#39;int32&#39;) .tolist ())
+    
+    i = num.identity (3, &#39;int32&#39;)
+    autoTester.check (&#39;Identity&#39;, i.tolist (), &#39;&lt;br&gt;&#39;)
+    
+    # shape: 2 blocks x 3 rows x 4 columns
+    a = num.array ([
+        [
+            [1, 1, 2, 3],
+            [4, 5, 6, 7],
+            [8, 9, 10, 12]
+        ], [
+            [100, 101, 102, 103],
+            [104, 105, 106, 107],
+            [108, 109, 110, 112]
+        ]
+    ])
+    
+    autoTester.check (&#39;Matrix a&#39;, a.tolist (), &#39;&lt;br&gt;&#39;)
+
+    b = num.array ([
+        [
+            [2, 2, 4, 6],
+            [8, 10, 12, 14],
+            [16, 18, 20, 24]
+        ], [
+            [200, 202, 204, 206],
+            [208, 210, 212, 214],
+            [216, 218, 220, 224]
+        ]
+    ])
+    
+    autoTester.check (&#39;Matrix b&#39;, b.tolist (), &#39;&lt;br&gt;&#39;)
+    
+    c = num.array ([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+    ])
+    
+    d = num.array ([
+        [13, 14],
+        [15, 16],
+        [17, 18],
+        [19, 20]
+    ])
+    
+    __pragma__ (&#39;opov&#39;)
+    sum = a + b
+    dif = a - b
+    prod = a * b
+    quot = a / b
+    dot = c @ d
+    __pragma__ (&#39;noopov&#39;)
+    
+    autoTester.check (&#39;Matrix sum&#39;, sum.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Matrix difference&#39;, dif.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Matrix product&#39;, prod.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Matrix quotient&#39;, quot.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Matrix dotproduct&#39;, dot.tolist (), &#39;&lt;br&gt;&#39;)
+    
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo_sphinx.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Subjects</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2. Systematic code examples: a guided tour of Numscrypt</a><ul>
+<li><a class="reference internal" href="#basics-creating-and-using-arrays">2.1. Basics: creating and using arrays</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation_use.html"
+                        title="previous chapter">1. Getting started</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/supported_constructs.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="installation_use.html" title="1. Getting started"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.16 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Jacques de Hooge.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

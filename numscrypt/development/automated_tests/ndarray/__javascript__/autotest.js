@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2016-03-17 16:37:45
+// Transcrypt'ed from Python, 2016-03-18 15:07:22
 function autotest () {
 	var __all__ = {};
 	var __world__ = __all__;
@@ -1320,7 +1320,7 @@ function autotest () {
 			__all__: {
 				__inited__: false,
 				__init__: function (__all__) {
-					var ns_version = '0.0.14';
+					var ns_version = '0.0.17';
 					__pragma__ ('<all>')
 						__all__.ns_version = ns_version;
 					__pragma__ ('</all>')

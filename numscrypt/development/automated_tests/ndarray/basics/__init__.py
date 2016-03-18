@@ -18,7 +18,6 @@ def run (autoTester):
 	i = num.identity (3, 'int32')
 	autoTester.check ('Identity', i.tolist (), '<br>')
 	
-	
 	# shape: 2 blocks x 3 rows x 4 columns
 	a = num.array ([
 		[
