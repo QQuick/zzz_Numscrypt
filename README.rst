@@ -16,7 +16,7 @@ Rather a lean and mean subset is sought that can still be very useful, e.g. for 
 
 Jacques de Hooge, Rotterdam, Netherlands
 
-.. figure:: http://www.transcrypt.org/illustrations/numscrypt/numscrypt_logo_white_small.png
+.. figure:: http://www.transcrypt.org/numscrypt/illustrations/numscrypt_logo_white_small.png
 	:alt: Logo
 	
 	**The first computers were used... to compute**
