@@ -33,6 +33,8 @@ def run (autoTester):
 	
 	autoTester.check ('Matrix a', a.tolist (), '<br>')
 
+	#autoTester.check ('Transpose of a', a.transpose () .tolist (), '<br>')
+
 	b = num.array ([
 		[
 			[2, 2, 4, 6],
@@ -46,6 +48,8 @@ def run (autoTester):
 	])
 	
 	autoTester.check ('Matrix b', b.tolist (), '<br>')
+
+	#autoTester.check ('Permutation of b', b.transpose ((2, 1, 0)) .tolist (), '<br>')
 	
 	c = num.array ([
 		[1, 2, 3, 4],
@@ -53,6 +57,10 @@ def run (autoTester):
 		[9, 10, 11, 12],
 	])
 	
+	autoTester.check ('Matrix c', c.tolist (), '<br>')
+	#autoTester.check ('Transpose of c', c.transpose () .tolist (), '<br>')
+	#console.log (c.transpose ().__str__ ())
+
 	d = num.array ([
 		[13, 14],
 		[15, 16],
@@ -60,13 +68,22 @@ def run (autoTester):
 		[19, 20]
 	])
 	
+	autoTester.check ('Matrix d', d.tolist (), '<br>')
+	#autoTester.check ('Permutation of d', d.transpose ((1, 0)) .tolist (), '<br>')
+	
 	__pragma__ ('opov')
+	a [1, 0, 2] = 77777
+	el = b [1, 2, 3]
+	
 	sum = a + b
 	dif = a - b
 	prod = a * b
 	quot = a / b
 	dot = c @ d
 	__pragma__ ('noopov')
+	
+	autoTester.check ('El a [1, 2, 3] alt', a.tolist (), '<br>)')
+	autoTester.check ('El b [1, 2, 3]', el, '<br>')
 	
 	autoTester.check ('Matrix sum', sum.tolist (), '<br>')
 	autoTester.check ('Matrix difference', dif.tolist (), '<br>')

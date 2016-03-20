@@ -24,7 +24,9 @@ class ndarray:
 		self,
 		shape,
 		dtype,
-		buffer
+		buffer,
+		offset = None,
+		strides = None
 	):				
 		self.dtype = dtype
 		self.itemsize = ns_itemsizes [self.dtype]
@@ -35,13 +37,13 @@ class ndarray:
 		self.shape = shape
 		self.ndim = len (self.shape)
 		
-		self.ns_skips = []
-		factor = 1
+		# e.g. itemsize 8 and shape 3 4 5 -> strides 160 40 8 -> ns_skips 20 5 1 
+		
+		self.strides = [self.itemsize]
 		for dim in reversed (self.shape [1 : ]):
-			factor = factor * dim
-			self.ns_skips.insert (0, factor)
-						
-		self.strides = itertools.chain ([self.itemsize * skip for skip in self.ns_skips], [self.itemsize])
+			self.strides.insert (0, self.strides [0] * dim)
+				
+		self.ns_skips = [stride / self.itemsize for stride in self.strides]
 			
 		self.ns_length = ns_length (self.shape)
 		self.nbytes = self.ns_length * self.itemsize
@@ -49,7 +51,7 @@ class ndarray:
 	def astype (self, dtype):
 		return ndarray (self.shape, dtype, ns_ctors [dtype] .js_from (self.data))
 		
-	def tolist (self):	
+	def tolist (self):	# !!! Still incorrect for non-default strides
 		def unflatten (obj, dims):
 			if len (dims) == 1:	# One dimension, so it's a flat list
 				return obj
@@ -59,13 +61,12 @@ class ndarray:
 				result = [unflatten (obj [index * seglen : (index + 1) * seglen], dims [1 : ]) for index in range (nsegs)]
 				return result
 		return unflatten (list (Array.js_from (self.data)), self.shape [:])
-		
-	# def __getitem__ (self, 
-		
-	def __repr__ (self):
+	
+				
+	def __repr__ (self):	# !!! Still incorrect for non-default strides
 		return 'array ({})'.format (str (self.tolist))
 			
-	def __str__ (self):
+	def __str__ (self):		# !!! Still incorrect for non-default strides
 		array = list (Array.js_from (self.data))
 	
 		result = ''
@@ -90,72 +91,70 @@ class ndarray:
 						
 		return '[' + result + ']'
 		
-	def transpose (self, *axes):
-		if axes:													# If any axes permutation is given explicitly
-			if Array.isArray (axes [0]):							# 	If the axes passed in array rather than separate params
-				axes = axes [0]										# 	The axes are the array
-		else:													# Else
-			axes = itertools.chain (range (1, len (shape)), [0])	#	Rotate axes to the left
-						
-		self.shape = [self.shape [axes [i]] for i in ndim]
-		self.strides = [self.strides [axes [i]] for i in ndim]
+	def transpose (self, *axes):	
+		if len (axes):													# If any axes permutation is given explicitly
+			if Array.isArray (axes [0]):								# 	If the axes passed in array rather than separate params
+				axes = axes [0]											# 	The axes are the array
+		else:															# Else
+			axes = itertools.chain (range (1, len (self.shape)), [0])	#	Rotate axes to the left
+		
+		return ndarray (
+			[self.shape [axes [i]] for i in range (self.ndim)],
+			self.dtype,
+			self.data,	# Don't copy, it's only a view
+			None,
+			[self.strides [axes [i]] for i in range (self.ndim)]
+		)
+		
+	def __getitem__ (self, key):
+		index = key [0] * self.ns_skips [0]
+		for idim in range (1, self.ndim):
+			index += key [idim] * self.ns_skips [idim]
+		return self.data [index]
+	
+	def __setitem__ (self, key, value):
+		index = key [0] * self.ns_skips [0]
+		for idim in range (1, self.ndim):
+			index += key [idim] * self.ns_skips [idim]
+		self.data [index] = value
 		
 	def __add__ (self, other):
 		result = empty (self.shape, self.dtype)
 		r, s, o = result.data, self.data, other.data
-		__pragma__ ('js', '''
-for (var i = 0; i < self.data.length; i++) {{
-	r [i] = s [i] + o [i];
-}}
-		''')
+		for i in range (self.data.length):
+			r [i] = s [i] + o [i]
 		return result
 		
 	def __sub__ (self, other):
 		result = empty (self.shape, self.dtype)
 		r, s, o = result.data, self.data, other.data
-		__pragma__ ('js', '''
-for (var i = 0; i < self.data.length; i++) {{
-	r [i] = s [i] - o [i];
-}}
-		''')
+		for i in range (self.data.length):
+			r [i] = s [i] - o [i]
 		return result
 		
 	def __mul__ (self, other):
 		result = empty (self.shape, self.dtype)
 		r, s, o = result.data, self.data, other.data
-		__pragma__ ('js', '''
-for (var i = 0; i < self.data.length; i++) {{
-	r [i] = s [i] * o [i];
-}}
-		''')
+		for i in range (self.data.length):
+			r [i] = s [i] * o [i]
 		return result
 		
 	def __div__ (self, other):
 		result = empty (self.shape, self.dtype)
 		r, s, o = result.data, self.data, other.data
-		__pragma__ ('js', '''
-for (var i = 0; i < self.data.length; i++) {{
-	r [i] = s [i] / o [i];
-}}
-		''')
+		for i in range (self.data.length):
+			r [i] = s [i] / o [i]
 		return result
 		
 	def __matmul__ (self, other):
-		result = zeros ((self.shape [0], other.shape [1]), self.dtype)
-		r, s, o = result.data, self.data, other.data
+		result = empty ((self.shape [0], other.shape [1]), self.dtype)
 		nrows, ncols, nterms  = self.shape [0], other.shape [1], self.shape [1]
-		console.log (777, nrows, ncols, nterms, 888)
-		__pragma__ ('js', '''
-for (var irow = 0; irow < nrows; irow++) {{
-	for (var icol = 0; icol < ncols; icol++) {{
-		for (var iterm = 0; iterm < nterms; iterm++) {{
-			console.log (irow, icol, iterm);
-			r [irow * ncols + icol] += s [irow * nterms + iterm] * o [iterm * ncols + icol];
-		}}
-	}}
-}}
-		''')
-		# r (nrows x ncols) [irow, icol] = s (nrows x nterms) [irow, iterm]  * o (nterms x ncols) [iterm, icol] 
+		for irow in range (nrows):
+			for icol in range (ncols):
+				sum = 0	# Optimization
+				for iterm in range (nterms):
+					sum += self [irow, iterm] * other [iterm, icol]
+				result [irow, icol] = sum
 		return result
 		
 def array (obj, dtype = 'float64', copy = True):
@@ -176,7 +175,7 @@ def array (obj, dtype = 'float64', copy = True):
 			curr_obj = curr_obj [0]
 			
 		def flatten (obj):
-			if Array.isArray (obj [0]):												# If the thing to flatten has inner structure
+			if Array.isArray (obj [0]):												# If obj has inner structure
 				return itertools.chain (*[flatten (sub_obj) for sub_obj in obj])	#	Flatten the inner structure	
 			else:																	# Else it's flat enough to be chained
 				return obj															#	Just return it for chaining

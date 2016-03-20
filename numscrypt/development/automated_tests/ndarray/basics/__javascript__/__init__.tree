@@ -495,6 +495,29 @@ file: Module
 										ctx: Load 
 								ctx: Load 
 						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix c
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = c
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
 				element: Assign 
 					targets: list 
 						element: Name 
@@ -542,6 +565,29 @@ file: Module
 						keywords: list 
 				element: Expr 
 					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix d
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = d
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
 						func: Name 
 							id: str = __pragma__
 							ctx: Load 
@@ -549,6 +595,45 @@ file: Module
 							element: Str 
 								s: str = opov
 						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Subscript 
+							value: Name 
+								id: str = a
+								ctx: Load 
+							slice: Index 
+								value: Tuple 
+									elts: list 
+										element: Num 
+											n: int = 1
+										element: Num 
+											n: int = 0
+										element: Num 
+											n: int = 2
+									ctx: Load 
+							ctx: Store 
+					value: Num 
+						n: int = 77777
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = el
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: Index 
+							value: Tuple 
+								elts: list 
+									element: Num 
+										n: int = 1
+									element: Num 
+										n: int = 2
+									element: Num 
+										n: int = 3
+								ctx: Load 
+						ctx: Load 
 				element: Assign 
 					targets: list 
 						element: Name 
@@ -622,6 +707,46 @@ file: Module
 						args: list 
 							element: Str 
 								s: str = noopov
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = El a [1, 2, 3] alt
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>)
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = El b [1, 2, 3]
+							element: Name 
+								id: str = el
+								ctx: Load 
+							element: Str 
+								s: str = <br>
 						keywords: list 
 				element: Expr 
 					value: Call 

@@ -19,12 +19,18 @@
 						var b = num.array (list ([list ([list ([2, 2, 4, 6]), list ([8, 10, 12, 14]), list ([16, 18, 20, 24])]), list ([list ([200, 202, 204, 206]), list ([208, 210, 212, 214]), list ([216, 218, 220, 224])])]));
 						autoTester.check ('Matrix b', b.tolist (), '<br>');
 						var c = num.array (list ([list ([1, 2, 3, 4]), list ([5, 6, 7, 8]), list ([9, 10, 11, 12])]));
+						autoTester.check ('Matrix c', c.tolist (), '<br>');
 						var d = num.array (list ([list ([13, 14]), list ([15, 16]), list ([17, 18]), list ([19, 20])]));
+						autoTester.check ('Matrix d', d.tolist (), '<br>');
+						a.__setitem__ (tuple ([1, 0, 2]), 77777);
+						var el = b.__getitem__ (tuple ([1, 2, 3]));
 						var sum = __add__ (a, b);
 						var dif = __sub__ (a, b);
 						var prod = __mul__ (a, b);
 						var quot = __div__ (a, b);
 						var dot = __matmul__ (c, d);
+						autoTester.check ('El a [1, 2, 3] alt', a.tolist (), '<br>)');
+						autoTester.check ('El b [1, 2, 3]', el, '<br>');
 						autoTester.check ('Matrix sum', sum.tolist (), '<br>');
 						autoTester.check ('Matrix difference', dif.tolist (), '<br>');
 						autoTester.check ('Matrix product', prod.tolist (), '<br>');
