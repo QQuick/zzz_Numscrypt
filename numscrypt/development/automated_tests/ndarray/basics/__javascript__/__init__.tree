@@ -333,6 +333,35 @@ file: Module
 							element: Str 
 								s: str = <br>
 						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Transpose of a
+							element: Call 
+								func: Attribute 
+									value: Call 
+										func: Attribute 
+											value: Name 
+												id: str = a
+												ctx: Load 
+											attr: str = transpose
+											ctx: Load 
+										args: list 
+										keywords: list 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
 				element: Assign 
 					targets: list 
 						element: Name 
@@ -445,6 +474,44 @@ file: Module
 							element: Str 
 								s: str = <br>
 						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Permutation of b
+							element: Call 
+								func: Attribute 
+									value: Call 
+										func: Attribute 
+											value: Name 
+												id: str = b
+												ctx: Load 
+											attr: str = transpose
+											ctx: Load 
+										args: list 
+											element: Tuple 
+												elts: list 
+													element: Num 
+														n: int = 2
+													element: Num 
+														n: int = 1
+													element: Num 
+														n: int = 0
+												ctx: Load 
+										keywords: list 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
 				element: Assign 
 					targets: list 
 						element: Name 
@@ -494,6 +561,46 @@ file: Module
 												n: int = 12
 										ctx: Load 
 								ctx: Load 
+							element: Str 
+								s: str = int32
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Shape strides c
+							element: Call 
+								func: Name 
+									id: str = tuple
+									ctx: Load 
+								args: list 
+									element: Attribute 
+										value: Name 
+											id: str = c
+											ctx: Load 
+										attr: str = shape
+										ctx: Load 
+								keywords: list 
+							element: Call 
+								func: Name 
+									id: str = tuple
+									ctx: Load 
+								args: list 
+									element: Attribute 
+										value: Name 
+											id: str = c
+											ctx: Load 
+										attr: str = strides
+										ctx: Load 
+								keywords: list 
+							element: Str 
+								s: str = <br>
 						keywords: list 
 				element: Expr 
 					value: Call 
@@ -521,6 +628,81 @@ file: Module
 				element: Assign 
 					targets: list 
 						element: Name 
+							id: str = ct
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = c
+								ctx: Load 
+							attr: str = transpose
+							ctx: Load 
+						args: list 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Shape strids ct
+							element: Call 
+								func: Name 
+									id: str = tuple
+									ctx: Load 
+								args: list 
+									element: Attribute 
+										value: Name 
+											id: str = ct
+											ctx: Load 
+										attr: str = shape
+										ctx: Load 
+								keywords: list 
+							element: Call 
+								func: Name 
+									id: str = tuple
+									ctx: Load 
+								args: list 
+									element: Attribute 
+										value: Name 
+											id: str = ct
+											ctx: Load 
+										attr: str = strides
+										ctx: Load 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Transpose of c
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = ct
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
 							id: str = d
 							ctx: Store 
 					value: Call 
@@ -536,7 +718,7 @@ file: Module
 									element: List 
 										elts: list 
 											element: Num 
-												n: int = 13
+												n: float = 13.1
 											element: Num 
 												n: int = 14
 										ctx: Load 
@@ -562,6 +744,8 @@ file: Module
 												n: int = 20
 										ctx: Load 
 								ctx: Load 
+							element: Str 
+								s: str = int32
 						keywords: list 
 				element: Expr 
 					value: Call 
@@ -579,6 +763,42 @@ file: Module
 									value: Name 
 										id: str = d
 										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Permutation of d
+							element: Call 
+								func: Attribute 
+									value: Call 
+										func: Attribute 
+											value: Name 
+												id: str = d
+												ctx: Load 
+											attr: str = transpose
+											ctx: Load 
+										args: list 
+											element: Tuple 
+												elts: list 
+													element: Num 
+														n: int = 1
+													element: Num 
+														n: int = 0
+												ctx: Load 
+										keywords: list 
 									attr: str = tolist
 									ctx: Load 
 								args: list 
@@ -729,7 +949,7 @@ file: Module
 								args: list 
 								keywords: list 
 							element: Str 
-								s: str = <br>)
+								s: str = <br>
 						keywords: list 
 				element: Expr 
 					value: Call 

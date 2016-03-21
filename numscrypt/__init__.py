@@ -5,11 +5,13 @@ import numscrypt.base
 
 ns_itemsizes = {
 	'int32': 4,
+	'float32': 4,
 	'float64': 8
 }
 
 ns_ctors = {
 	'int32': Int32Array,
+	'float32': Float32Array,
 	'float64': Float64Array
 }
 
@@ -30,18 +32,21 @@ class ndarray:
 	):				
 		self.dtype = dtype
 		self.itemsize = ns_itemsizes [self.dtype]
-		self.reshape (shape)
+		self.reshape (shape, strides)
 		self.data = buffer
 
-	def reshape (self, shape):
+	def reshape (self, shape, strides):
 		self.shape = shape
 		self.ndim = len (self.shape)
 		
 		# e.g. itemsize 8 and shape 3 4 5 -> strides 160 40 8 -> ns_skips 20 5 1 
 		
-		self.strides = [self.itemsize]
-		for dim in reversed (self.shape [1 : ]):
-			self.strides.insert (0, self.strides [0] * dim)
+		if strides:
+			self.strides = strides
+		else:
+			self.strides = [self.itemsize]
+			for dim in reversed (self.shape [1 : ]):
+				self.strides.insert (0, self.strides [0] * dim)
 				
 		self.ns_skips = [stride / self.itemsize for stride in self.strides]
 			
@@ -50,60 +55,35 @@ class ndarray:
 		
 	def astype (self, dtype):
 		return ndarray (self.shape, dtype, ns_ctors [dtype] .js_from (self.data))
-		
-	def tolist (self):	# !!! Still incorrect for non-default strides
-		def unflatten (obj, dims):
-			if len (dims) == 1:	# One dimension, so it's a flat list
-				return obj
-			else:
-				nsegs = dims [0]
-				seglen = len (obj) / nsegs
-				result = [unflatten (obj [index * seglen : (index + 1) * seglen], dims [1 : ]) for index in range (nsegs)]
-				return result
-		return unflatten (list (Array.js_from (self.data)), self.shape [:])
-	
-				
-	def __repr__ (self):	# !!! Still incorrect for non-default strides
-		return 'array ({})'.format (str (self.tolist))
-			
-	def __str__ (self):		# !!! Still incorrect for non-default strides
-		array = list (Array.js_from (self.data))
-	
-		result = ''
-		for index, entry in enumerate (array):
-			for skip in self.ns_skips:			# If current entry first of new segment
-				if (index % skip) == 0:
-					result += '['
 					
-			result += entry
-			
-			for skip in self.ns_skips:
-				if ((index + 1) % skip) == 0:	# If next entry first of new segment
-					result += ']'
-								
-			if index < len (array) - 1 :				
-				if result.endswith (']]'):
-					result += '\n\n'
-				elif result.endswith (']'):
-					result += '\n'
+	def tolist (self):
+		def tl_recur (dim, key):
+			result = []
+			for i in range (self.shape [dim]):
+				if dim < self.ndim - 1:
+					result.append (tl_recur (dim + 1, itertools.chain (key, [i])))
 				else:
-					result += ' '
-						
-		return '[' + result + ']'
+					result.append (self.__getitem__ (itertools.chain (key, [i])))
+			return result
+		return tl_recur (0, [])
+					
+	def __repr__ (self):
+		return 'ndarray ({})'.format (str (self.tolist ()))
+
+	def __str__ (self):
+		return str (self.tolist ()). replace (']], [[', ']] \n\n [[') .replace ('],', ']\n') .replace (',', '')
 		
 	def transpose (self, *axes):	
-		if len (axes):													# If any axes permutation is given explicitly
-			if Array.isArray (axes [0]):								# 	If the axes passed in array rather than separate params
-				axes = axes [0]											# 	The axes are the array
-		else:															# Else
-			axes = itertools.chain (range (1, len (self.shape)), [0])	#	Rotate axes to the left
-		
+		if len (axes):						# If any axes permutation is given explicitly
+			if Array.isArray (axes [0]):	# 	If the axes passed in array rather than separate params
+				axes = axes [0]				# 		The axes are the array
+			
 		return ndarray (
-			[self.shape [axes [i]] for i in range (self.ndim)],
+			[self.shape [axes [i]] for i in range (self.ndim)] if len (axes) else reversed (self.shape),
 			self.dtype,
-			self.data,	# Don't copy, it's only a view
+			self.data,						# Don't copy, it's only a view
 			None,
-			[self.strides [axes [i]] for i in range (self.ndim)]
+			[self.strides [axes [i]] for i in range (self.ndim)] if len (axes) else reversed (self.strides)
 		)
 		
 	def __getitem__ (self, key):

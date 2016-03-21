@@ -24,6 +24,8 @@ Jacques de Hooge, Rotterdam, Netherlands
 What's new
 ==========
 
+- Transpose can now deal with non-default strides
+- Tuple stripping optimization added for simple indices
 - Overloaded operators added for simple indices e.g. matrix [2, 3, 2] + autotest
 - Overloaded operators added for +, -, \*, / and @, not yet mixable with scalars + autotest
 - Setup adapted to Linux' case sensitivity

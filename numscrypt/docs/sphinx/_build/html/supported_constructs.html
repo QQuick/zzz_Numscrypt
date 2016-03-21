@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Systematic code examples: a guided tour of Numscrypt &mdash; Transcrypt 0.0.17 documentation</title>
+    <title>2. Systematic code examples: a guided tour of Numscrypt &mdash; Transcrypt 0.0.22 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.17',
+        VERSION:     '0.0.22',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Transcrypt 0.0.17 documentation" href="index.html" />
+    <link rel="top" title="Transcrypt 0.0.22 documentation" href="index.html" />
     <link rel="prev" title="1. Getting started" href="installation_use.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.17 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.22 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -100,8 +100,11 @@ def run (autoTester):
         ]
     ])
     
+    # print (a)
+    
     autoTester.check (&#39;Matrix a&#39;, a.tolist (), &#39;&lt;br&gt;&#39;)
-
+    autoTester.check (&#39;Transpose of a&#39;, a.transpose () .tolist (), &#39;&lt;br&gt;&#39;)
+    
     b = num.array ([
         [
             [2, 2, 4, 6],
@@ -115,27 +118,43 @@ def run (autoTester):
     ])
     
     autoTester.check (&#39;Matrix b&#39;, b.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Permutation of b&#39;, b.transpose ((2, 1, 0)) .tolist (), &#39;&lt;br&gt;&#39;)
     
     c = num.array ([
         [1, 2, 3, 4],
         [5, 6, 7, 8],
         [9, 10, 11, 12],
-    ])
+    ], &#39;int32&#39;)
     
+    autoTester.check (&#39;Shape strides c&#39;, tuple (c.shape), tuple (c.strides), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Matrix c&#39;, c.tolist (), &#39;&lt;br&gt;&#39;)
+    ct = c.transpose ()
+    autoTester.check (&#39;Shape strids ct&#39;, tuple (ct.shape), tuple (ct.strides), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Transpose of c&#39;, ct .tolist (), &#39;&lt;br&gt;&#39;)
+
     d = num.array ([
-        [13, 14],
+        [13.1, 14],
         [15, 16],
         [17, 18],
         [19, 20]
-    ])
+    ], &#39;int32&#39;)
+    
+    autoTester.check (&#39;Matrix d&#39;, d.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Permutation of d&#39;, d.transpose ((1, 0)) .tolist (), &#39;&lt;br&gt;&#39;)
     
     __pragma__ (&#39;opov&#39;)
+    a [1, 0, 2] = 77777
+    el = b [1, 2, 3]
+    
     sum = a + b
     dif = a - b
     prod = a * b
     quot = a / b
     dot = c @ d
     __pragma__ (&#39;noopov&#39;)
+    
+    autoTester.check (&#39;El a [1, 2, 3] alt&#39;, a.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;El b [1, 2, 3]&#39;, el, &#39;&lt;br&gt;&#39;)
     
     autoTester.check (&#39;Matrix sum&#39;, sum.tolist (), &#39;&lt;br&gt;&#39;)
     autoTester.check (&#39;Matrix difference&#39;, dif.tolist (), &#39;&lt;br&gt;&#39;)
@@ -202,7 +221,7 @@ def run (autoTester):
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.17 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.22 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

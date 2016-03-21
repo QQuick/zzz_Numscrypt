@@ -1,0 +1,1 @@
+To convert a numpy array into a list, go through the indices in target order and use [] to retrieve righ element.

@@ -12,9 +12,9 @@ def getAbsPath (rootDir, relPath):
 def copyWebsite (projRelPath, webRelPath, static = False, subdirs = False):
 	 os.system ('xcopy /Y {} {} {}'.format ('/E' if subdirs else '', getAbsPath (appRootDir, projRelPath) .replace ('/', '\\'), getAbsPath (statWebRootDir if static else dynWebRootDir, webRelPath) .replace ('/', '\\')))
 
-#os.chdir (sphinxDir)
-#os.system ('make html')
-#copyWebsite ('docs/sphinx/_build/html', 'docs/html/', True, True)
+os.chdir (sphinxDir)
+os.system ('make html')
+copyWebsite ('docs/sphinx/_build/html', 'numscrypt/docs/html/', True, True)
 
 os.chdir (distributionDir)
 

@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2016-03-20 17:06:45
+// Transcrypt'ed from Python, 2016-03-21 15:32:08
 function autotest () {
 	var __all__ = {};
 	var __world__ = __all__;
@@ -103,7 +103,7 @@ function autotest () {
 					var __Envir__ = __class__ ('__Envir__', [object], {
 						get __init__ () {return __get__ (this, function (self) {
 							self.transpiler_name = 'transcrypt';
-							self.transpiler_version = '3.5.130';
+							self.transpiler_version = '3.5.132';
 							self.target_subdir = '__javascript__';
 						});}
 					});
@@ -807,6 +807,9 @@ function autotest () {
 	String.prototype.lower = function () {
 		return this.toLowerCase ();
 	};
+	String.prototype.py_replace = function (old, aNew, maxreplace) {
+		return this.split (old, maxreplace) .join (aNew);
+	};
 	String.prototype.lstrip = function () {
 		return this.replace (/^\s*/g, '');
 	};
@@ -912,7 +915,7 @@ function autotest () {
 	__all__.__setitem__ = __setitem__;
 	var __getslice__ = function (container, lower, upper, step) {
 		if (typeof container == 'object' && '__getitem__' in container) {
-			return container.__getitem__ (tuple ([lower, upper, step]));
+			return container.__getitem__ ([lower, upper, step]);
 		}
 		else {
 			return container.__getslice__ (lower, upper, step);
@@ -921,7 +924,7 @@ function autotest () {
 	__all__.__getslice__ = __getslice__;
 	var __setslice__ = function (container, lower, upper, step, value) {
 		if (typeof container == 'object' && '__setitem__' in container) {
-			container.__setitem__ (tuple ([lower, upper, step]), value);
+			container.__setitem__ ([lower, upper, step], value);
 		}
 		else {
 			container.__setslice__ (lower, upper, step, value);
@@ -956,20 +959,27 @@ function autotest () {
 						autoTester.check ('Identity', i.tolist (), '<br>');
 						var a = num.array (list ([list ([list ([1, 1, 2, 3]), list ([4, 5, 6, 7]), list ([8, 9, 10, 12])]), list ([list ([100, 101, 102, 103]), list ([104, 105, 106, 107]), list ([108, 109, 110, 112])])]));
 						autoTester.check ('Matrix a', a.tolist (), '<br>');
+						autoTester.check ('Transpose of a', a.transpose ().tolist (), '<br>');
 						var b = num.array (list ([list ([list ([2, 2, 4, 6]), list ([8, 10, 12, 14]), list ([16, 18, 20, 24])]), list ([list ([200, 202, 204, 206]), list ([208, 210, 212, 214]), list ([216, 218, 220, 224])])]));
 						autoTester.check ('Matrix b', b.tolist (), '<br>');
-						var c = num.array (list ([list ([1, 2, 3, 4]), list ([5, 6, 7, 8]), list ([9, 10, 11, 12])]));
+						autoTester.check ('Permutation of b', b.transpose (tuple ([2, 1, 0])).tolist (), '<br>');
+						var c = num.array (list ([list ([1, 2, 3, 4]), list ([5, 6, 7, 8]), list ([9, 10, 11, 12])]), 'int32');
+						autoTester.check ('Shape strides c', tuple (c.shape), tuple (c.strides), '<br>');
 						autoTester.check ('Matrix c', c.tolist (), '<br>');
-						var d = num.array (list ([list ([13, 14]), list ([15, 16]), list ([17, 18]), list ([19, 20])]));
+						var ct = c.transpose ();
+						autoTester.check ('Shape strids ct', tuple (ct.shape), tuple (ct.strides), '<br>');
+						autoTester.check ('Transpose of c', ct.tolist (), '<br>');
+						var d = num.array (list ([list ([13.1, 14]), list ([15, 16]), list ([17, 18]), list ([19, 20])]), 'int32');
 						autoTester.check ('Matrix d', d.tolist (), '<br>');
-						a.__setitem__ (tuple ([1, 0, 2]), 77777);
-						var el = b.__getitem__ (tuple ([1, 2, 3]));
+						autoTester.check ('Permutation of d', d.transpose (tuple ([1, 0])).tolist (), '<br>');
+						a.__setitem__ ([1, 0, 2], 77777);
+						var el = b.__getitem__ ([1, 2, 3]);
 						var sum = __add__ (a, b);
 						var dif = __sub__ (a, b);
 						var prod = __mul__ (a, b);
 						var quot = __div__ (a, b);
 						var dot = __matmul__ (c, d);
-						autoTester.check ('El a [1, 2, 3] alt', a.tolist (), '<br>)');
+						autoTester.check ('El a [1, 2, 3] alt', a.tolist (), '<br>');
 						autoTester.check ('El b [1, 2, 3]', el, '<br>');
 						autoTester.check ('Matrix sum', sum.tolist (), '<br>');
 						autoTester.check ('Matrix difference', dif.tolist (), '<br>');
@@ -999,7 +1009,7 @@ function autotest () {
 						for (var index = 0; index < args.length; index++) {
 							result = result.concat (args [index]);
 						}
-						return result;
+						return list (result);
 					}
 					//<all>
 					__all__.chain = chain;
@@ -1018,8 +1028,8 @@ function autotest () {
 					var numscrypt = {};
 					__nest__ (itertools, '', __init__ (__world__.itertools));
 					__nest__ (numscrypt, 'base', __init__ (__world__.numscrypt.base));
-					var ns_itemsizes = dict ({'int32': 4, 'float64': 8});
-					var ns_ctors = dict ({'int32': Int32Array, 'float64': Float64Array});
+					var ns_itemsizes = dict ({'int32': 4, 'float32': 4, 'float64': 8});
+					var ns_ctors = dict ({'int32': Int32Array, 'float32': Float32Array, 'float64': Float64Array});
 					var ns_length = function (shape) {
 						var result = shape [0];
 						var __iter0__ = shape.__getslice__ (1, null, 1);
@@ -1039,17 +1049,22 @@ function autotest () {
 							};
 							self.dtype = dtype;
 							self.itemsize = ns_itemsizes [self.dtype];
-							self.reshape (shape);
+							self.reshape (shape, strides);
 							self.data = buffer;
 						});},
-						get reshape () {return __get__ (this, function (self, shape) {
+						get reshape () {return __get__ (this, function (self, shape, strides) {
 							self.shape = shape;
 							self.ndim = len (self.shape);
-							self.strides = list ([self.itemsize]);
-							var __iter0__ = reversed (self.shape.__getslice__ (1, null, 1));
-							for (var __index0__ = 0; __index0__ < __iter0__.length; __index0__++) {
-								var dim = __iter0__ [__index0__];
-								self.strides.insert (0, self.strides [0] * dim);
+							if (strides) {
+								self.strides = strides;
+							}
+							else {
+								self.strides = list ([self.itemsize]);
+								var __iter0__ = reversed (self.shape.__getslice__ (1, null, 1));
+								for (var __index0__ = 0; __index0__ < __iter0__.length; __index0__++) {
+									var dim = __iter0__ [__index0__];
+									self.strides.insert (0, self.strides [0] * dim);
+								}
 							}
 							self.ns_skips = function () {
 								var __accu0__ = [];
@@ -1067,66 +1082,25 @@ function autotest () {
 							return ndarray (self.shape, dtype, ns_ctors [dtype].from (self.data));
 						});},
 						get tolist () {return __get__ (this, function (self) {
-							var unflatten = function (obj, dims) {
-								if (len (dims) == 1) {
-									return obj;
-								}
-								else {
-									var nsegs = dims [0];
-									var seglen = len (obj) / nsegs;
-									var result = function () {
-										var __accu0__ = [];
-										for (var index = 0; index < nsegs; index++) {
-											__accu0__.append (unflatten (obj.__getslice__ (index * seglen, (index + 1) * seglen, 1), dims.__getslice__ (1, null, 1)));
-										}
-										return __accu0__;
-									} ();
-									return result;
-								}
-							};
-							return unflatten (list (Array.from (self.data)), self.shape.__getslice__ (0, null, 1));
-						});},
-						get __repr__ () {return __get__ (this, function (self) {
-							return 'array ({})'.format (str (self.tolist));
-						});},
-						get __str__ () {return __get__ (this, function (self) {
-							var array = list (Array.from (self.data));
-							var result = '';
-							var __iter0__ = enumerate (array);
-							for (var __index0__ = 0; __index0__ < __iter0__.length; __index0__++) {
-								var __left0__ = __iter0__ [__index0__];
-								var index = __left0__ [0];
-								var entry = __left0__ [1];
-								var __iter1__ = self.ns_skips;
-								for (var __index1__ = 0; __index1__ < __iter1__.length; __index1__++) {
-									var skip = __iter1__ [__index1__];
-									if (index % skip == 0) {
-										result += '[';
-									}
-								}
-								result += entry;
-								var __iter1__ = self.ns_skips;
-								for (var __index1__ = 0; __index1__ < __iter1__.length; __index1__++) {
-									var skip = __iter1__ [__index1__];
-									if ((index + 1) % skip == 0) {
-										result += ']';
-									}
-								}
-								if (index < len (array) - 1) {
-									if (result.endswith (']]')) {
-										result += '\n\n';
+							var tl_recur = function (dim, key) {
+								var result = list ([]);
+								for (var i = 0; i < self.shape [dim]; i++) {
+									if (dim < self.ndim - 1) {
+										result.append (tl_recur (dim + 1, itertools.chain (key, list ([i]))));
 									}
 									else {
-										if (result.endswith (']')) {
-											result += '\n';
-										}
-										else {
-											result += ' ';
-										}
+										result.append (self.__getitem__ (itertools.chain (key, list ([i]))));
 									}
 								}
-							}
-							return '[' + result + ']';
+								return result;
+							};
+							return tl_recur (0, list ([]));
+						});},
+						get __repr__ () {return __get__ (this, function (self) {
+							return 'ndarray ({})'.format (str (self.tolist ()));
+						});},
+						get __str__ () {return __get__ (this, function (self) {
+							return str (self.tolist ()).py_replace (']], [[', ']] \n\n [[').py_replace ('],', ']\n').py_replace (',', '');
 						});},
 						get transpose () {return __get__ (this, function (self) {
 							var axes = tuple ([].slice.apply (arguments).slice (1));
@@ -1135,22 +1109,19 @@ function autotest () {
 									var axes = axes [0];
 								}
 							}
-							else {
-								var axes = itertools.chain (range (1, len (self.shape)), list ([0]));
-							}
-							return ndarray (function () {
+							return ndarray ((len (axes) ? function () {
 								var __accu0__ = [];
 								for (var i = 0; i < self.ndim; i++) {
 									__accu0__.append (self.shape [axes [i]]);
 								}
 								return __accu0__;
-							} (), self.dtype, self.data, null, function () {
+							} () : reversed (self.shape)), self.dtype, self.data, null, (len (axes) ? function () {
 								var __accu0__ = [];
 								for (var i = 0; i < self.ndim; i++) {
 									__accu0__.append (self.strides [axes [i]]);
 								}
 								return __accu0__;
-							} ());
+							} () : reversed (self.strides)));
 						});},
 						get __getitem__ () {return __get__ (this, function (self, key) {
 							var index = key [0] * self.ns_skips [0];
@@ -1220,9 +1191,9 @@ function autotest () {
 								for (var icol = 0; icol < ncols; icol++) {
 									var sum = 0;
 									for (var iterm = 0; iterm < nterms; iterm++) {
-										sum += self.__getitem__ (tuple ([irow, iterm])) * other.__getitem__ (tuple ([iterm, icol]));
+										sum += self.__getitem__ ([irow, iterm]) * other.__getitem__ ([iterm, icol]);
 									}
-									result.__setitem__ (tuple ([irow, icol]), sum);
+									result.__setitem__ ([irow, icol], sum);
 								}
 							}
 							return result;
@@ -1321,7 +1292,7 @@ function autotest () {
 			__all__: {
 				__inited__: false,
 				__init__: function (__all__) {
-					var ns_version = '0.0.21';
+					var ns_version = '0.0.22';
 					__pragma__ ('<all>')
 						__all__.ns_version = ns_version;
 					__pragma__ ('</all>')
@@ -1490,7 +1461,7 @@ function autotest () {
 								self.compare ();
 							}
 							else {
-								self.dump (__main__.__file__.__getslice__ (0, -3, 1).replace ('\\', '/').rsplit ('/', 1) [-1]);
+								self.dump (__main__.__file__.__getslice__ (0, -3, 1).py_replace ('\\', '/').rsplit ('/', 1) [-1]);
 							}
 						});}
 					});
