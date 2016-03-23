@@ -13,7 +13,7 @@ def read (*paths):
 setup (
 	name = 'Numscrypt',
 	version = base.ns_version,
-	description = 'Purely experimental attempt to port a microscopic part of NumPy to Transcrypt using JS typed arrays',
+	description = 'A tiny bit of NumPy for Transcrypt using JavaScript typed arrays',
 	long_description = (
 		read ('README.rst') + '\n\n' +
 		read ('numscrypt/license_reference.txt')

@@ -1,7 +1,9 @@
-Numscrypt?
+Numscrypt is a port of a small part of NumPy to Transcrypt using JavaScript typed arrays.
+While some attention is paid to speed, e.g. by optimizing for-loops and operators in Transcrypt, that is currently not the main focus.
 
-Numscrypt is an experimental attempt to port a microscopically Small Sane Subset of NumPy to Transcrypt using JS typed arrays.
-While some attention is paid to speed, e.g. by using inline JavaScript for inner loops, that is currently not the main focus.
+Whereas NumPy often has multiple way to do things, Numscrypt focuses on one obvious way. The clearest example is the NumPy type *matrix* type, that is a specialization of *ndarray* with confusingly deviating use of some operators. In Transcrypt *matrix* is deliberately left out, to keep it lean.
+
+One thing Numscrypt does support is the use of views, i.e. references to parts of existing arrays rather than copies. As with NumPy, views are implemented using strides and offsets.
 
 Parts of the code can later be replaced by things like asm.js and simd.js, or, better even, GPGPU code.
 There's not yet a clear winner in this area.
@@ -24,6 +26,7 @@ Jacques de Hooge, Rotterdam, Netherlands
 What's new
 ==========
 
+- Readme adapted
 - Hsplit, vsplit, hstack, vstack added
 - Transpose can now deal with non-default strides
 - Tuple stripping optimization added for simple indices

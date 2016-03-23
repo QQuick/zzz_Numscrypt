@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Systematic code examples: a guided tour of Numscrypt &mdash; Transcrypt 0.0.23 documentation</title>
+    <title>2. Currently available facilities &mdash; Transcrypt 0.0.24 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.23',
+        VERSION:     '0.0.24',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Transcrypt 0.0.23 documentation" href="index.html" />
+    <link rel="top" title="Transcrypt 0.0.24 documentation" href="index.html" />
     <link rel="prev" title="1. Getting started" href="installation_use.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.23 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.24 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -45,8 +45,37 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="systematic-code-examples-a-guided-tour-of-numscrypt">
-<h1>2. Systematic code examples: a guided tour of Numscrypt<a class="headerlink" href="#systematic-code-examples-a-guided-tour-of-numscrypt" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="currently-available-facilities">
+<h1>2. Currently available facilities<a class="headerlink" href="#currently-available-facilities" title="Permalink to this headline">¶</a></h1>
+<p>Numscrypt currently supports:</p>
+<ul>
+<li><dl class="first docutils">
+<dt>ndarray with</dt>
+<dd><ul class="first last simple">
+<li>dtype int32, float32 and float64, shape, views using offset and strides</li>
+<li>multi-dimensional indexing (no slices yet)</li>
+<li>reshape</li>
+<li>astype</li>
+<li>tolist</li>
+<li>__repr__ and __str__</li>
+<li>transpose</li>
+<li>overloaded operators: * / + - &#64; (no mixing of ndarray and scalar expressions yet)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">empty, array, copy</p>
+</li>
+<li><p class="first">hsplit, vsplit</p>
+</li>
+<li><p class="first">hstack.vstack</p>
+</li>
+<li><p class="first">zeros, ones, identity</p>
+</li>
+</ul>
+</div>
+<div class="section" id="systematic-code-examples-a-guided-tour-of-numscrypt">
+<h1>3. Systematic code examples: a guided tour of Numscrypt<a class="headerlink" href="#systematic-code-examples-a-guided-tour-of-numscrypt" title="Permalink to this headline">¶</a></h1>
 <p>One ready-to-run code example is worth more than ten lengthy descriptions. The <em>autotest and demo suite</em>, that is part of the distribution, is a collection of sourcecode fragments called <em>testlets</em>. These testlets are used for automated regression testing of Numscrypt against CPython.
 Since they systematically cover all the library constructs, they are also very effective as a learning tool. The testlets are arranged alphabetically by subject.</p>
 <div class="literal-block-wrapper container" id="autotest-numcrypt-autotest-demo-suite">
@@ -64,7 +93,7 @@ Since they systematically cover all the library constructs, they are also very e
 </div>
 </div>
 <div class="section" id="basics-creating-and-using-arrays">
-<h2>2.1. Basics: creating and using arrays<a class="headerlink" href="#basics-creating-and-using-arrays" title="Permalink to this headline">¶</a></h2>
+<h2>3.1. Basics: creating and using arrays<a class="headerlink" href="#basics-creating-and-using-arrays" title="Permalink to this headline">¶</a></h2>
 <div class="literal-block-wrapper container" id="testlet-basics">
 <div class="code-block-caption"><span class="caption-text">Testlet: basics</span><a class="headerlink" href="#testlet-basics" title="Permalink to this code">¶</a></div>
 <div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
@@ -212,8 +241,9 @@ def run (autoTester):
             </a></p>
   <h3><a href="index.html">Subjects</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2. Systematic code examples: a guided tour of Numscrypt</a><ul>
-<li><a class="reference internal" href="#basics-creating-and-using-arrays">2.1. Basics: creating and using arrays</a></li>
+<li><a class="reference internal" href="#">2. Currently available facilities</a></li>
+<li><a class="reference internal" href="#systematic-code-examples-a-guided-tour-of-numscrypt">3. Systematic code examples: a guided tour of Numscrypt</a><ul>
+<li><a class="reference internal" href="#basics-creating-and-using-arrays">3.1. Basics: creating and using arrays</a></li>
 </ul>
 </li>
 </ul>
@@ -254,7 +284,7 @@ def run (autoTester):
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.23 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.24 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
