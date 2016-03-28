@@ -25,3 +25,4 @@ def copyCode (relPath):
 
 copyCode ('__init__.py')
 copyCode ('base.py')
+copyCode ('linalg.py')

@@ -45,6 +45,8 @@ class ndarray:
 		if strides:
 			self.strides = strides
 		else:
+		
+		
 			self.strides = [self.itemsize]
 			for dim in reversed (self.shape [1 : ]):
 				self.strides.insert (0, self.strides [0] * dim)
@@ -54,8 +56,7 @@ class ndarray:
 		self.nbytes = self.ns_length * self.itemsize
 		
 	def astype (self, dtype):
-		itemsize = ns_itemsizes [dtype]
-		return ndarray (self.shape, dtype, ns_ctors [dtype] .js_from (self.data), itemsize * self.ns_shift, [itemsize * skip for skip in self.ns_skips])
+		return ndarray (self.shape, dtype, ns_ctors [dtype] .js_from (self.data))
 					
 	def tolist (self):
 		def tl_recur (dim, key):
@@ -87,69 +88,50 @@ class ndarray:
 			[self.strides [axes [i]] for i in range (self.ndim)] if len (axes) else reversed (self.strides)
 		)
 		
-	def __getitem__ (self, key):
-		if type (key) == list:				# Multi-dimensional array
-			ns_shift = self.ns_shift
-			shape = []
-			strides = []			
-			isslice = False
-			
-			for idim in range (0, self.ndim):
+		
+	def x__getitem__ (self, key):
+		if type (key) == list:	# Multi-dimensional array
+			offset = 0
+			shape = [None for i in range (self.ndim)]
+			strides = [None for i in self.ndim]
+			for idim in range (self.ndim):
 				subkey = key [idim]
-				if type (subkey) == tuple:
-					isslice = True
-					ns_shift += subkey [0] * self.ns_skips [idim]
-					shape.append (
+				if type (subkey) == list:
+					offset += subkey [0] * self.ns_skips [idim]
+					shape [idim] = (
 							(subkey [1] - subkey [0]) / subkey [2]
 						if subkey [1] else
 							(self.shape [idim] - subkey [0]) / subkey [2]
 					)
-					strides.append (subkey [2] * self.strides [idim])
+					strides [idim] = subkey [2] * self.strides [idim]
 				else:
-					ns_shift += subkey * self.ns_skips [idim]
+					offset += subkey * self.ns_skips [idim]
+					shape [idim] = 1
+					strides [idim] = self.strides [idim]
+			console.log (777777, offset, shape, strides)
 			
-			if isslice:
-				return ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides)
-			else:
-				return self.data [ns_shift]
-		else:								# One-dimensional array
+			return ndarray (shape, self.dtype, self.data, offset, strides)
+			#return self.data [self.ns_shift + istart]
+		else:					# One-dimensional array
 			return self.data [self.ns_shift + key * self.ns_skips [0]]
-	
-	def __setitem__ (self, key, value):
-		def si_recur (key, target, value):
-			if len (key) < target.ndim:
-				for i in range (target.shape [len (key)]):
-					si_recur (itertools.chain (key, [i]), target, value)
-			else:
-				target.__setitem__ (key, value.__getitem__ (key))
-	
-		if type (key) == list:
-			ns_shift = self.ns_shift
-			shape = []
-			strides = []			
-			isslice = False
-			
-			for idim in range (0, self.ndim):
-				subkey = key [idim]
-				if type (subkey) == tuple:
-					isslice = True
-					ns_shift += subkey [0] * self.ns_skips [idim]
-					shape.append (
-							(subkey [1] - subkey [0]) / subkey [2]
-						if subkey [1] else
-							(self.shape [idim] - subkey [0]) / subkey [2]
-					)
-					strides.append (subkey [2] * self.strides [idim])
-				else:
-					ns_shift += subkey * self.ns_skips [idim]
-			if isslice:
-				target = ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides)
-				si_recur ([], target, value)
-			else:
-				self.data [ns_shift] = value
-		else:
-			self.data [self.ns_shift + key * self.ns_skips [0]] = value
-			
+
+	def x__setitem__ (self, key, value):
+		return
+		
+		# if type (key) == list:
+			# offset = 0
+			# index = key [0] * self.ns_skips [0]
+			# for idim in range (1, self.ndim):
+				# subkey = key [idim]
+				# if type (subkey) == list:
+					# pass
+				# else:
+					# offset += key [idim] * self.ns_skips [idim]
+			# self.data [offset + self.ns_shift] = value
+		# else:
+			# self.data [self.ns_shift + key * self.ns_skips [0]] = value
+		
+		
 	def __add__ (self, other):
 		result = empty (self.shape, self.dtype)
 		r, s, o = result.data, self.data, other.data
@@ -201,7 +183,7 @@ def array (obj, dtype = 'float64', copy = True):
 		return ndarray (
 			obj.shape,
 			obj.dtype,
-			obj.data.slice () if copy else obj.buffer,
+			obj.buffer.slice () if copy else obj.buffer,
 			obj.offset,
 			obj.strides
 		)
@@ -226,7 +208,7 @@ def array (obj, dtype = 'float64', copy = True):
 		)
 		
 def copy (obj):
-	return array (obj, obj.dtype, True)
+	return array (obj, copy = True)
 	
 def hsplit (arr, nparts):
 	result = []

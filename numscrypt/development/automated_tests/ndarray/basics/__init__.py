@@ -48,9 +48,11 @@ def run (autoTester):
 		]
 	])
 	
-	autoTester.check ('Matrix b', b.tolist (), '<br>')
-	autoTester.check ('Permutation of b', b.transpose ((2, 1, 0)) .tolist (), '<br>')
+	bp =  b.transpose ((2, 1, 0))
 	
+	autoTester.check ('Matrix b', b.tolist (), '<br>')
+	autoTester.check ('Permutation of b', bp.tolist (), '<br>')
+		
 	c = num.array ([
 		[1, 2, 3, 4],
 		[5, 6, 7, 8],
@@ -106,23 +108,70 @@ def run (autoTester):
 	dti = num.vstack ((dts1, dts0))
 	autoTester.check ('Matrix dti', dti.tolist (), '<br>')
 	
+	v0 = num.array (range (10))	
+	v1 = num.array ((1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
+	
 	__pragma__ ('opov')
 	a [1, 0, 2] = 77777
 	el = b [1, 2, 3]
+
+	bsl0 = b [1, 1 : 3, : ]
+	bsl1 = b [1 : 2, 1 : 3, :]
+	bsl2 = b [1, 1, :]
+	bsl3 = b [1, 1 : 3, 1]
+	bsl4 = b [ : , 1, 1]
+	bsl5 = b [1, 1 : 3, :]
+	bsl6 = b [1, 1 : 3, 1 : 4]
+	bsl7 = b [1, 2 : 3, 2 : 4]
+	
+	bpsl0 = bp [1, 1 : 3, : ]
+	bpsl1 = bp [1 : 2, 1 : 3, :]
+	bpsl2 = bp [1, 1, :]
+	bpsl3 = bp [1, 1 : 3, 1]
+	bpsl4 = bp [ : , 1, 1]
+	bpsl5 = bp [3, 1 : 3, :]
+	bpsl6 = bp [2 : 4, 1 : 3, 0 : 1]
+	bpsl7 = bp [2 : 4, 2 : 3, 1 : 2]
 	
 	sum = a + b
 	dif = a - b
 	prod = a * b
 	quot = a / b
 	dot = c @ d
+	vsum = v0 + v1
+	vel = vsum [6]
+	vsum [6] = 70
 	__pragma__ ('noopov')
 	
 	autoTester.check ('El a [1, 2, 3] alt', a.tolist (), '<br>')
 	autoTester.check ('El b [1, 2, 3]', el, '<br>')
+	
+	autoTester.check ('Sl b0', bsl0.tolist (), '<br>')
+	autoTester.check ('Sl b1', bsl1.tolist (), '<br>')
+	autoTester.check ('Sl b2', bsl2.tolist (), '<br>')
+	autoTester.check ('Sl b3', bsl3.tolist (), '<br>')
+	autoTester.check ('Sl b4', bsl4.tolist (), '<br>')
+	autoTester.check ('Sl b5', bsl5.tolist (), '<br>')
+	autoTester.check ('Sl b6', bsl6.tolist (), '<br>')
+	autoTester.check ('Sl b7', bsl7.tolist (), '<br>')
+	
+	autoTester.check ('Sl bp0', bpsl0.tolist (), '<br>')
+	autoTester.check ('Sl bp1', bpsl1.tolist (), '<br>')
+	autoTester.check ('Sl bp2', bpsl2.tolist (), '<br>')
+	autoTester.check ('Sl bp3', bpsl3.tolist (), '<br>')
+	autoTester.check ('Sl bp4', bpsl4.tolist (), '<br>')
+	autoTester.check ('Sl bp5', bpsl5.tolist (), '<br>')
+	autoTester.check ('Sl bp6', bpsl6.tolist (), '<br>')
+	autoTester.check ('Sl bp7', bpsl7.tolist (), '<br>')
 	
 	autoTester.check ('Matrix sum', sum.tolist (), '<br>')
 	autoTester.check ('Matrix difference', dif.tolist (), '<br>')
 	autoTester.check ('Matrix product', prod.tolist (), '<br>')
 	autoTester.check ('Matrix quotient', quot.tolist (), '<br>')
 	autoTester.check ('Matrix dotproduct', dot.tolist (), '<br>')
+	
+	autoTester.check ('Vector', v0.tolist (), '<br>')
+	autoTester.check ('Vector', v1.tolist (), '<br>')
+	autoTester.check ('El sum old', vel, '<br>')
+	autoTester.check ('Vector sum new', vsum.tolist (), '<br>')
 	

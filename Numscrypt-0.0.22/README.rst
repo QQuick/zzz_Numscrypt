@@ -26,6 +26,10 @@ Jacques de Hooge, Rotterdam, Netherlands
 What's new
 ==========
 
+N.B. Always use the newest version of Transcrypt to be able to use the newest features of Numscrypt.
+
+- Start made with module linalg, matrix inversion added + testcase
+- Overloaded LHS and RHS slicing added to ndarray
 - Readme adapted
 - Hsplit, vsplit, hstack, vstack added
 - Transpose can now deal with non-default strides

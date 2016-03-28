@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Currently available facilities &mdash; Transcrypt 0.0.24 documentation</title>
+    <title>2. Currently available features &mdash; Transcrypt 0.0.25 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.24',
+        VERSION:     '0.0.25',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Transcrypt 0.0.24 documentation" href="index.html" />
+    <link rel="top" title="Transcrypt 0.0.25 documentation" href="index.html" />
     <link rel="prev" title="1. Getting started" href="installation_use.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.24 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.25 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -45,8 +45,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="currently-available-facilities">
-<h1>2. Currently available facilities<a class="headerlink" href="#currently-available-facilities" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="currently-available-features">
+<h1>2. Currently available features<a class="headerlink" href="#currently-available-features" title="Permalink to this headline">¶</a></h1>
 <p>Numscrypt currently supports:</p>
 <ul>
 <li><dl class="first docutils">
@@ -76,17 +76,19 @@
 </div>
 <div class="section" id="systematic-code-examples-a-guided-tour-of-numscrypt">
 <h1>3. Systematic code examples: a guided tour of Numscrypt<a class="headerlink" href="#systematic-code-examples-a-guided-tour-of-numscrypt" title="Permalink to this headline">¶</a></h1>
-<p>One ready-to-run code example is worth more than ten lengthy descriptions. The <em>autotest and demo suite</em>, that is part of the distribution, is a collection of sourcecode fragments called <em>testlets</em>. These testlets are used for automated regression testing of Numscrypt against CPython.
+<p>One ready-to-run code example is worth more than ten lengthy descriptions. The <em>autotest and demo suite</em>, that is part of the distribution, is a collection of sourcecode fragments called <em>testlets</em>. These testlets are used for automated regression testing of Numscrypt against NumPy.
 Since they systematically cover all the library constructs, they are also very effective as a learning tool. The testlets are arranged alphabetically by subject.</p>
 <div class="literal-block-wrapper container" id="autotest-numcrypt-autotest-demo-suite">
 <div class="code-block-caption"><span class="caption-text">Autotest: Numcrypt autotest demo suite</span><a class="headerlink" href="#autotest-numcrypt-autotest-demo-suite" title="Permalink to this code">¶</a></div>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.transcrypt.autotester</span>
 
 <span class="kn">import</span> <span class="nn">basics</span>
+<span class="kn">import</span> <span class="nn">a_linalg</span>
 
 <span class="n">autoTester</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="n">transcrypt</span><span class="o">.</span><span class="n">autotester</span><span class="o">.</span><span class="n">AutoTester</span> <span class="p">()</span>
 
 <span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">basics</span><span class="p">,</span> <span class="s">&#39;basics&#39;</span><span class="p">)</span>
+<span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">a_linalg</span><span class="p">,</span> <span class="s">&#39;a_linalg&#39;</span><span class="p">)</span>
 
 <span class="n">autoTester</span><span class="o">.</span><span class="n">done</span> <span class="p">()</span>
 </pre></div>
@@ -146,9 +148,11 @@ def run (autoTester):
         ]
     ])
     
-    autoTester.check (&#39;Matrix b&#39;, b.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Permutation of b&#39;, b.transpose ((2, 1, 0)) .tolist (), &#39;&lt;br&gt;&#39;)
+    bp =  b.transpose ((2, 1, 0))
     
+    autoTester.check (&#39;Matrix b&#39;, b.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Permutation of b&#39;, bp.tolist (), &#39;&lt;br&gt;&#39;)
+        
     c = num.array ([
         [1, 2, 3, 4],
         [5, 6, 7, 8],
@@ -204,19 +208,61 @@ def run (autoTester):
     dti = num.vstack ((dts1, dts0))
     autoTester.check (&#39;Matrix dti&#39;, dti.tolist (), &#39;&lt;br&gt;&#39;)
     
+    v0 = num.array (range (10)) 
+    v1 = num.array ((1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
+    
     __pragma__ (&#39;opov&#39;)
     a [1, 0, 2] = 77777
     el = b [1, 2, 3]
+
+    bsl0 = b [1, 1 : 3, : ]
+    bsl1 = b [1 : 2, 1 : 3, :]
+    bsl2 = b [1, 1, :]
+    bsl3 = b [1, 1 : 3, 1]
+    bsl4 = b [ : , 1, 1]
+    bsl5 = b [1, 1 : 3, :]
+    bsl6 = b [1, 1 : 3, 1 : 4]
+    bsl7 = b [1, 2 : 3, 2 : 4]
+    
+    bpsl0 = bp [1, 1 : 3, : ]
+    bpsl1 = bp [1 : 2, 1 : 3, :]
+    bpsl2 = bp [1, 1, :]
+    bpsl3 = bp [1, 1 : 3, 1]
+    bpsl4 = bp [ : , 1, 1]
+    bpsl5 = bp [3, 1 : 3, :]
+    bpsl6 = bp [2 : 4, 1 : 3, 0 : 1]
+    bpsl7 = bp [2 : 4, 2 : 3, 1 : 2]
     
     sum = a + b
     dif = a - b
     prod = a * b
     quot = a / b
     dot = c @ d
+    vsum = v0 + v1
+    vel = vsum [6]
+    vsum [6] = 70
     __pragma__ (&#39;noopov&#39;)
     
     autoTester.check (&#39;El a [1, 2, 3] alt&#39;, a.tolist (), &#39;&lt;br&gt;&#39;)
     autoTester.check (&#39;El b [1, 2, 3]&#39;, el, &#39;&lt;br&gt;&#39;)
+    
+    autoTester.check (&#39;Sl b0&#39;, bsl0.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl b1&#39;, bsl1.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl b2&#39;, bsl2.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl b3&#39;, bsl3.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl b4&#39;, bsl4.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl b5&#39;, bsl5.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl b6&#39;, bsl6.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl b7&#39;, bsl7.tolist (), &#39;&lt;br&gt;&#39;)
+    
+    autoTester.check (&#39;Sl bp0&#39;, bpsl0.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl bp1&#39;, bpsl1.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl bp2&#39;, bpsl2.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl bp3&#39;, bpsl3.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl bp4&#39;, bpsl4.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl bp5&#39;, bpsl5.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl bp6&#39;, bpsl6.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Sl bp7&#39;, bpsl7.tolist (), &#39;&lt;br&gt;&#39;)
     
     autoTester.check (&#39;Matrix sum&#39;, sum.tolist (), &#39;&lt;br&gt;&#39;)
     autoTester.check (&#39;Matrix difference&#39;, dif.tolist (), &#39;&lt;br&gt;&#39;)
@@ -224,6 +270,49 @@ def run (autoTester):
     autoTester.check (&#39;Matrix quotient&#39;, quot.tolist (), &#39;&lt;br&gt;&#39;)
     autoTester.check (&#39;Matrix dotproduct&#39;, dot.tolist (), &#39;&lt;br&gt;&#39;)
     
+    autoTester.check (&#39;Vector&#39;, v0.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Vector&#39;, v1.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;El sum old&#39;, vel, &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;Vector sum new&#39;, vsum.tolist (), &#39;&lt;br&gt;&#39;)
+    
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="linalg-matrix-inversion">
+<h2>3.2. Linalg: matrix inversion<a class="headerlink" href="#linalg-matrix-inversion" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper container" id="testlet-a-linalg">
+<div class="code-block-caption"><span class="caption-text">Testlet: a_linalg</span><a class="headerlink" href="#testlet-a-linalg" title="Permalink to this code">¶</a></div>
+<div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
+from org.transcrypt.stubs.browser import __main__, __envir__, __pragma__
+
+if __envir__.executor_name == __envir__.transpiler_name:
+    import numscrypt as num
+    import numscrypt.linalg as linalg
+
+__pragma__ (&#39;skip&#39;)
+import numpy as num                 # Bundling: import has to be known compile time
+import numpy.linalg as linalg       # Bundling: import has to be known compile time
+__pragma__ (&#39;noskip&#39;)
+
+def run (autoTester):
+    a = num.array ([
+        [0, -2, -1], 
+        [2, 1, 3], 
+        [1, 1, 2]
+    ])
+    
+    autoTester.check (&#39;Matrix a&#39;, a.astype (&#39;int32&#39;) .tolist (), &#39;&lt;br&gt;&#39;)
+    
+    ai = linalg.inv (a)
+    
+    autoTester.check (&#39;Matrix ai&#39;, ai.astype (&#39;int32&#39;) .tolist (), &#39;&lt;br&gt;&#39;)
+    
+    __pragma__ (&#39;opov&#39;)
+    id = a @ ai
+    __pragma__ (&#39;noopov&#39;)
+    
+    autoTester.check (&#39;a @ ai&#39;, id.astype (&#39;int32&#39;) .tolist (), &#39;&lt;br&gt;&#39;)
 </pre></div>
 </div>
 </div>
@@ -241,9 +330,10 @@ def run (autoTester):
             </a></p>
   <h3><a href="index.html">Subjects</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2. Currently available facilities</a></li>
+<li><a class="reference internal" href="#">2. Currently available features</a></li>
 <li><a class="reference internal" href="#systematic-code-examples-a-guided-tour-of-numscrypt">3. Systematic code examples: a guided tour of Numscrypt</a><ul>
 <li><a class="reference internal" href="#basics-creating-and-using-arrays">3.1. Basics: creating and using arrays</a></li>
+<li><a class="reference internal" href="#linalg-matrix-inversion">3.2. Linalg: matrix inversion</a></li>
 </ul>
 </li>
 </ul>
@@ -284,7 +374,7 @@ def run (autoTester):
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.24 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.25 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

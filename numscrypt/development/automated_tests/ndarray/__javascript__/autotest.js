@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2016-03-23 10:59:11
+// Transcrypt'ed from Python, 2016-03-28 19:06:36
 function autotest () {
 	var __all__ = {};
 	var __world__ = __all__;
@@ -498,7 +498,6 @@ function autotest () {
 	__all__.deepcopy = deepcopy;
 	function list (iterable) {
 		var instance = iterable ? [] .slice.apply (iterable) : [];
-		instance.__class__ = list;
 		return instance;
 	}
 	__all__.list = list;
@@ -943,6 +942,35 @@ function autotest () {
 	__all__.__call__ = __call__;
 	__nest__ (
 		__all__,
+		'a_linalg', {
+			__all__: {
+				__inited__: false,
+				__init__: function (__all__) {
+					if (__envir__.executor_name == __envir__.transpiler_name) {
+						var num =  __init__ (__world__.numscrypt);
+						var linalg =  __init__ (__world__.numscrypt.linalg);
+					}
+					var run = function (autoTester) {
+						var a = num.array (list ([list ([0, -2, -1]), list ([2, 1, 3]), list ([1, 1, 2])]));
+						autoTester.check ('Matrix a', a.astype ('int32').tolist (), '<br>');
+						var ai = linalg.inv (a);
+						autoTester.check ('Matrix ai', ai.astype ('int32').tolist (), '<br>');
+						var id = __matmul__ (a, ai);
+						autoTester.check ('a @ ai', id.astype ('int32').tolist (), '<br>');
+					};
+					__pragma__ ('<use>' +
+						'numscrypt' +
+						'numscrypt.linalg' +
+					'</use>')
+					__pragma__ ('<all>')
+						__all__.run = run;
+					__pragma__ ('</all>')
+				}
+			}
+		}
+	);
+	__nest__ (
+		__all__,
 		'basics', {
 			__all__: {
 				__inited__: false,
@@ -961,8 +989,9 @@ function autotest () {
 						autoTester.check ('Matrix a', a.tolist (), '<br>');
 						autoTester.check ('Transpose of a', a.transpose ().tolist (), '<br>');
 						var b = num.array (list ([list ([list ([2, 2, 4, 6]), list ([8, 10, 12, 14]), list ([16, 18, 20, 24])]), list ([list ([200, 202, 204, 206]), list ([208, 210, 212, 214]), list ([216, 218, 220, 224])])]));
+						var bp = b.transpose (tuple ([2, 1, 0]));
 						autoTester.check ('Matrix b', b.tolist (), '<br>');
-						autoTester.check ('Permutation of b', b.transpose (tuple ([2, 1, 0])).tolist (), '<br>');
+						autoTester.check ('Permutation of b', bp.tolist (), '<br>');
 						var c = num.array (list ([list ([1, 2, 3, 4]), list ([5, 6, 7, 8]), list ([9, 10, 11, 12])]), 'int32');
 						autoTester.check ('Shape strides c', tuple (c.shape), tuple (c.strides), '<br>');
 						autoTester.check ('Matrix c', c.tolist (), '<br>');
@@ -1007,20 +1036,61 @@ function autotest () {
 						autoTester.check ('Matrix dts1', dts1.tolist (), '<br>');
 						var dti = num.vstack (tuple ([dts1, dts0]));
 						autoTester.check ('Matrix dti', dti.tolist (), '<br>');
+						var v0 = num.array (range (10));
+						var v1 = num.array (tuple ([1, 2, 3, 1, 2, 3, 1, 2, 3, 1]));
 						a.__setitem__ ([1, 0, 2], 77777);
 						var el = b.__getitem__ ([1, 2, 3]);
+						var bsl0 = b.__getitem__ ([1, tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
+						var bsl1 = b.__getitem__ ([tuple ([1, 2, 1]), tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
+						var bsl2 = b.__getitem__ ([1, 1, tuple ([0, 0, 1])]);
+						var bsl3 = b.__getitem__ ([1, tuple ([1, 3, 1]), 1]);
+						var bsl4 = b.__getitem__ ([tuple ([0, 0, 1]), 1, 1]);
+						var bsl5 = b.__getitem__ ([1, tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
+						var bsl6 = b.__getitem__ ([1, tuple ([1, 3, 1]), tuple ([1, 4, 1])]);
+						var bsl7 = b.__getitem__ ([1, tuple ([2, 3, 1]), tuple ([2, 4, 1])]);
+						var bpsl0 = bp.__getitem__ ([1, tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
+						var bpsl1 = bp.__getitem__ ([tuple ([1, 2, 1]), tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
+						var bpsl2 = bp.__getitem__ ([1, 1, tuple ([0, 0, 1])]);
+						var bpsl3 = bp.__getitem__ ([1, tuple ([1, 3, 1]), 1]);
+						var bpsl4 = bp.__getitem__ ([tuple ([0, 0, 1]), 1, 1]);
+						var bpsl5 = bp.__getitem__ ([3, tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
+						var bpsl6 = bp.__getitem__ ([tuple ([2, 4, 1]), tuple ([1, 3, 1]), tuple ([0, 1, 1])]);
+						var bpsl7 = bp.__getitem__ ([tuple ([2, 4, 1]), tuple ([2, 3, 1]), tuple ([1, 2, 1])]);
 						var sum = __add__ (a, b);
 						var dif = __sub__ (a, b);
 						var prod = __mul__ (a, b);
 						var quot = __div__ (a, b);
 						var dot = __matmul__ (c, d);
+						var vsum = __add__ (v0, v1);
+						var vel = __getitem__ (vsum, 6);
+						__setitem__ (vsum, 6, 70);
 						autoTester.check ('El a [1, 2, 3] alt', a.tolist (), '<br>');
 						autoTester.check ('El b [1, 2, 3]', el, '<br>');
+						autoTester.check ('Sl b0', bsl0.tolist (), '<br>');
+						autoTester.check ('Sl b1', bsl1.tolist (), '<br>');
+						autoTester.check ('Sl b2', bsl2.tolist (), '<br>');
+						autoTester.check ('Sl b3', bsl3.tolist (), '<br>');
+						autoTester.check ('Sl b4', bsl4.tolist (), '<br>');
+						autoTester.check ('Sl b5', bsl5.tolist (), '<br>');
+						autoTester.check ('Sl b6', bsl6.tolist (), '<br>');
+						autoTester.check ('Sl b7', bsl7.tolist (), '<br>');
+						autoTester.check ('Sl bp0', bpsl0.tolist (), '<br>');
+						autoTester.check ('Sl bp1', bpsl1.tolist (), '<br>');
+						autoTester.check ('Sl bp2', bpsl2.tolist (), '<br>');
+						autoTester.check ('Sl bp3', bpsl3.tolist (), '<br>');
+						autoTester.check ('Sl bp4', bpsl4.tolist (), '<br>');
+						autoTester.check ('Sl bp5', bpsl5.tolist (), '<br>');
+						autoTester.check ('Sl bp6', bpsl6.tolist (), '<br>');
+						autoTester.check ('Sl bp7', bpsl7.tolist (), '<br>');
 						autoTester.check ('Matrix sum', sum.tolist (), '<br>');
 						autoTester.check ('Matrix difference', dif.tolist (), '<br>');
 						autoTester.check ('Matrix product', prod.tolist (), '<br>');
 						autoTester.check ('Matrix quotient', quot.tolist (), '<br>');
 						autoTester.check ('Matrix dotproduct', dot.tolist (), '<br>');
+						autoTester.check ('Vector', v0.tolist (), '<br>');
+						autoTester.check ('Vector', v1.tolist (), '<br>');
+						autoTester.check ('El sum old', vel, '<br>');
+						autoTester.check ('Vector sum new', vsum.tolist (), '<br>');
 					};
 					__pragma__ ('<use>' +
 						'numscrypt' +
@@ -1116,7 +1186,16 @@ function autotest () {
 							self.nbytes = self.ns_length * self.itemsize;
 						});},
 						get astype () {return __get__ (this, function (self, dtype) {
-							return ndarray (self.shape, dtype, ns_ctors [dtype].from (self.data));
+							var itemsize = ns_itemsizes [dtype];
+							return ndarray (self.shape, dtype, ns_ctors [dtype].from (self.data), itemsize * self.ns_shift, function () {
+								var __accu0__ = [];
+								var __iter0__ = self.ns_skips;
+								for (var __index0__ = 0; __index0__ < __iter0__.length; __index0__++) {
+									var skip = __iter0__ [__index0__];
+									__accu0__.append (itemsize * skip);
+								}
+								return __accu0__;
+							} ());
 						});},
 						get tolist () {return __get__ (this, function (self) {
 							var tl_recur = function (dim, key) {
@@ -1161,18 +1240,73 @@ function autotest () {
 							} () : reversed (self.strides)));
 						});},
 						get __getitem__ () {return __get__ (this, function (self, key) {
-							var index = key [0] * self.ns_skips [0];
-							for (var idim = 1; idim < self.ndim; idim++) {
-								index += key [idim] * self.ns_skips [idim];
+							if (type (key) == list) {
+								var ns_shift = self.ns_shift;
+								var shape = list ([]);
+								var strides = list ([]);
+								var isslice = false;
+								for (var idim = 0; idim < self.ndim; idim++) {
+									var subkey = key [idim];
+									if (type (subkey) == tuple) {
+										var isslice = true;
+										ns_shift += subkey [0] * self.ns_skips [idim];
+										shape.append ((subkey [1] ? (subkey [1] - subkey [0]) / subkey [2] : (self.shape [idim] - subkey [0]) / subkey [2]));
+										strides.append (subkey [2] * self.strides [idim]);
+									}
+									else {
+										ns_shift += subkey * self.ns_skips [idim];
+									}
+								}
+								if (isslice) {
+									return ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides);
+								}
+								else {
+									return self.data [ns_shift];
+								}
 							}
-							return self.data [self.ns_shift + index];
+							else {
+								return self.data [self.ns_shift + key * self.ns_skips [0]];
+							}
 						});},
 						get __setitem__ () {return __get__ (this, function (self, key, value) {
-							var index = key [0] * self.ns_skips [0];
-							for (var idim = 1; idim < self.ndim; idim++) {
-								index += key [idim] * self.ns_skips [idim];
+							var si_recur = function (key, target, value) {
+								if (len (key) < target.ndim) {
+									for (var i = 0; i < target.shape [len (key)]; i++) {
+										si_recur (itertools.chain (key, list ([i])), target, value);
+									}
+								}
+								else {
+									target.__setitem__ (key, value.__getitem__ (key));
+								}
+							};
+							if (type (key) == list) {
+								var ns_shift = self.ns_shift;
+								var shape = list ([]);
+								var strides = list ([]);
+								var isslice = false;
+								for (var idim = 0; idim < self.ndim; idim++) {
+									var subkey = key [idim];
+									if (type (subkey) == tuple) {
+										var isslice = true;
+										ns_shift += subkey [0] * self.ns_skips [idim];
+										shape.append ((subkey [1] ? (subkey [1] - subkey [0]) / subkey [2] : (self.shape [idim] - subkey [0]) / subkey [2]));
+										strides.append (subkey [2] * self.strides [idim]);
+									}
+									else {
+										ns_shift += subkey * self.ns_skips [idim];
+									}
+								}
+								if (isslice) {
+									var target = ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides);
+									si_recur (list ([]), target, value);
+								}
+								else {
+									self.data [ns_shift] = value;
+								}
 							}
-							self.data [self.ns_shift + index] = value;
+							else {
+								self.data [self.ns_shift + key * self.ns_skips [0]] = value;
+							}
 						});},
 						get __add__ () {return __get__ (this, function (self, other) {
 							var result = empty (self.shape, self.dtype);
@@ -1250,7 +1384,7 @@ function autotest () {
 							var copy = true;
 						};
 						if (obj.__class__ == ndarray) {
-							return ndarray (obj.shape, obj.dtype, (copy ? obj.buffer.slice () : obj.buffer), obj.offset, obj.strides);
+							return ndarray (obj.shape, obj.dtype, (copy ? obj.data.slice () : obj.buffer), obj.offset, obj.strides);
 						}
 						else {
 							var shape = list ([]);
@@ -1279,7 +1413,7 @@ function autotest () {
 						}
 					};
 					var copy = function (obj) {
-						return array (obj, __kwargdict__ ({copy: true}));
+						return array (obj, obj.dtype, true);
 					};
 					var hsplit = function (arr, nparts) {
 						var result = list ([]);
@@ -1398,6 +1532,51 @@ function autotest () {
 					var ns_version = '0.0.24';
 					__pragma__ ('<all>')
 						__all__.ns_version = ns_version;
+					__pragma__ ('</all>')
+				}
+			}
+		}
+	);
+	__nest__ (
+		__all__,
+		'numscrypt.linalg', {
+			__all__: {
+				__inited__: false,
+				__init__: function (__all__) {
+					var ns =  __init__ (__world__.numscrypt);
+					var inv = function (a) {
+						var b = ns.hstack (tuple ([a, ns.identity (a.shape [0], a.dtype)]));
+						for (var ipiv = 0; ipiv < b.shape [0]; ipiv++) {
+							if (!b.__getitem__ ([ipiv, ipiv])) {
+								for (var irow = ipiv + 1; irow < b.shape [0]; irow++) {
+									if (b.__getitem__ ([irow, ipiv])) {
+										var t = ns.copy (b.__getitem__ ([irow, tuple ([0, 0, 1])]));
+										b.__setitem__ ([irow, tuple ([0, 0, 1])], b.__getitem__ ([ipiv, tuple ([0, 0, 1])]));
+										b.__setitem__ ([ipiv, tuple ([0, 0, 1])], t);
+										break;
+									}
+								}
+							}
+							var piv = b.__getitem__ ([ipiv, ipiv]);
+							for (var icol = ipiv; icol < b.shape [1]; icol++) {
+								b.__setitem__ ([ipiv, icol], b.__getitem__ ([ipiv, icol]) / piv);
+							}
+							for (var irow = 0; irow < b.shape [0]; irow++) {
+								if (irow != ipiv) {
+									var factor = b.__getitem__ ([irow, ipiv]);
+									for (var icol = 0; icol < b.shape [1]; icol++) {
+										b.__setitem__ ([irow, icol], b.__getitem__ ([irow, icol]) - factor * b.__getitem__ ([ipiv, icol]));
+									}
+								}
+							}
+						}
+						return ns.hsplit (b, 2) [1];
+					};
+					__pragma__ ('<use>' +
+						'numscrypt' +
+					'</use>')
+					__pragma__ ('<all>')
+						__all__.inv = inv;
 					__pragma__ ('</all>')
 				}
 			}
@@ -1583,14 +1762,18 @@ function autotest () {
 		}
 	);
 	(function () {
+		var a_linalg = {};
 		var basics = {};
 		var org = {};
 		__nest__ (org, 'transcrypt.autotester', __init__ (__world__.org.transcrypt.autotester));
 		__nest__ (basics, '', __init__ (__world__.basics));
+		__nest__ (a_linalg, '', __init__ (__world__.a_linalg));
 		var autoTester = org.transcrypt.autotester.AutoTester ();
 		autoTester.run (basics, 'basics');
+		autoTester.run (a_linalg, 'a_linalg');
 		autoTester.done ();
 		__pragma__ ('<use>' +
+			'a_linalg' +
 			'basics' +
 			'org.transcrypt.autotester' +
 		'</use>')

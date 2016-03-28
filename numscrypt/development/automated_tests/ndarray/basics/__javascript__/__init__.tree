@@ -451,6 +451,29 @@ file: Module
 										ctx: Load 
 								ctx: Load 
 						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bp
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = b
+								ctx: Load 
+							attr: str = transpose
+							ctx: Load 
+						args: list 
+							element: Tuple 
+								elts: list 
+									element: Num 
+										n: int = 2
+									element: Num 
+										n: int = 1
+									element: Num 
+										n: int = 0
+								ctx: Load 
+						keywords: list 
 				element: Expr 
 					value: Call 
 						func: Attribute 
@@ -487,24 +510,9 @@ file: Module
 								s: str = Permutation of b
 							element: Call 
 								func: Attribute 
-									value: Call 
-										func: Attribute 
-											value: Name 
-												id: str = b
-												ctx: Load 
-											attr: str = transpose
-											ctx: Load 
-										args: list 
-											element: Tuple 
-												elts: list 
-													element: Num 
-														n: int = 2
-													element: Num 
-														n: int = 1
-													element: Num 
-														n: int = 0
-												ctx: Load 
-										keywords: list 
+									value: Name 
+										id: str = bp
+										ctx: Load 
 									attr: str = tolist
 									ctx: Load 
 								args: list 
@@ -1362,6 +1370,65 @@ file: Module
 							element: Str 
 								s: str = <br>
 						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = v0
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = array
+							ctx: Load 
+						args: list 
+							element: Call 
+								func: Name 
+									id: str = range
+									ctx: Load 
+								args: list 
+									element: Num 
+										n: int = 10
+								keywords: list 
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = v1
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = array
+							ctx: Load 
+						args: list 
+							element: Tuple 
+								elts: list 
+									element: Num 
+										n: int = 1
+									element: Num 
+										n: int = 2
+									element: Num 
+										n: int = 3
+									element: Num 
+										n: int = 1
+									element: Num 
+										n: int = 2
+									element: Num 
+										n: int = 3
+									element: Num 
+										n: int = 1
+									element: Num 
+										n: int = 2
+									element: Num 
+										n: int = 3
+									element: Num 
+										n: int = 1
+								ctx: Load 
+						keywords: list 
 				element: Expr 
 					value: Call 
 						func: Name 
@@ -1409,6 +1476,412 @@ file: Module
 									element: Num 
 										n: int = 3
 								ctx: Load 
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl0
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl1
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 2
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl2
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl3
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Index 
+									value: Num 
+										n: int = 1
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl4
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Index 
+									value: Num 
+										n: int = 1
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl5
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl6
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 4
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl7
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 2
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 2
+									upper: Num 
+										n: int = 4
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl0
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl1
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 2
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl2
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl3
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Index 
+									value: Num 
+										n: int = 1
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl4
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Index 
+									value: Num 
+										n: int = 1
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl5
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 3
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl6
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: Num 
+										n: int = 2
+									upper: Num 
+										n: int = 4
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 0
+									upper: Num 
+										n: int = 1
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl7
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: Num 
+										n: int = 2
+									upper: Num 
+										n: int = 4
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 2
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 2
+									step: NoneType = None
 						ctx: Load 
 				element: Assign 
 					targets: list 
@@ -1475,6 +1948,44 @@ file: Module
 						right: Name 
 							id: str = d
 							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = vsum
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = v0
+							ctx: Load 
+						op: Add 
+						right: Name 
+							id: str = v1
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = vel
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = vsum
+							ctx: Load 
+						slice: Index 
+							value: Num 
+								n: int = 6
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Subscript 
+							value: Name 
+								id: str = vsum
+								ctx: Load 
+							slice: Index 
+								value: Num 
+									n: int = 6
+							ctx: Store 
+					value: Num 
+						n: int = 70
 				element: Expr 
 					value: Call 
 						func: Name 
@@ -1521,6 +2032,374 @@ file: Module
 							element: Name 
 								id: str = el
 								ctx: Load 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b0
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl0
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b1
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl1
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b2
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl2
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b3
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl3
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b4
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl4
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b5
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl5
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b6
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl6
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b7
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl7
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp0
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl0
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp1
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl1
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp2
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl2
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp3
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl3
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp4
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl4
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp5
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl5
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp6
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl6
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp7
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl7
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
 							element: Str 
 								s: str = <br>
 						keywords: list 
@@ -1631,6 +2510,92 @@ file: Module
 								func: Attribute 
 									value: Name 
 										id: str = dot
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Vector
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = v0
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Vector
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = v1
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = El sum old
+							element: Name 
+								id: str = vel
+								ctx: Load 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Vector sum new
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = vsum
 										ctx: Load 
 									attr: str = tolist
 									ctx: Load 

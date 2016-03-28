@@ -54,7 +54,8 @@ class ndarray:
 		self.nbytes = self.ns_length * self.itemsize
 		
 	def astype (self, dtype):
-		return ndarray (self.shape, dtype, ns_ctors [dtype] .js_from (self.data))
+		itemsize = ns_itemsizes [dtype]
+		return ndarray (self.shape, dtype, ns_ctors [dtype] .js_from (self.data), itemsize * self.ns_shift, [itemsize * skip for skip in self.ns_skips])
 					
 	def tolist (self):
 		def tl_recur (dim, key):
@@ -87,17 +88,68 @@ class ndarray:
 		)
 		
 	def __getitem__ (self, key):
-		index = key [0] * self.ns_skips [0]
-		for idim in range (1, self.ndim):
-			index += key [idim] * self.ns_skips [idim]
-		return self.data [self.ns_shift + index]
+		if type (key) == list:				# Multi-dimensional array
+			ns_shift = self.ns_shift
+			shape = []
+			strides = []			
+			isslice = False
+			
+			for idim in range (0, self.ndim):
+				subkey = key [idim]
+				if type (subkey) == tuple:
+					isslice = True
+					ns_shift += subkey [0] * self.ns_skips [idim]
+					shape.append (
+							(subkey [1] - subkey [0]) / subkey [2]
+						if subkey [1] else
+							(self.shape [idim] - subkey [0]) / subkey [2]
+					)
+					strides.append (subkey [2] * self.strides [idim])
+				else:
+					ns_shift += subkey * self.ns_skips [idim]
+			
+			if isslice:
+				return ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides)
+			else:
+				return self.data [ns_shift]
+		else:								# One-dimensional array
+			return self.data [self.ns_shift + key * self.ns_skips [0]]
 	
 	def __setitem__ (self, key, value):
-		index = key [0] * self.ns_skips [0]
-		for idim in range (1, self.ndim):
-			index += key [idim] * self.ns_skips [idim]
-		self.data [self.ns_shift + index] = value
-		
+		def si_recur (key, target, value):
+			if len (key) < target.ndim:
+				for i in range (target.shape [len (key)]):
+					si_recur (itertools.chain (key, [i]), target, value)
+			else:
+				target.__setitem__ (key, value.__getitem__ (key))
+	
+		if type (key) == list:
+			ns_shift = self.ns_shift
+			shape = []
+			strides = []			
+			isslice = False
+			
+			for idim in range (0, self.ndim):
+				subkey = key [idim]
+				if type (subkey) == tuple:
+					isslice = True
+					ns_shift += subkey [0] * self.ns_skips [idim]
+					shape.append (
+							(subkey [1] - subkey [0]) / subkey [2]
+						if subkey [1] else
+							(self.shape [idim] - subkey [0]) / subkey [2]
+					)
+					strides.append (subkey [2] * self.strides [idim])
+				else:
+					ns_shift += subkey * self.ns_skips [idim]
+			if isslice:
+				target = ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides)
+				si_recur ([], target, value)
+			else:
+				self.data [ns_shift] = value
+		else:
+			self.data [self.ns_shift + key * self.ns_skips [0]] = value
+			
 	def __add__ (self, other):
 		result = empty (self.shape, self.dtype)
 		r, s, o = result.data, self.data, other.data
@@ -149,7 +201,7 @@ def array (obj, dtype = 'float64', copy = True):
 		return ndarray (
 			obj.shape,
 			obj.dtype,
-			obj.buffer.slice () if copy else obj.buffer,
+			obj.data.slice () if copy else obj.buffer,
 			obj.offset,
 			obj.strides
 		)
@@ -174,7 +226,7 @@ def array (obj, dtype = 'float64', copy = True):
 		)
 		
 def copy (obj):
-	return array (obj, copy = True)
+	return array (obj, obj.dtype, True)
 	
 def hsplit (arr, nparts):
 	result = []
