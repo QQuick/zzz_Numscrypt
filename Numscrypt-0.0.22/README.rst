@@ -28,6 +28,8 @@ What's new
 
 N.B. Always use the newest version of Transcrypt to be able to use the newest features of Numscrypt.
 
+- Preliminary optimizations, speedup 70x for inversion, 10x for multiplication (default: optimize for speed)
+- Several bugs fixed for working with non-default strides
 - Start made with module linalg, matrix inversion added + testcase
 - Overloaded LHS and RHS slicing added to ndarray
 - Readme adapted

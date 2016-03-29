@@ -1,0 +1,358 @@
+file: Module 
+	body: list 
+		element: ImportFrom 
+			module: str = org.transcrypt.stubs.browser
+			names: list 
+				element: alias 
+					name: str = *
+					asname: NoneType = None
+			level: int = 0
+		element: ImportFrom 
+			module: str = org.transcrypt.stubs.browser
+			names: list 
+				element: alias 
+					name: str = __pragma__
+					asname: NoneType = None
+			level: int = 0
+		element: Import 
+			names: list 
+				element: alias 
+					name: str = numscrypt
+					asname: str = ns
+		element: Import 
+			names: list 
+				element: alias 
+					name: str = numscrypt.random
+					asname: str = random
+		element: Import 
+			names: list 
+				element: alias 
+					name: str = numscrypt.linalg
+					asname: str = linalg
+		element: Assign 
+			targets: list 
+				element: Name 
+					id: str = result
+					ctx: Store 
+			value: Str 
+				s: str = 
+		element: For 
+			target: Name 
+				id: str = optim_space
+				ctx: Store 
+			iter: Tuple 
+				elts: list 
+					element: NameConstant 
+						value: bool = False
+					element: NameConstant 
+						value: bool = True
+				ctx: Load 
+			body: list 
+				element: Assign 
+					targets: list 
+						element: Attribute 
+							value: Attribute 
+								value: Name 
+									id: str = ns
+									ctx: Load 
+								attr: str = ns_settings
+								ctx: Load 
+							attr: str = optim_space
+							ctx: Store 
+					value: Name 
+						id: str = optim_space
+						ctx: Load 
+				element: For 
+					target: Name 
+						id: str = transpose
+						ctx: Store 
+					iter: Tuple 
+						elts: list 
+							element: NameConstant 
+								value: bool = False
+							element: NameConstant 
+								value: bool = True
+						ctx: Load 
+					body: list 
+						element: Assign 
+							targets: list 
+								element: Name 
+									id: str = a
+									ctx: Store 
+							value: Call 
+								func: Attribute 
+									value: Name 
+										id: str = random
+										ctx: Load 
+									attr: str = rand
+									ctx: Load 
+								args: list 
+									element: Num 
+										n: int = 30
+									element: Num 
+										n: int = 30
+								keywords: list 
+						element: Assign 
+							targets: list 
+								element: Name 
+									id: str = timeStartTranspose
+									ctx: Store 
+							value: Call 
+								func: Name 
+									id: str = __new__
+									ctx: Load 
+								args: list 
+									element: Call 
+										func: Name 
+											id: str = Date
+											ctx: Load 
+										args: list 
+										keywords: list 
+								keywords: list 
+						element: If 
+							test: Name 
+								id: str = transpose
+								ctx: Load 
+							body: list 
+								element: Assign 
+									targets: list 
+										element: Name 
+											id: str = a
+											ctx: Store 
+									value: Call 
+										func: Attribute 
+											value: Name 
+												id: str = a
+												ctx: Load 
+											attr: str = transpose
+											ctx: Load 
+										args: list 
+										keywords: list 
+							orelse: list 
+						element: Assign 
+							targets: list 
+								element: Name 
+									id: str = timeStartInv
+									ctx: Store 
+							value: Call 
+								func: Name 
+									id: str = __new__
+									ctx: Load 
+								args: list 
+									element: Call 
+										func: Name 
+											id: str = Date
+											ctx: Load 
+										args: list 
+										keywords: list 
+								keywords: list 
+						element: Assign 
+							targets: list 
+								element: Name 
+									id: str = ai
+									ctx: Store 
+							value: Call 
+								func: Attribute 
+									value: Name 
+										id: str = linalg
+										ctx: Load 
+									attr: str = inv
+									ctx: Load 
+								args: list 
+									element: Name 
+										id: str = a
+										ctx: Load 
+								keywords: list 
+						element: Assign 
+							targets: list 
+								element: Name 
+									id: str = timeStartMul
+									ctx: Store 
+							value: Call 
+								func: Name 
+									id: str = __new__
+									ctx: Load 
+								args: list 
+									element: Call 
+										func: Name 
+											id: str = Date
+											ctx: Load 
+										args: list 
+										keywords: list 
+								keywords: list 
+						element: Expr 
+							value: Call 
+								func: Name 
+									id: str = __pragma__
+									ctx: Load 
+								args: list 
+									element: Str 
+										s: str = opov
+								keywords: list 
+						element: Assign 
+							targets: list 
+								element: Name 
+									id: str = id
+									ctx: Store 
+							value: BinOp 
+								left: Name 
+									id: str = a
+									ctx: Load 
+								op: MatMult 
+								right: Name 
+									id: str = ai
+									ctx: Load 
+						element: Expr 
+							value: Call 
+								func: Name 
+									id: str = __pragma__
+									ctx: Load 
+								args: list 
+									element: Str 
+										s: str = noopov
+								keywords: list 
+						element: Assign 
+							targets: list 
+								element: Name 
+									id: str = timeEnd
+									ctx: Store 
+							value: Call 
+								func: Name 
+									id: str = __new__
+									ctx: Load 
+								args: list 
+									element: Call 
+										func: Name 
+											id: str = Date
+											ctx: Load 
+										args: list 
+										keywords: list 
+								keywords: list 
+						element: AugAssign 
+							target: Name 
+								id: str = result
+								ctx: Store 
+							op: Add 
+							value: Call 
+								func: Attribute 
+									value: Str 
+										s: str = <pre>
+Optimized for space instead of time: {}
+	
+{}: a @ ai [0:5, 0:5] =
+
+{}
+
+Transpose took: {} ms
+Inverse took: {} ms
+Product took: {} ms
+			</pre>
+									attr: str = format
+									ctx: Load 
+								args: list 
+									element: Name 
+										id: str = optim_space
+										ctx: Load 
+									element: IfExp 
+										test: Attribute 
+											value: Name 
+												id: str = a
+												ctx: Load 
+											attr: str = ns_natural
+											ctx: Load 
+										body: Str 
+											s: str = natural
+										orelse: Str 
+											s: str = unnatural
+									element: Call 
+										func: Attribute 
+											value: Call 
+												func: Name 
+													id: str = str
+													ctx: Load 
+												args: list 
+													element: Call 
+														func: Attribute 
+															value: Name 
+																id: str = ns
+																ctx: Load 
+															attr: str = round
+															ctx: Load 
+														args: list 
+															element: Subscript 
+																value: Name 
+																	id: str = id
+																	ctx: Load 
+																slice: ExtSlice 
+																	dims: list 
+																		element: Slice 
+																			lower: Num 
+																				n: int = 0
+																			upper: Num 
+																				n: int = 5
+																			step: NoneType = None
+																		element: Slice 
+																			lower: Num 
+																				n: int = 0
+																			upper: Num 
+																				n: int = 5
+																			step: NoneType = None
+																ctx: Load 
+															element: Num 
+																n: int = 2
+														keywords: list 
+												keywords: list 
+											attr: str = replace
+											ctx: Load 
+										args: list 
+											element: Str 
+												s: str =  
+											element: Str 
+												s: str = 	
+										keywords: list 
+									element: BinOp 
+										left: Name 
+											id: str = timeStartInv
+											ctx: Load 
+										op: Sub 
+										right: Name 
+											id: str = timeStartTranspose
+											ctx: Load 
+									element: BinOp 
+										left: Name 
+											id: str = timeStartMul
+											ctx: Load 
+										op: Sub 
+										right: Name 
+											id: str = timeStartInv
+											ctx: Load 
+									element: BinOp 
+										left: Name 
+											id: str = timeEnd
+											ctx: Load 
+										op: Sub 
+										right: Name 
+											id: str = timeStartMul
+											ctx: Load 
+								keywords: list 
+					orelse: list 
+			orelse: list 
+		element: Assign 
+			targets: list 
+				element: Attribute 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = document
+								ctx: Load 
+							attr: str = getElementById
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = result
+						keywords: list 
+					attr: str = innerHTML
+					ctx: Store 
+			value: Name 
+				id: str = result
+				ctx: Load 

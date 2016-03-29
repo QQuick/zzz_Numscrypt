@@ -1,13 +1,15 @@
 from org.transcrypt.stubs.browser import *
 from org.transcrypt.stubs.browser import __main__, __envir__, __pragma__
 
+# Imports for Transcrypt, resolved run time
 if __envir__.executor_name == __envir__.transpiler_name:
 	import numscrypt as num
 	import numscrypt.linalg as linalg
 
+# Imports for CPython, resolved compile time
 __pragma__ ('skip')
-import numpy as num					# Bundling: import has to be known compile time
-import numpy.linalg as linalg		# Bundling: import has to be known compile time
+import numpy as num
+import numpy.linalg as linalg
 __pragma__ ('noskip')
 
 def run (autoTester):

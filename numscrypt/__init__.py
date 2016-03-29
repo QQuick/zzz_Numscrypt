@@ -1,7 +1,13 @@
 from org.transcrypt.stubs.browser import __pragma__
 	
+__pragma__ ('skip')
+Int32Array = Float32Array = Float64Array = Array = 0
+__pragma__ ('noskip')
+	
 import itertools
-import numscrypt.base
+
+class ns_settings:
+	optim_space = False
 
 ns_itemsizes = {
 	'int32': 4,
@@ -34,9 +40,9 @@ class ndarray:
 		self.itemsize = ns_itemsizes [self.dtype]
 		self.offset = offset
 		self.ns_shift = self.offset / self.itemsize
-		self.reshape (shape, strides)
 		self.data = buffer
-
+		self.reshape (shape, strides)
+		
 	def reshape (self, shape, strides):
 		self.shape = shape
 		self.ndim = len (self.shape)
@@ -50,19 +56,30 @@ class ndarray:
 				self.strides.insert (0, self.strides [0] * dim)
 				
 		self.ns_skips = [stride / self.itemsize for stride in self.strides]
+		
+		self.ns_natural = self.offset == 0
+		
+		for i in range (self.ndim - 1):
+			if self.ns_skips [i + 1] > self.ns_skips [i]:
+				self.ns_natural = False
+				break;
+		
 		self.ns_length = ns_length (self.shape)
+		if self.ns_length < self.data.length:
+			self.ns_natural = False
+		
 		self.nbytes = self.ns_length * self.itemsize
 		
 	def astype (self, dtype):
 		itemsize = ns_itemsizes [dtype]
 		return ndarray (self.shape, dtype, ns_ctors [dtype] .js_from (self.data), itemsize * self.ns_shift, [itemsize * skip for skip in self.ns_skips])
-					
+						
 	def tolist (self):
-		def tl_recur (dim, key):
+		def tl_recur (idim, key):
 			result = []
-			for i in range (self.shape [dim]):
-				if dim < self.ndim - 1:
-					result.append (tl_recur (dim + 1, itertools.chain (key, [i])))
+			for i in range (self.shape [idim]):
+				if idim < self.ndim - 1:
+					result.append (tl_recur (idim + 1, itertools.chain (key, [i])))
 				else:
 					result.append (self.__getitem__ (itertools.chain (key, [i])))
 			return result
@@ -72,7 +89,7 @@ class ndarray:
 		return 'ndarray ({})'.format (str (self.tolist ()))
 
 	def __str__ (self):
-		return str (self.tolist ()). replace (']], [[', ']] \n\n [[') .replace ('],', ']\n') .replace (',', '')
+		return str (self.tolist ()). replace (']], [[', ']]\n\n[[') .replace ('], ', ']\n') .replace (',', '')
 		
 	def transpose (self, *axes):	
 		if len (axes):						# If any axes permutation is given explicitly
@@ -149,44 +166,117 @@ class ndarray:
 				self.data [ns_shift] = value
 		else:
 			self.data [self.ns_shift + key * self.ns_skips [0]] = value
-			
+		
 	def __add__ (self, other):
+		def add_recur (idim, key):
+			for i in range (self.shape [idim]):
+				if idim < self.ndim - 1:
+					add_recur (idim + 1, itertools.chain (key, [i]))
+				else:
+					key2 = itertools.chain (key, [i])
+					result.__setitem__ (key2, self.__getitem__ (key2) + other.__getitem__ (key2))
+		
 		result = empty (self.shape, self.dtype)
-		r, s, o = result.data, self.data, other.data
-		for i in range (self.data.length):
-			r [i] = s [i] + o [i]
+		
+		if self.ns_natural and other.ns_natural:
+			r, s, o = result.data, self.data, other.data
+			for i in range (self.data.length):
+				r [i] = s [i] + o [i]
+		else:
+			add_recur (0, [])
+			
 		return result
 		
 	def __sub__ (self, other):
+		def sub_recur (idim, key):
+			for i in range (self.shape [idim]):
+				if idim < self.ndim - 1:
+					sub_recur (idim + 1, itertools.chain (key, [i]))
+				else:
+					key2 = itertools.chain (key, [i])
+					result.__setitem__ (key2, self.__getitem__ (key2) - other.__getitem__ (key2))
+		
 		result = empty (self.shape, self.dtype)
-		r, s, o = result.data, self.data, other.data
-		for i in range (self.data.length):
-			r [i] = s [i] - o [i]
+		
+		if self.ns_natural and other.ns_natural:
+			r, s, o = result.data, self.data, other.data
+			for i in range (self.data.length):
+				r [i] = s [i] - o [i]
+		else:
+			sub_recur (0, [])
+			
 		return result
 		
 	def __mul__ (self, other):
+		def mul_recur (idim, key):
+			for i in range (self.shape [idim]):
+				if idim < self.ndim - 1:
+					mul_recur (idim + 1, itertools.chain (key, [i]))
+				else:
+					key2 = itertools.chain (key, [i])
+					result.__setitem__ (key2, self.__getitem__ (key2) * other.__getitem__ (key2))
+		
 		result = empty (self.shape, self.dtype)
-		r, s, o = result.data, self.data, other.data
-		for i in range (self.data.length):
-			r [i] = s [i] * o [i]
+		
+		if self.ns_natural and other.ns_natural:
+			r, s, o = result.data, self.data, other.data
+			for i in range (self.data.length):
+				r [i] = s [i] * o [i]
+		else:
+			mul_recur (0, [])
+			
 		return result
 		
 	def __div__ (self, other):
+		def div_recur (idim, key):
+			for i in range (self.shape [idim]):
+				if idim < self.ndim - 1:
+					div_recur (idim + 1, itertools.chain (key, [i]))
+				else:
+					key2 = itertools.chain (key, [i])
+					result.__setitem__ (key2, self.__getitem__ (key2) / other.__getitem__ (key2))
+		
 		result = empty (self.shape, self.dtype)
-		r, s, o = result.data, self.data, other.data
-		for i in range (self.data.length):
-			r [i] = s [i] / o [i]
+		
+		if self.ns_natural and other.ns_natural:
+			r, s, o = result.data, self.data, other.data
+			for i in range (self.data.length):
+				r [i] = s [i] / o [i]
+		else:
+			div_recur (0, [])
+			
 		return result
 		
 	def __matmul__ (self, other):
-		result = empty ((self.shape [0], other.shape [1]), self.dtype)
 		nrows, ncols, nterms  = self.shape [0], other.shape [1], self.shape [1]
-		for irow in range (nrows):
-			for icol in range (ncols):
-				sum = 0	# Optimization
-				for iterm in range (nterms):
-					sum += self [irow, iterm] * other [iterm, icol]
-				result [irow, icol] = sum
+		result = empty ((nrows, ncols), self.dtype)
+		
+		if self.ns_natural or ns_settings.optim_space:
+			self2 = self
+		else:
+			self2 = copy (self)
+			
+		if other.ns_natural or ns_settings.optim_space:
+			other2 = other
+		else:
+			other2 = copy (other)
+		
+		if self2.ns_natural and other2.ns_natural:
+			print (111)
+			for irow in range (nrows):
+				for icol in range (ncols):
+					r, s, o = result.data, self2.data, other2.data
+					for iterm in range (nterms):
+						r [irow * ncols + icol] += s [irow * nterms + iterm] * o [iterm * ncols + icol]
+		else:
+			print (222)
+			for irow in range (nrows):
+				for icol in range (ncols):
+					sum = 0	# Optimization
+					for iterm in range (nterms):
+						sum += self2 [irow, iterm] * other2 [iterm, icol]
+					result [irow, icol] = sum
+				
 		return result
 		
 def empty (shape, dtype = 'float64'):
@@ -197,13 +287,33 @@ def empty (shape, dtype = 'float64'):
 	)
 	
 def array (obj, dtype = 'float64', copy = True):
+	def cp_recur (idim, key):
+		for i in range (obj.shape [idim]):
+			if idim < obj.ndim - 1:
+				cp_recur (idim + 1, itertools.chain (key, [i]))
+			else:
+				key2 = itertools.chain (key, [i])
+				result.__setitem__ (key2, obj.__getitem__ (key2))
+				
 	if obj.__class__ == ndarray:
-		return ndarray (
-			obj.shape,
-			obj.dtype,
-			obj.data.slice () if copy else obj.buffer,
-			obj.offset,
-			obj.strides
+		if copy:
+			result = empty (obj.shape, dtype)
+			
+			if obj.ns_natural:
+				o, r = obj.data, result.data
+				for i in range (o.length):
+					r [i] = o [i]
+			else:
+				cp_recur (0, [])
+				
+			return result
+		else:
+			return ndarray (
+				obj.shape,
+				obj.dtype,
+				obj.buffer,
+				obj.offset,
+				obj.strides
 		)
 	else:	# Assume JS array of JS arrays, compiled from nested tuples and lists
 		shape = []
@@ -286,14 +396,38 @@ def vstack (arrs):
 				
 	return result
 			
+def round (arr, decimals = 0):
+	def rnd_recur (idim, key):
+		for i in range (arr.shape [idim]):
+			if idim < arr.ndim - 1:
+				rnd_recur (idim + 1, itertools.chain (key, [i]))
+			else:
+				key2 = itertools.chain (key, [i])
+				result.__setitem__ (key2, arr.__getitem__ (key2) .toFixed (decimals))
+
+	result = empty (arr.shape, arr.dtype)
+
+	if arr.ns_natural:
+		a, r = arr.data, result.data
+		for i in range (a.length):
+			r [i] = a [i] .toFixed (decimals)
+	else:
+		rnd_recur (0, [])
+		
+	return result
+		
 def zeros (shape, dtype = 'float64'):
 	result = empty (shape, dtype)
-	result.data.fill (0)
+	r = result.data
+	for i in range (r.length):
+		r [i] = 0
 	return result
 	
 def ones (shape, dtype = 'float64'):
 	result = empty (shape, dtype)
-	result.data.fill (1)
+	r = result.data
+	for i in range (r.length):
+		r [i] = 1
 	return result
 	
 def identity (n, dtype = 'float64'):
@@ -301,4 +435,5 @@ def identity (n, dtype = 'float64'):
 	for i in range (n):
 		result.data [i * result.shape [1] + i] = 1
 	return result
+	
 	

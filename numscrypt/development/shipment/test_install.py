@@ -25,4 +25,5 @@ def copyCode (relPath):
 
 copyCode ('__init__.py')
 copyCode ('base.py')
+copyCode ('random.py')
 copyCode ('linalg.py')

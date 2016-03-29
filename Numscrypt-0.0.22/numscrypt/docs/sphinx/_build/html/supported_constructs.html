@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Currently available features &mdash; Transcrypt 0.0.25 documentation</title>
+    <title>2. Currently available features &mdash; Transcrypt 0.0.26 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.25',
+        VERSION:     '0.0.26',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Transcrypt 0.0.25 documentation" href="index.html" />
+    <link rel="top" title="Transcrypt 0.0.26 documentation" href="index.html" />
     <link rel="prev" title="1. Getting started" href="installation_use.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.25 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.26 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -49,11 +49,14 @@
 <h1>2. Currently available features<a class="headerlink" href="#currently-available-features" title="Permalink to this headline">¶</a></h1>
 <p>Numscrypt currently supports:</p>
 <ul>
+<li><p class="first">ns_settings.optim_space setting added, default is False. Setting it to True is DISADVISED, since it will result in slow code.</p>
+</li>
 <li><dl class="first docutils">
 <dt>ndarray with</dt>
 <dd><ul class="first last simple">
 <li>dtype int32, float32 and float64, shape, views using offset and strides</li>
-<li>multi-dimensional indexing (no slices yet)</li>
+<li>multi-dimensional indexing</li>
+<li>multi-dimensional slicing</li>
 <li>reshape</li>
 <li>astype</li>
 <li>tolist</li>
@@ -71,6 +74,14 @@
 <li><p class="first">hstack.vstack</p>
 </li>
 <li><p class="first">zeros, ones, identity</p>
+</li>
+<li><dl class="first docutils">
+<dt>linalg with</dt>
+<dd><ul class="first last simple">
+<li>matrix inversion</li>
+</ul>
+</dd>
+</dl>
 </li>
 </ul>
 </div>
@@ -101,11 +112,13 @@ Since they systematically cover all the library constructs, they are also very e
 <div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
 from org.transcrypt.stubs.browser import __main__, __envir__, __pragma__
 
+# Imports for Transcrypt, resolved run time
 if __envir__.executor_name == __envir__.transpiler_name:
     import numscrypt as num
 
+# Imports for CPython, resolved compile time
 __pragma__ (&#39;skip&#39;)
-import numpy as num     # Bundling: import has to be known compile time
+import numpy as num
 __pragma__ (&#39;noskip&#39;)
 
 def run (autoTester):
@@ -286,13 +299,15 @@ def run (autoTester):
 <div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
 from org.transcrypt.stubs.browser import __main__, __envir__, __pragma__
 
+# Imports for Transcrypt, resolved run time
 if __envir__.executor_name == __envir__.transpiler_name:
     import numscrypt as num
     import numscrypt.linalg as linalg
 
+# Imports for CPython, resolved compile time
 __pragma__ (&#39;skip&#39;)
-import numpy as num                 # Bundling: import has to be known compile time
-import numpy.linalg as linalg       # Bundling: import has to be known compile time
+import numpy as num
+import numpy.linalg as linalg
 __pragma__ (&#39;noskip&#39;)
 
 def run (autoTester):
@@ -318,6 +333,70 @@ def run (autoTester):
 </div>
 </div>
 </div>
+<div class="section" id="some-more-examples-interactive-tests">
+<h1>4. Some more examples: interactive tests<a class="headerlink" href="#some-more-examples-interactive-tests" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ns-settings-optimize-space">
+<h2>4.1. ns_settings.optimize_space<a class="headerlink" href="#ns-settings-optimize-space" title="Permalink to this headline">¶</a></h2>
+<p>For time critical operations like <em>&#64;</em> and <em>inv</em>, slicing operations are avoided.
+For &#8216;&#64;&#8217; this happens by copying arrays to &#8216;natural stride order&#8217;.
+Setting ns_settings.optimize_space to True will avoid this copying to save memory space.
+In general this is DISADVISED, since it will considerably slow down execution of the <em>&#64;</em> operator, which is O (n^3).</p>
+<div class="literal-block-wrapper container" id="benchmark-slicing-optimization">
+<div class="code-block-caption"><span class="caption-text">Benchmark: slicing_optimization</span><a class="headerlink" href="#benchmark-slicing-optimization" title="Permalink to this code">¶</a></div>
+<div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
+from org.transcrypt.stubs.browser import __pragma__
+
+import numscrypt as ns
+import numscrypt.random as random
+import numscrypt.linalg as linalg
+
+result = &#39;&#39;
+
+for optim_space in (False, True):
+    ns.ns_settings.optim_space = optim_space
+
+    for transpose in (False, True):
+        a = random.rand (30, 30)
+        
+        timeStartTranspose = __new__ (Date ())
+        if transpose:
+            a = a.transpose ()
+
+        timeStartInv = __new__ (Date ())
+        ai = linalg.inv (a)
+        
+        timeStartMul = __new__ (Date ()) 
+        __pragma__ (&#39;opov&#39;)
+        id = a @ ai
+        __pragma__ (&#39;noopov&#39;)
+        
+        timeEnd = __new__ (Date ())
+        
+        result +=  &#39;&#39;&#39;&lt;pre&gt;
+Optimized for space instead of time: {}
+    
+{}: a @ ai [0:5, 0:5] =
+
+{}
+
+Transpose took: {} ms
+Inverse took: {} ms
+Product took: {} ms
+            &lt;/pre&gt;&#39;&#39;&#39;.format (
+            optim_space,
+            &#39;natural&#39; if a.ns_natural else &#39;unnatural&#39;,
+            str (ns.round (id [0:5, 0:5], 2)) .replace (&#39; &#39;, &#39;\t&#39;),
+            timeStartInv - timeStartTranspose,
+            timeStartMul - timeStartInv,
+            timeEnd - timeStartMul
+        )
+
+document.getElementById (&#39;result&#39;) .innerHTML = result
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 
 
           </div>
@@ -334,6 +413,10 @@ def run (autoTester):
 <li><a class="reference internal" href="#systematic-code-examples-a-guided-tour-of-numscrypt">3. Systematic code examples: a guided tour of Numscrypt</a><ul>
 <li><a class="reference internal" href="#basics-creating-and-using-arrays">3.1. Basics: creating and using arrays</a></li>
 <li><a class="reference internal" href="#linalg-matrix-inversion">3.2. Linalg: matrix inversion</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#some-more-examples-interactive-tests">4. Some more examples: interactive tests</a><ul>
+<li><a class="reference internal" href="#ns-settings-optimize-space">4.1. ns_settings.optimize_space</a></li>
 </ul>
 </li>
 </ul>
@@ -374,7 +457,7 @@ def run (autoTester):
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.25 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.26 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
