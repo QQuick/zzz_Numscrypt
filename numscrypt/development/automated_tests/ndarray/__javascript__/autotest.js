@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2016-03-29 20:42:47
+// Transcrypt'ed from Python, 2016-03-30 12:25:04
 function autotest () {
 	var __all__ = {};
 	var __world__ = __all__;
@@ -103,7 +103,7 @@ function autotest () {
 					var __Envir__ = __class__ ('__Envir__', [object], {
 						get __init__ () {return __get__ (this, function (self) {
 							self.transpiler_name = 'transcrypt';
-							self.transpiler_version = '3.5.135';
+							self.transpiler_version = '3.5.138';
 							self.target_subdir = '__javascript__';
 						});}
 					});
@@ -837,13 +837,17 @@ function autotest () {
 	String.prototype.upper = function () {
 		return this.toUpperCase ();
 	};
-	var __matmul__ = function (a, b) {
-		if (typeof a == 'object' && '__matmul__' in a) {
-			return a.__matmul__ (b);
+	var __neg__ = function (a) {
+		if (typeof a == 'object' && '__neg__' in a) {
+			return a.__neg__ ();
 		}
 		else {
-			return b.__rmatmul__ (a);
+			return -a;
 		}
+	};
+	__all__.__neg__ = __neg__;
+	var __matmul__ = function (a, b) {
+		return a.__matmul__ (b);
 	};
 	__all__.__matmul__ = __matmul__;
 	var __mul__ = function (a, b) {
@@ -1038,7 +1042,7 @@ function autotest () {
 						autoTester.check ('Matrix dti', dti.tolist (), '<br>');
 						var v0 = num.array (range (10));
 						var v1 = num.array (tuple ([1, 2, 3, 1, 2, 3, 1, 2, 3, 1]));
-						a.__setitem__ ([1, 0, 2], 77777);
+						a.__setitem__ ([1, 0, 2], 177);
 						var el = b.__getitem__ ([1, 2, 3]);
 						var bsl0 = b.__getitem__ ([1, tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
 						var bsl1 = b.__getitem__ ([tuple ([1, 2, 1]), tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
@@ -1064,6 +1068,15 @@ function autotest () {
 						var vsum = __add__ (v0, v1);
 						var vel = __getitem__ (vsum, 6);
 						__setitem__ (vsum, 6, 70);
+						var mul_a3 = __mul__ (a, 3);
+						var mul_3a = __mul__ (3, a);
+						var div_a3 = __div__ (a, 3.1234567);
+						var div_3a = __div__ (3.1234567, a);
+						var add_a3 = __add__ (a, 3);
+						var add_3a = __add__ (3, a);
+						var sub_a3 = __sub__ (a, 3);
+						var sub_3a = __sub__ (3, a);
+						var neg_a = __neg__ (a);
 						autoTester.check ('El a [1, 2, 3] alt', a.tolist (), '<br>');
 						autoTester.check ('El b [1, 2, 3]', el, '<br>');
 						autoTester.check ('Sl b0', bsl0.tolist (), '<br>');
@@ -1091,6 +1104,15 @@ function autotest () {
 						autoTester.check ('Vector', v1.tolist (), '<br>');
 						autoTester.check ('El sum old', vel, '<br>');
 						autoTester.check ('Vector sum new', vsum.tolist (), '<br>');
+						autoTester.check ('mul_a3', mul_a3.tolist (), '<br>');
+						autoTester.check ('mul_3a', mul_3a.tolist (), '<br>');
+						autoTester.check ('div_a3', num.round (div_a3, 2).tolist (), '<br>');
+						autoTester.check ('div_3a', num.round (div_3a, 2).tolist (), '<br>');
+						autoTester.check ('add_a3', add_a3.tolist (), '<br>');
+						autoTester.check ('add_3a', add_3a.tolist (), '<br>');
+						autoTester.check ('sub_a3', sub_a3.tolist (), '<br>');
+						autoTester.check ('sub_3a', sub_3a.tolist (), '<br>');
+						autoTester.check ('neg_a', neg_a.tolist (), '<br>');
 					};
 					__pragma__ ('<use>' +
 						'numscrypt' +
@@ -1319,7 +1341,60 @@ function autotest () {
 								self.data [self.ns_shift + key * self.ns_skips [0]] = value;
 							}
 						});},
+						get __neg__ () {return __get__ (this, function (self) {
+							var neg_recur = function (idim, key) {
+								for (var i = 0; i < self.shape [idim]; i++) {
+									if (idim < self.ndim - 1) {
+										neg_recur (idim + 1, itertools.chain (key, list ([i])));
+									}
+									else {
+										var key2 = itertools.chain (key, list ([i]));
+										result.__setitem__ (key2, -self.__getitem__ (key2));
+									}
+								}
+							};
+							var result = empty (self.shape, self.dtype);
+							if (self.ns_natural) {
+								var __left0__ = tuple ([result.data, self.data]);
+								var r = __left0__ [0];
+								var s = __left0__ [1];
+								for (var i = 0; i < self.data.length; i++) {
+									r [i] = -s [i];
+								}
+							}
+							else {
+								neg_recur (0, list ([]));
+							}
+							return result;
+						});},
+						get __ns_inv__ () {return __get__ (this, function (self) {
+							var ns_inv_recur = function (idim, key) {
+								for (var i = 0; i < self.shape [idim]; i++) {
+									if (idim < self.ndim - 1) {
+										ns_inv_recur (idim + 1, itertools.chain (key, list ([i])));
+									}
+									else {
+										var key2 = itertools.chain (key, list ([i]));
+										result.__setitem__ (key2, 1 / self.__getitem__ (key2));
+									}
+								}
+							};
+							var result = empty (self.shape, self.dtype);
+							if (self.ns_natural) {
+								var __left0__ = tuple ([result.data, self.data]);
+								var r = __left0__ [0];
+								var s = __left0__ [1];
+								for (var i = 0; i < self.data.length; i++) {
+									r [i] = 1 / s [i];
+								}
+							}
+							else {
+								ns_inv_recur (0, list ([]));
+							}
+							return result;
+						});},
 						get __add__ () {return __get__ (this, function (self, other) {
+							var isarr = type (other) == ndarray;
 							var add_recur = function (idim, key) {
 								for (var i = 0; i < self.shape [idim]; i++) {
 									if (idim < self.ndim - 1) {
@@ -1327,12 +1402,17 @@ function autotest () {
 									}
 									else {
 										var key2 = itertools.chain (key, list ([i]));
-										result.__setitem__ (key2, self.__getitem__ (key2) + other.__getitem__ (key2));
+										if (isarr) {
+											result.__setitem__ (key2, self.__getitem__ (key2) + other.__getitem__ (key2));
+										}
+										else {
+											result.__setitem__ (key2, self.__getitem__ (key2) + other);
+										}
 									}
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
@@ -1342,11 +1422,25 @@ function autotest () {
 								}
 							}
 							else {
-								add_recur (0, list ([]));
+								if (self.ns_natural && !isarr) {
+									var __left0__ = tuple ([result.data, self.data]);
+									var r = __left0__ [0];
+									var s = __left0__ [1];
+									for (var i = 0; i < self.data.length; i++) {
+										r [i] = s [i] + other;
+									}
+								}
+								else {
+									add_recur (0, list ([]));
+								}
 							}
 							return result;
 						});},
+						get __radd__ () {return __get__ (this, function (self, scalar) {
+							return self.__add__ (scalar);
+						});},
 						get __sub__ () {return __get__ (this, function (self, other) {
+							var isarr = type (other) == ndarray;
 							var sub_recur = function (idim, key) {
 								for (var i = 0; i < self.shape [idim]; i++) {
 									if (idim < self.ndim - 1) {
@@ -1354,12 +1448,17 @@ function autotest () {
 									}
 									else {
 										var key2 = itertools.chain (key, list ([i]));
-										result.__setitem__ (key2, self.__getitem__ (key2) - other.__getitem__ (key2));
+										if (isarr) {
+											result.__setitem__ (key2, self.__getitem__ (key2) - other.__getitem__ (key2));
+										}
+										else {
+											result.__setitem__ (key2, self.__getitem__ (key2) - other);
+										}
 									}
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
@@ -1369,11 +1468,25 @@ function autotest () {
 								}
 							}
 							else {
-								sub_recur (0, list ([]));
+								if (self.ns_natural && !isarr) {
+									var __left0__ = tuple ([result.data, self.data]);
+									var r = __left0__ [0];
+									var s = __left0__ [1];
+									for (var i = 0; i < self.data.length; i++) {
+										r [i] = s [i] - other;
+									}
+								}
+								else {
+									sub_recur (0, list ([]));
+								}
 							}
 							return result;
 						});},
+						get __rsub__ () {return __get__ (this, function (self, scalar) {
+							return self.__neg__ ().__add__ (scalar);
+						});},
 						get __mul__ () {return __get__ (this, function (self, other) {
+							var isarr = type (other) == ndarray;
 							var mul_recur = function (idim, key) {
 								for (var i = 0; i < self.shape [idim]; i++) {
 									if (idim < self.ndim - 1) {
@@ -1381,12 +1494,17 @@ function autotest () {
 									}
 									else {
 										var key2 = itertools.chain (key, list ([i]));
-										result.__setitem__ (key2, self.__getitem__ (key2) * other.__getitem__ (key2));
+										if (isarr) {
+											result.__setitem__ (key2, self.__getitem__ (key2) * other.__getitem__ (key2));
+										}
+										else {
+											result.__setitem__ (key2, self.__getitem__ (key2) * other);
+										}
 									}
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
@@ -1396,11 +1514,25 @@ function autotest () {
 								}
 							}
 							else {
-								mul_recur (0, list ([]));
+								if (self.ns_natural && !isarr) {
+									var __left0__ = tuple ([result.data, self.data]);
+									var r = __left0__ [0];
+									var s = __left0__ [1];
+									for (var i = 0; i < self.data.length; i++) {
+										r [i] = s [i] * other;
+									}
+								}
+								else {
+									mul_recur (0, list ([]));
+								}
 							}
 							return result;
 						});},
+						get __rmul__ () {return __get__ (this, function (self, scalar) {
+							return self.__mul__ (scalar);
+						});},
 						get __div__ () {return __get__ (this, function (self, other) {
+							var isarr = type (other) == ndarray;
 							var div_recur = function (idim, key) {
 								for (var i = 0; i < self.shape [idim]; i++) {
 									if (idim < self.ndim - 1) {
@@ -1408,12 +1540,17 @@ function autotest () {
 									}
 									else {
 										var key2 = itertools.chain (key, list ([i]));
-										result.__setitem__ (key2, self.__getitem__ (key2) / other.__getitem__ (key2));
+										if (isarr) {
+											result.__setitem__ (key2, self.__getitem__ (key2) / other.__getitem__ (key2));
+										}
+										else {
+											result.__setitem__ (key2, self.__getitem__ (key2) / other);
+										}
 									}
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
@@ -1423,9 +1560,22 @@ function autotest () {
 								}
 							}
 							else {
-								div_recur (0, list ([]));
+								if (self.ns_natural && !isarr) {
+									var __left0__ = tuple ([result.data, self.data]);
+									var r = __left0__ [0];
+									var s = __left0__ [1];
+									for (var i = 0; i < self.data.length; i++) {
+										r [i] = s [i] / other;
+									}
+								}
+								else {
+									div_recur (0, list ([]));
+								}
 							}
 							return result;
+						});},
+						get __rdiv__ () {return __get__ (this, function (self, scalar) {
+							return self.__ns_inv__ ().__mul__ (scalar);
 						});},
 						get __matmul__ () {return __get__ (this, function (self, other) {
 							var __left0__ = tuple ([self.shape [0], other.shape [1], self.shape [1]]);
@@ -1446,7 +1596,6 @@ function autotest () {
 								var other2 = copy (other);
 							}
 							if (self2.ns_natural && other2.ns_natural) {
-								print (111);
 								for (var irow = 0; irow < nrows; irow++) {
 									for (var icol = 0; icol < ncols; icol++) {
 										var __left0__ = tuple ([result.data, self2.data, other2.data]);
@@ -1460,7 +1609,6 @@ function autotest () {
 								}
 							}
 							else {
-								print (222);
 								for (var irow = 0; irow < nrows; irow++) {
 									for (var icol = 0; icol < ncols; icol++) {
 										var sum = 0;

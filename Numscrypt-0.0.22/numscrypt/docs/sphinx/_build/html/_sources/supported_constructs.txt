@@ -55,7 +55,7 @@ ns_settings.optimize_space
 --------------------------
 
 For time critical operations like *@* and *inv*, slicing operations are avoided.
-For '@' this happens by copying arrays to 'natural stride order'.
+For *@* this happens by copying arrays to 'natural stride order'.
 Setting ns_settings.optimize_space to True will avoid this copying to save memory space.
 In general this is DISADVISED, since it will considerably slow down execution of the *@* operator, which is O (n^3).
 

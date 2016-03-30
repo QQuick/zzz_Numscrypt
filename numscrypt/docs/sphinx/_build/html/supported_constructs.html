@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Currently available features &mdash; Transcrypt 0.0.26 documentation</title>
+    <title>2. Currently available features &mdash; Transcrypt 0.0.27 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.26',
+        VERSION:     '0.0.27',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Transcrypt 0.0.26 documentation" href="index.html" />
+    <link rel="top" title="Transcrypt 0.0.27 documentation" href="index.html" />
     <link rel="prev" title="1. Getting started" href="installation_use.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.26 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.27 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -225,7 +225,7 @@ def run (autoTester):
     v1 = num.array ((1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
     
     __pragma__ (&#39;opov&#39;)
-    a [1, 0, 2] = 77777
+    a [1, 0, 2] = 177
     el = b [1, 2, 3]
 
     bsl0 = b [1, 1 : 3, : ]
@@ -254,6 +254,17 @@ def run (autoTester):
     vsum = v0 + v1
     vel = vsum [6]
     vsum [6] = 70
+    
+    mul_a3 = a * 3
+    mul_3a = 3 * a
+    div_a3 = a / 3.1234567
+    div_3a = 3.1234567 / a
+    add_a3 = a + 3
+    add_3a = 3 + a
+    sub_a3 = a - 3
+    sub_3a = 3 - a
+    neg_a = -a
+    
     __pragma__ (&#39;noopov&#39;)
     
     autoTester.check (&#39;El a [1, 2, 3] alt&#39;, a.tolist (), &#39;&lt;br&gt;&#39;)
@@ -287,6 +298,16 @@ def run (autoTester):
     autoTester.check (&#39;Vector&#39;, v1.tolist (), &#39;&lt;br&gt;&#39;)
     autoTester.check (&#39;El sum old&#39;, vel, &#39;&lt;br&gt;&#39;)
     autoTester.check (&#39;Vector sum new&#39;, vsum.tolist (), &#39;&lt;br&gt;&#39;)
+    
+    autoTester.check (&#39;mul_a3&#39;, mul_a3.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;mul_3a&#39;, mul_3a.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;div_a3&#39;, num.round (div_a3, 2).tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;div_3a&#39;, num.round (div_3a, 2).tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;add_a3&#39;, add_a3.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;add_3a&#39;, add_3a.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;sub_a3&#39;, sub_a3.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;sub_3a&#39;, sub_3a.tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;neg_a&#39;, neg_a.tolist (), &#39;&lt;br&gt;&#39;)
     
 </pre></div>
 </div>
@@ -338,7 +359,7 @@ def run (autoTester):
 <div class="section" id="ns-settings-optimize-space">
 <h2>4.1. ns_settings.optimize_space<a class="headerlink" href="#ns-settings-optimize-space" title="Permalink to this headline">¶</a></h2>
 <p>For time critical operations like <em>&#64;</em> and <em>inv</em>, slicing operations are avoided.
-For &#8216;&#64;&#8217; this happens by copying arrays to &#8216;natural stride order&#8217;.
+For <em>&#64;</em> this happens by copying arrays to &#8216;natural stride order&#8217;.
 Setting ns_settings.optimize_space to True will avoid this copying to save memory space.
 In general this is DISADVISED, since it will considerably slow down execution of the <em>&#64;</em> operator, which is O (n^3).</p>
 <div class="literal-block-wrapper container" id="benchmark-slicing-optimization">
@@ -457,7 +478,7 @@ document.getElementById (&#39;result&#39;) .innerHTML = result
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.26 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.27 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

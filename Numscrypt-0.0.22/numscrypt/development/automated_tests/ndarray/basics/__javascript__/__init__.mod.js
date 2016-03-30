@@ -67,7 +67,7 @@
 						autoTester.check ('Matrix dti', dti.tolist (), '<br>');
 						var v0 = num.array (range (10));
 						var v1 = num.array (tuple ([1, 2, 3, 1, 2, 3, 1, 2, 3, 1]));
-						a.__setitem__ ([1, 0, 2], 77777);
+						a.__setitem__ ([1, 0, 2], 177);
 						var el = b.__getitem__ ([1, 2, 3]);
 						var bsl0 = b.__getitem__ ([1, tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
 						var bsl1 = b.__getitem__ ([tuple ([1, 2, 1]), tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
@@ -93,6 +93,15 @@
 						var vsum = __add__ (v0, v1);
 						var vel = __getitem__ (vsum, 6);
 						__setitem__ (vsum, 6, 70);
+						var mul_a3 = __mul__ (a, 3);
+						var mul_3a = __mul__ (3, a);
+						var div_a3 = __div__ (a, 3.1234567);
+						var div_3a = __div__ (3.1234567, a);
+						var add_a3 = __add__ (a, 3);
+						var add_3a = __add__ (3, a);
+						var sub_a3 = __sub__ (a, 3);
+						var sub_3a = __sub__ (3, a);
+						var neg_a = __neg__ (a);
 						autoTester.check ('El a [1, 2, 3] alt', a.tolist (), '<br>');
 						autoTester.check ('El b [1, 2, 3]', el, '<br>');
 						autoTester.check ('Sl b0', bsl0.tolist (), '<br>');
@@ -120,6 +129,15 @@
 						autoTester.check ('Vector', v1.tolist (), '<br>');
 						autoTester.check ('El sum old', vel, '<br>');
 						autoTester.check ('Vector sum new', vsum.tolist (), '<br>');
+						autoTester.check ('mul_a3', mul_a3.tolist (), '<br>');
+						autoTester.check ('mul_3a', mul_3a.tolist (), '<br>');
+						autoTester.check ('div_a3', num.round (div_a3, 2).tolist (), '<br>');
+						autoTester.check ('div_3a', num.round (div_3a, 2).tolist (), '<br>');
+						autoTester.check ('add_a3', add_a3.tolist (), '<br>');
+						autoTester.check ('add_3a', add_3a.tolist (), '<br>');
+						autoTester.check ('sub_a3', sub_a3.tolist (), '<br>');
+						autoTester.check ('sub_3a', sub_3a.tolist (), '<br>');
+						autoTester.check ('neg_a', neg_a.tolist (), '<br>');
 					};
 					__pragma__ ('<use>' +
 						'numscrypt' +

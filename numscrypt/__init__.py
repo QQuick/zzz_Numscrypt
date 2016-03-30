@@ -26,7 +26,7 @@ def ns_length (shape):
 	for dim in shape [1 : ]:
 		result *= dim
 	return result
-	
+				
 class ndarray:
 	def __init__ (
 		self,
@@ -166,86 +166,174 @@ class ndarray:
 				self.data [ns_shift] = value
 		else:
 			self.data [self.ns_shift + key * self.ns_skips [0]] = value
+			
+	def __neg__ (self):
+		def neg_recur (idim, key):
+			for i in range (self.shape [idim]):
+				if idim < self.ndim - 1:
+					neg_recur (idim + 1, itertools.chain (key, [i]))
+				else:
+					key2 = itertools.chain (key, [i])
+					result.__setitem__ (key2, -self.__getitem__ (key2))
 		
+		result = empty (self.shape, self.dtype)
+		
+		if self.ns_natural:
+			r, s = result.data, self.data
+			for i in range (self.data.length):
+				r [i] = -s [i]
+		else:
+			neg_recur (0, [])
+			
+		return result	
+			
+	def __ns_inv__ (self):
+		def ns_inv_recur (idim, key):
+			for i in range (self.shape [idim]):
+				if idim < self.ndim - 1:
+					ns_inv_recur (idim + 1, itertools.chain (key, [i]))
+				else:
+					key2 = itertools.chain (key, [i])
+					result.__setitem__ (key2, 1 / self.__getitem__ (key2))
+		
+		result = empty (self.shape, self.dtype)
+		
+		if self.ns_natural:
+			r, s = result.data, self.data
+			for i in range (self.data.length):
+				r [i] = 1 / s [i]
+		else:
+			ns_inv_recur (0, [])
+			
+		return result	
+			
 	def __add__ (self, other):
+		isarr = type (other) == ndarray
+	
 		def add_recur (idim, key):
 			for i in range (self.shape [idim]):
 				if idim < self.ndim - 1:
 					add_recur (idim + 1, itertools.chain (key, [i]))
 				else:
 					key2 = itertools.chain (key, [i])
-					result.__setitem__ (key2, self.__getitem__ (key2) + other.__getitem__ (key2))
+					if isarr:
+						result.__setitem__ (key2, self.__getitem__ (key2) + other.__getitem__ (key2))
+					else:
+						result.__setitem__ (key2, self.__getitem__ (key2) + other)
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and other.ns_natural:
+		if self.ns_natural and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
 			for i in range (self.data.length):
 				r [i] = s [i] + o [i]
+		elif self.ns_natural and not isarr:
+			r, s = result.data, self.data
+			for i in range (self.data.length):
+				r [i] = s [i] + other
 		else:
 			add_recur (0, [])
 			
 		return result
 		
+	def __radd__ (self, scalar):	# scalar + array -> array.__radd__ (scalar)
+		return self.__add__ (scalar)
+		
 	def __sub__ (self, other):
+		isarr = type (other) == ndarray
+	
 		def sub_recur (idim, key):
 			for i in range (self.shape [idim]):
 				if idim < self.ndim - 1:
 					sub_recur (idim + 1, itertools.chain (key, [i]))
 				else:
 					key2 = itertools.chain (key, [i])
-					result.__setitem__ (key2, self.__getitem__ (key2) - other.__getitem__ (key2))
+					if isarr:
+						result.__setitem__ (key2, self.__getitem__ (key2) - other.__getitem__ (key2))
+					else:
+						result.__setitem__ (key2, self.__getitem__ (key2) - other)
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and other.ns_natural:
+		if self.ns_natural and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
 			for i in range (self.data.length):
 				r [i] = s [i] - o [i]
+		elif self.ns_natural and not isarr:
+			r, s = result.data, self.data
+			for i in range (self.data.length):
+				r [i] = s [i] - other
 		else:
 			sub_recur (0, [])
 			
 		return result
 		
+	def __rsub__ (self, scalar):	# scalar - array -> array.__rsub__ (scalar)
+		return self.__neg__ () .__add__ (scalar)
+		
 	def __mul__ (self, other):
+		isarr = type (other) == ndarray
+	
 		def mul_recur (idim, key):
 			for i in range (self.shape [idim]):
 				if idim < self.ndim - 1:
 					mul_recur (idim + 1, itertools.chain (key, [i]))
 				else:
 					key2 = itertools.chain (key, [i])
-					result.__setitem__ (key2, self.__getitem__ (key2) * other.__getitem__ (key2))
+					if isarr:
+						result.__setitem__ (key2, self.__getitem__ (key2) * other.__getitem__ (key2))
+					else:
+						result.__setitem__ (key2, self.__getitem__ (key2) * other)
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and other.ns_natural:
+		if self.ns_natural and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
 			for i in range (self.data.length):
 				r [i] = s [i] * o [i]
+		elif self.ns_natural and not isarr:
+			r, s = result.data, self.data
+			for i in range (self.data.length):
+				r [i] = s [i] * other
 		else:
 			mul_recur (0, [])
 			
 		return result
 		
+	def __rmul__ (self, scalar):	# scalar * array -> array.__rmul__ (scalar)
+		return self.__mul__ (scalar)
+		
 	def __div__ (self, other):
+		isarr = type (other) == ndarray
+	
 		def div_recur (idim, key):
 			for i in range (self.shape [idim]):
 				if idim < self.ndim - 1:
 					div_recur (idim + 1, itertools.chain (key, [i]))
 				else:
 					key2 = itertools.chain (key, [i])
-					result.__setitem__ (key2, self.__getitem__ (key2) / other.__getitem__ (key2))
+					if isarr:
+						result.__setitem__ (key2, self.__getitem__ (key2) / other.__getitem__ (key2))
+					else:
+						result.__setitem__ (key2, self.__getitem__ (key2) / other)
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and other.ns_natural:
+		if self.ns_natural and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
 			for i in range (self.data.length):
 				r [i] = s [i] / o [i]
+		elif self.ns_natural and not isarr:
+			r, s = result.data, self.data
+			for i in range (self.data.length):
+				r [i] = s [i] / other
 		else:
 			div_recur (0, [])
 			
 		return result
+		
+	def __rdiv__ (self, scalar):	# scalar / array -> array.__rdiv__ (scalar)
+		return self.__ns_inv__ () .__mul__ (scalar)
 		
 	def __matmul__ (self, other):
 		nrows, ncols, nterms  = self.shape [0], other.shape [1], self.shape [1]
@@ -262,14 +350,12 @@ class ndarray:
 			other2 = copy (other)
 		
 		if self2.ns_natural and other2.ns_natural:
-			print (111)
 			for irow in range (nrows):
 				for icol in range (ncols):
 					r, s, o = result.data, self2.data, other2.data
 					for iterm in range (nterms):
 						r [irow * ncols + icol] += s [irow * nterms + iterm] * o [iterm * ncols + icol]
 		else:
-			print (222)
 			for irow in range (nrows):
 				for icol in range (ncols):
 					sum = 0	# Optimization

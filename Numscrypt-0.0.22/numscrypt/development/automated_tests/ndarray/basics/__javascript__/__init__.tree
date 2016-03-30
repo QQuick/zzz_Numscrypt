@@ -1456,7 +1456,7 @@ file: Module
 									ctx: Load 
 							ctx: Store 
 					value: Num 
-						n: int = 77777
+						n: int = 177
 				element: Assign 
 					targets: list 
 						element: Name 
@@ -1986,6 +1986,112 @@ file: Module
 							ctx: Store 
 					value: Num 
 						n: int = 70
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = mul_a3
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Mult 
+						right: Num 
+							n: int = 3
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = mul_3a
+							ctx: Store 
+					value: BinOp 
+						left: Num 
+							n: int = 3
+						op: Mult 
+						right: Name 
+							id: str = a
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = div_a3
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Div 
+						right: Num 
+							n: float = 3.1234567
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = div_3a
+							ctx: Store 
+					value: BinOp 
+						left: Num 
+							n: float = 3.1234567
+						op: Div 
+						right: Name 
+							id: str = a
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = add_a3
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Add 
+						right: Num 
+							n: int = 3
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = add_3a
+							ctx: Store 
+					value: BinOp 
+						left: Num 
+							n: int = 3
+						op: Add 
+						right: Name 
+							id: str = a
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = sub_a3
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Sub 
+						right: Num 
+							n: int = 3
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = sub_3a
+							ctx: Store 
+					value: BinOp 
+						left: Num 
+							n: int = 3
+						op: Sub 
+						right: Name 
+							id: str = a
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = neg_a
+							ctx: Store 
+					value: UnaryOp 
+						op: USub 
+						operand: Name 
+							id: str = a
+							ctx: Load 
 				element: Expr 
 					value: Call 
 						func: Name 
@@ -2596,6 +2702,235 @@ file: Module
 								func: Attribute 
 									value: Name 
 										id: str = vsum
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = mul_a3
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = mul_a3
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = mul_3a
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = mul_3a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = div_a3
+							element: Call 
+								func: Attribute 
+									value: Call 
+										func: Attribute 
+											value: Name 
+												id: str = num
+												ctx: Load 
+											attr: str = round
+											ctx: Load 
+										args: list 
+											element: Name 
+												id: str = div_a3
+												ctx: Load 
+											element: Num 
+												n: int = 2
+										keywords: list 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = div_3a
+							element: Call 
+								func: Attribute 
+									value: Call 
+										func: Attribute 
+											value: Name 
+												id: str = num
+												ctx: Load 
+											attr: str = round
+											ctx: Load 
+										args: list 
+											element: Name 
+												id: str = div_3a
+												ctx: Load 
+											element: Num 
+												n: int = 2
+										keywords: list 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = add_a3
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = add_a3
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = add_3a
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = add_3a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = sub_a3
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = sub_a3
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = sub_3a
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = sub_3a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = neg_a
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = neg_a
 										ctx: Load 
 									attr: str = tolist
 									ctx: Load 

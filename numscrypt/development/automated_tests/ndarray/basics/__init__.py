@@ -114,7 +114,7 @@ def run (autoTester):
 	v1 = num.array ((1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
 	
 	__pragma__ ('opov')
-	a [1, 0, 2] = 77777
+	a [1, 0, 2] = 177
 	el = b [1, 2, 3]
 
 	bsl0 = b [1, 1 : 3, : ]
@@ -143,6 +143,17 @@ def run (autoTester):
 	vsum = v0 + v1
 	vel = vsum [6]
 	vsum [6] = 70
+	
+	mul_a3 = a * 3
+	mul_3a = 3 * a
+	div_a3 = a / 3.1234567
+	div_3a = 3.1234567 / a
+	add_a3 = a + 3
+	add_3a = 3 + a
+	sub_a3 = a - 3
+	sub_3a = 3 - a
+	neg_a = -a
+	
 	__pragma__ ('noopov')
 	
 	autoTester.check ('El a [1, 2, 3] alt', a.tolist (), '<br>')
@@ -176,4 +187,14 @@ def run (autoTester):
 	autoTester.check ('Vector', v1.tolist (), '<br>')
 	autoTester.check ('El sum old', vel, '<br>')
 	autoTester.check ('Vector sum new', vsum.tolist (), '<br>')
+	
+	autoTester.check ('mul_a3', mul_a3.tolist (), '<br>')
+	autoTester.check ('mul_3a', mul_3a.tolist (), '<br>')
+	autoTester.check ('div_a3', num.round (div_a3, 2).tolist (), '<br>')
+	autoTester.check ('div_3a', num.round (div_3a, 2).tolist (), '<br>')
+	autoTester.check ('add_a3', add_a3.tolist (), '<br>')
+	autoTester.check ('add_3a', add_3a.tolist (), '<br>')
+	autoTester.check ('sub_a3', sub_a3.tolist (), '<br>')
+	autoTester.check ('sub_3a', sub_3a.tolist (), '<br>')
+	autoTester.check ('neg_a', neg_a.tolist (), '<br>')
 	
