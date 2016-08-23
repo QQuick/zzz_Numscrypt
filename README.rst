@@ -1,4 +1,4 @@
-** Requires Transcrypt commit ba2c278 (not pip-installable, get it from GitHub) **
+**Requires Transcrypt commit ba2c278 (not pip-installable, get it from GitHub)**
 
 Numscrypt is a port of a small part of NumPy to Transcrypt using JavaScript typed arrays.
 While some attention is paid to speed, e.g. by optimizing for-loops and operators in Transcrypt, that is currently not the main focus.
