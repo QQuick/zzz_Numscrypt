@@ -1,0 +1,2 @@
+A complex ndarray has the same interface as an ndarray
+But internally it consists of two ndarrays

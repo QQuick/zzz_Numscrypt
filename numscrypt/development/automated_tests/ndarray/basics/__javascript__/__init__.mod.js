@@ -138,6 +138,24 @@
 						autoTester.check ('sub_a3', sub_a3.tolist (), '<br>');
 						autoTester.check ('sub_3a', sub_3a.tolist (), '<br>');
 						autoTester.check ('neg_a', neg_a.tolist (), '<br>');
+						var comp_a = __call__ (num.array, list ([list ([__add__ (1, complex (0, 2.0)), __sub__ (2, complex (0, 1.0)), 3]), list ([4, __add__ (5, complex (0, 3.0)), 7])]), 'complex128');
+						var comp_b = __call__ (num.array, list ([list ([6, __sub__ (8, complex (0, 1.0))]), list ([__add__ (9, complex (0, 3.0)), 10]), list ([11, __sub__ (12, complex (0, 6.0))])]), 'complex128');
+						var comp_c = __matmul__ (comp_a, comp_b);
+						autoTester.check ('comp_a', comp_a.tolist (), '<br>');
+						autoTester.check ('comp_b', comp_b.tolist (), '<br>');
+						autoTester.check ('comp_c', comp_c.tolist (), '<br>');
+						var comp_a_square = comp_a.__getitem__ ([tuple ([0, 0, 1]), tuple ([0, 2, 1])]);
+						var comp_b_square = comp_b.__getitem__ ([tuple ([1, 0, 1]), tuple ([0, 0, 1])]);
+						var comp_c_square = __mul__ (comp_a_square, comp_b_square);
+						var comp_d_square = __div__ (comp_a_square, comp_b_square);
+						var comp_e_square = __add__ (comp_a_square, comp_b_square);
+						var comp_f_square = __sub__ (comp_a_square, comp_b_square);
+						autoTester.check ('comp_a_square', comp_a_square.tolist (), '<br>');
+						autoTester.check ('comp_b_square', comp_b_square.tolist (), '<br>');
+						autoTester.check ('comp_c_square', comp_c_square.tolist (), '<br>');
+						autoTester.check ('comp_d_square', num.round (comp_d_square, 2).tolist (), '<br>');
+						autoTester.check ('comp_e_square', comp_e_square.tolist (), '<br>');
+						autoTester.check ('comp_f_square', comp_f_square.tolist (), '<br>');
 					};
 					__pragma__ ('<use>' +
 						'numscrypt' +

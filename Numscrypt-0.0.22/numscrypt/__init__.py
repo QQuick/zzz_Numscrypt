@@ -1,3 +1,8 @@
+# For performance reasons, real arrays or scalars and complex arrays or scalars cannot be mixed
+# In general real arrays in natural order are fastest
+# Real arrays in non-natural order are slower
+# Complex arrays are slowest
+
 from org.transcrypt.stubs.browser import __pragma__
 	
 __pragma__ ('skip')
@@ -12,21 +17,28 @@ class ns_settings:
 ns_itemsizes = {
 	'int32': 4,
 	'float32': 4,
-	'float64': 8
+	'float64': 8,
+	'complex64': 8,
+	'complex128': 16
 }
 
 ns_ctors = {
 	'int32': Int32Array,
 	'float32': Float32Array,
-	'float64': Float64Array
+	'float64': Float64Array,
+	'complex64': Float32Array,
+	'complex128': Float64Array
 }
 
-def ns_length (shape):
+def ns_size (shape):
 	result = shape [0]
 	for dim in shape [1 : ]:
 		result *= dim
 	return result
-				
+
+def ns_iscomplex (dtype):
+	return dtype in ('complex64', 'complex128')
+	
 class ndarray:
 	def __init__ (
 		self,
@@ -35,8 +47,9 @@ class ndarray:
 		buffer,
 		offset = 0,
 		strides = None
-	):				
+	):
 		self.dtype = dtype
+		self.ns_complex = ns_iscomplex (self.dtype)
 		self.itemsize = ns_itemsizes [self.dtype]
 		self.offset = offset
 		self.ns_shift = self.offset / self.itemsize
@@ -64,26 +77,26 @@ class ndarray:
 				self.ns_natural = False
 				break;
 		
-		self.ns_length = ns_length (self.shape)
-		if self.ns_length < self.data.length:
+		self.size = ns_size (self.shape)
+		if self.size < self.data.length:
 			self.ns_natural = False
 		
-		self.nbytes = self.ns_length * self.itemsize
+		self.nbytes = self.size * self.itemsize
 		
 	def astype (self, dtype):
 		itemsize = ns_itemsizes [dtype]
 		return ndarray (self.shape, dtype, ns_ctors [dtype] .js_from (self.data), itemsize * self.ns_shift, [itemsize * skip for skip in self.ns_skips])
 						
 	def tolist (self):
-		def tl_recur (idim, key):
+		def tolist_recur (idim, key):
 			result = []
 			for i in range (self.shape [idim]):
 				if idim < self.ndim - 1:
-					result.append (tl_recur (idim + 1, itertools.chain (key, [i])))
+					result.append (tolist_recur (idim + 1, itertools.chain (key, [i])))
 				else:
 					result.append (self.__getitem__ (itertools.chain (key, [i])))
 			return result
-		return tl_recur (0, [])
+		return tolist_recur (0, [])
 					
 	def __repr__ (self):
 		return 'ndarray ({})'.format (str (self.tolist ()))
@@ -126,21 +139,31 @@ class ndarray:
 					ns_shift += subkey * self.ns_skips [idim]
 			
 			if isslice:
-				return ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides)
+				result = ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides)
+				print (result)
+				return result
 			else:
-				return self.data [ns_shift]
+				if self.ns_complex:
+					ibase = 2 * ns_shift
+					return complex (self.data [ibase], self.data [ibase + 1])
+				else:
+					return self.data [ns_shift]
 		else:								# One-dimensional array
-			return self.data [self.ns_shift + key * self.ns_skips [0]]
+			if self.ns_complex:
+				ibase = 2 * (self.ns_shift + key * self.ns_skips [0])
+				return complex (self.data [ibase], self.data [ibase + 1])
+			else:
+				return self.data [self.ns_shift + key * self.ns_skips [0]]
 	
 	def __setitem__ (self, key, value):
-		def si_recur (key, target, value):
+		def setitem_recur (key, target, value):
 			if len (key) < target.ndim:
 				for i in range (target.shape [len (key)]):
-					si_recur (itertools.chain (key, [i]), target, value)
+					setitem_recur (itertools.chain (key, [i]), target, value)
 			else:
 				target.__setitem__ (key, value.__getitem__ (key))
 	
-		if type (key) == list:
+		if type (key) == list:				# Multi-dimensional array
 			ns_shift = self.ns_shift
 			shape = []
 			strides = []			
@@ -161,11 +184,19 @@ class ndarray:
 					ns_shift += subkey * self.ns_skips [idim]
 			if isslice:
 				target = ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides)
-				si_recur ([], target, value)
+				setitem_recur ([], target, value)
 			else:
-				self.data [ns_shift] = value
+				if self.ns_complex:
+					ibase = 2 * ns_shift
+					self.data [ibase], self.data [ibase + 1] = value.real, value.imag
+				else:
+					self.data [ns_shift] = value
 		else:
-			self.data [self.ns_shift + key * self.ns_skips [0]] = value
+			if self.ns_complex:
+				ibase = 2 * (self.ns_shift + key * self.ns_skips [0])
+				self.data [ibase], self.data [ibase + 1] = value.real, value.imag
+			else:
+				self.data [self.ns_shift + key * self.ns_skips [0]] = value
 			
 	def __neg__ (self):
 		def neg_recur (idim, key):
@@ -174,11 +205,14 @@ class ndarray:
 					neg_recur (idim + 1, itertools.chain (key, [i]))
 				else:
 					key2 = itertools.chain (key, [i])
-					result.__setitem__ (key2, -self.__getitem__ (key2))
+					if self.ns_complex:
+						result.__setitem__ (key2, self.__getitem__ (key2) .__neg__ ())
+					else:
+						result.__setitem__ (key2, -self.__getitem__ (key2))
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural:
+		if self.ns_natural and not self.ns_complex:
 			r, s = result.data, self.data
 			for i in range (self.data.length):
 				r [i] = -s [i]
@@ -194,11 +228,14 @@ class ndarray:
 					ns_inv_recur (idim + 1, itertools.chain (key, [i]))
 				else:
 					key2 = itertools.chain (key, [i])
-					result.__setitem__ (key2, 1 / self.__getitem__ (key2))
+					if self.ns_complex:
+						result.__setitem__ (key2, self.__getitem__ (key2) .__rdiv__ (1))						
+					else:
+						result.__setitem__ (key2, 1 / self.__getitem__ (key2))
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural:
+		if self.ns_natural and not self.ns_complex:
 			r, s = result.data, self.data
 			for i in range (self.data.length):
 				r [i] = 1 / s [i]
@@ -216,18 +253,24 @@ class ndarray:
 					add_recur (idim + 1, itertools.chain (key, [i]))
 				else:
 					key2 = itertools.chain (key, [i])
-					if isarr:
-						result.__setitem__ (key2, self.__getitem__ (key2) + other.__getitem__ (key2))
+					if self.ns_complex:
+						if isarr:
+							result.__setitem__ (key2, self.__getitem__ (key2) .__add__ (other.__getitem__ (key2)))
+						else:
+							result.__setitem__ (key2, self.__getitem__ (key2) .__add__ (other))
 					else:
-						result.__setitem__ (key2, self.__getitem__ (key2) + other)
+						if isarr:
+							result.__setitem__ (key2, self.__getitem__ (key2) + other.__getitem__ (key2))
+						else:
+							result.__setitem__ (key2, self.__getitem__ (key2) + other)
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and isarr and other.ns_natural:
+		if self.ns_natural and not self.ns_complex and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
 			for i in range (self.data.length):
 				r [i] = s [i] + o [i]
-		elif self.ns_natural and not isarr:
+		elif self.ns_natural and not self.ns_complex and not isarr:
 			r, s = result.data, self.data
 			for i in range (self.data.length):
 				r [i] = s [i] + other
@@ -248,18 +291,24 @@ class ndarray:
 					sub_recur (idim + 1, itertools.chain (key, [i]))
 				else:
 					key2 = itertools.chain (key, [i])
-					if isarr:
-						result.__setitem__ (key2, self.__getitem__ (key2) - other.__getitem__ (key2))
+					if self.ns_complex:
+						if isarr:
+							result.__setitem__ (key2, self.__getitem__ (key2) .__sub__ (other.__getitem__ (key2)))
+						else:
+							result.__setitem__ (key2, self.__getitem__ (key2) .__sub__ (other))
 					else:
-						result.__setitem__ (key2, self.__getitem__ (key2) - other)
+						if isarr:
+							result.__setitem__ (key2, self.__getitem__ (key2) - other.__getitem__ (key2))
+						else:
+							result.__setitem__ (key2, self.__getitem__ (key2) - other)
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and isarr and other.ns_natural:
+		if self.ns_natural and not self.ns_complex and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
 			for i in range (self.data.length):
 				r [i] = s [i] - o [i]
-		elif self.ns_natural and not isarr:
+		elif self.ns_natural and not self.ns_complex and not isarr:
 			r, s = result.data, self.data
 			for i in range (self.data.length):
 				r [i] = s [i] - other
@@ -280,18 +329,24 @@ class ndarray:
 					mul_recur (idim + 1, itertools.chain (key, [i]))
 				else:
 					key2 = itertools.chain (key, [i])
-					if isarr:
-						result.__setitem__ (key2, self.__getitem__ (key2) * other.__getitem__ (key2))
+					if self.ns_complex:
+						if isarr:
+							result.__setitem__ (key2, self.__getitem__ (key2) .__mul__ (other.__getitem__ (key2)))
+						else:
+							result.__setitem__ (key2, self.__getitem__ (key2) .__mul__ (other))
 					else:
-						result.__setitem__ (key2, self.__getitem__ (key2) * other)
+						if isarr:
+							result.__setitem__ (key2, self.__getitem__ (key2) * other.__getitem__ (key2))
+						else:
+							result.__setitem__ (key2, self.__getitem__ (key2) * other)
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and isarr and other.ns_natural:
+		if self.ns_natural and not self.ns_complex and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
 			for i in range (self.data.length):
 				r [i] = s [i] * o [i]
-		elif self.ns_natural and not isarr:
+		elif self.ns_natural and not self.ns_complex and not isarr:
 			r, s = result.data, self.data
 			for i in range (self.data.length):
 				r [i] = s [i] * other
@@ -312,18 +367,24 @@ class ndarray:
 					div_recur (idim + 1, itertools.chain (key, [i]))
 				else:
 					key2 = itertools.chain (key, [i])
-					if isarr:
-						result.__setitem__ (key2, self.__getitem__ (key2) / other.__getitem__ (key2))
+					if self.ns_complex:
+						if isarr:
+							result.__setitem__ (key2, self.__getitem__ (key2) .__div__ (other.__getitem__ (key2)))
+						else:
+							result.__setitem__ (key2, self.__getitem__ (key2) .__div__ (other))
 					else:
-						result.__setitem__ (key2, self.__getitem__ (key2) / other)
+						if isarr:
+							result.__setitem__ (key2, self.__getitem__ (key2) / other.__getitem__ (key2))
+						else:
+							result.__setitem__ (key2, self.__getitem__ (key2) / other)
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and isarr and other.ns_natural:
+		if self.ns_natural and not self.ns_complex and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
 			for i in range (self.data.length):
 				r [i] = s [i] / o [i]
-		elif self.ns_natural and not isarr:
+		elif self.ns_natural and not self.ns_complex and not isarr:
 			r, s = result.data, self.data
 			for i in range (self.data.length):
 				r [i] = s [i] / other
@@ -339,17 +400,17 @@ class ndarray:
 		nrows, ncols, nterms  = self.shape [0], other.shape [1], self.shape [1]
 		result = empty ((nrows, ncols), self.dtype)
 		
-		if self.ns_natural or ns_settings.optim_space:
+		if self.ns_natural or self.ns_complex or ns_settings.optim_space:
 			self2 = self
 		else:
-			self2 = copy (self)
+			self2 = copy (self)	# Will place items in natural order for fast multiplication
 			
-		if other.ns_natural or ns_settings.optim_space:
+		if other.ns_natural or other.ns_complex or ns_settings.optim_space:
 			other2 = other
 		else:
 			other2 = copy (other)
 		
-		if self2.ns_natural and other2.ns_natural:
+		if self2.ns_natural and not self.ns_complex and other2.ns_natural:
 			for irow in range (nrows):
 				for icol in range (ncols):
 					r, s, o = result.data, self2.data, other2.data
@@ -358,9 +419,15 @@ class ndarray:
 		else:
 			for irow in range (nrows):
 				for icol in range (ncols):
-					sum = 0	# Optimization
+					if self.ns_complex:
+						sum = complex (0, 0)
+					else:
+						sum = 0	
 					for iterm in range (nterms):
-						sum += self2 [irow, iterm] * other2 [iterm, icol]
+						if self.ns_complex:
+							sum = sum.__add__ (self2 [irow, iterm] .__mul__ (other2 [iterm, icol]))
+						else:
+							sum += self2 [irow, iterm] * other2 [iterm, icol]
 					result [irow, icol] = sum
 				
 		return result
@@ -369,14 +436,14 @@ def empty (shape, dtype = 'float64'):
 	return ndarray (
 		shape,
 		dtype,
-		__new__ (ns_ctors [dtype] (ns_length (shape)))
+		__new__ (ns_ctors [dtype] (2 * ns_size (shape) if ns_iscomplex (dtype) else ns_size (shape)))
 	)
 	
 def array (obj, dtype = 'float64', copy = True):
-	def cp_recur (idim, key):
+	def copy_recur (idim, key):
 		for i in range (obj.shape [idim]):
 			if idim < obj.ndim - 1:
-				cp_recur (idim + 1, itertools.chain (key, [i]))
+				copy_recur (idim + 1, itertools.chain (key, [i]))
 			else:
 				key2 = itertools.chain (key, [i])
 				result.__setitem__ (key2, obj.__getitem__ (key2))
@@ -385,12 +452,12 @@ def array (obj, dtype = 'float64', copy = True):
 		if copy:
 			result = empty (obj.shape, dtype)
 			
-			if obj.ns_natural:
+			if obj.ns_natural and not obj.ns_complex:
 				o, r = obj.data, result.data
 				for i in range (o.length):
 					r [i] = o [i]
 			else:
-				cp_recur (0, [])
+				copy_recur (0, [])
 				
 			return result
 		else:
@@ -410,15 +477,20 @@ def array (obj, dtype = 'float64', copy = True):
 			curr_obj = curr_obj [0]
 			
 		def flatten (obj):
-			if Array.isArray (obj [0]):												# If obj has inner structure
-				return itertools.chain (*[flatten (sub_obj) for sub_obj in obj])	#	Flatten the inner structure	
-			else:																	# Else it's flat enough to be chained
-				return obj															#	Just return it for chaining
+			if Array.isArray (obj [0]):												# If elements of obj are lists
+				return itertools.chain (*[flatten (sub_obj) for sub_obj in obj])	#	Chain these lists, flattening them if needed
+			else:																	# Else obj is flat already, no need to chain its elements
+				return obj															#	Just return obj for chaining
 		
+		if ns_iscomplex (dtype):
+			untypedArray = itertools.chain (*[[elem.real, elem.imag] if type (elem) == complex else [elem, 0] for elem in flatten (obj)])
+		else:
+			untypedArray = flatten (obj)
+			
 		return ndarray (
 			shape,
 			dtype,
-			ns_ctors [dtype] .js_from (flatten (obj))
+			ns_ctors [dtype] .js_from (untypedArray)
 		)
 		
 def copy (obj):
@@ -482,18 +554,22 @@ def vstack (arrs):
 				
 	return result
 			
-def round (arr, decimals = 0):
+def round (arr, decimals = 0):	# Truncation rather than bankers rounding, for speed
 	def rnd_recur (idim, key):
 		for i in range (arr.shape [idim]):
 			if idim < arr.ndim - 1:
 				rnd_recur (idim + 1, itertools.chain (key, [i]))
 			else:
 				key2 = itertools.chain (key, [i])
-				result.__setitem__ (key2, arr.__getitem__ (key2) .toFixed (decimals))
+				if arr.ns_complex:
+					c = arr.__getitem__ (key2)
+					result.__setitem__ (key2,  complex (c.real.toFixed (decimals), c.imag.toFixed (decimals)))
+				else:
+					result.__setitem__ (key2, arr.__getitem__ (key2) .toFixed (decimals))
 
 	result = empty (arr.shape, arr.dtype)
 
-	if arr.ns_natural:
+	if arr.ns_natural and not arr.ns_complex:
 		a, r = arr.data, result.data
 		for i in range (a.length):
 			r [i] = a [i] .toFixed (decimals)
@@ -512,14 +588,23 @@ def zeros (shape, dtype = 'float64'):
 def ones (shape, dtype = 'float64'):
 	result = empty (shape, dtype)
 	r = result.data
-	for i in range (r.length):
-		r [i] = 1
+	if self.ns_complex:
+		for i in range (0, r.length, 2):
+			r [i], r [i + 1] = 1, 0
+	else:
+		for i in range (r.length):
+			r [i] = 1
 	return result
 	
 def identity (n, dtype = 'float64'):
 	result = zeros ((n, n), dtype)
-	for i in range (n):
-		result.data [i * result.shape [1] + i] = 1
+	r = result.data
+	if self.ns_complex:
+		for i in range (0, r.length, 2):
+			r [i * result.shape [1] + i] = 1
+	else:
+		for i in range (n):
+			r [i * result.shape [1] + i] = 1
 	return result
 	
 	

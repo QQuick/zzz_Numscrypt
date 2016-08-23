@@ -27,21 +27,36 @@ for optim_space in (False, True):
 		
 		timeEnd = __new__ (Date ())
 		
-		result +=  '''<pre>
+		result += (
+'''
+<pre>
 Optimized for space instead of time: {}
 	
 {}: a @ ai [0:5, 0:5] =
 
 {}
-
-Transpose took: {} ms
-Inverse took: {} ms
-Product took: {} ms
-			</pre>'''.format (
+'''	
+	) .format (
 			optim_space,
 			'natural' if a.ns_natural else 'unnatural',
 			str (ns.round (id [0:5, 0:5], 2)) .replace (' ', '\t'),
-			timeStartInv - timeStartTranspose,
+		)
+
+		if transpose:
+			result += (
+'''
+Transpose took: {} ms'''
+			).format (
+				timeStartInv - timeStartTranspose
+			)
+			
+		result += (
+'''
+Inverse took: {} ms
+Product took: {} ms
+</pre>
+'''
+		) .format (
 			timeStartMul - timeStartInv,
 			timeEnd - timeStartMul
 		)

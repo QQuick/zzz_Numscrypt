@@ -6,7 +6,7 @@ Numscrypt currently supports:
 - ns_settings.optim_space setting added, default is False. Setting it to True is DISADVISED, since it will result in slow code.
 
 - ndarray with
-	- dtype int32, float32 and float64, shape, views using offset and strides 
+	- dtype int32, float32 and float64, views using offset and strides 
 	- multi-dimensional indexing
 	- multi-dimensional slicing
 	- reshape
@@ -14,7 +14,7 @@ Numscrypt currently supports:
 	- tolist
 	- __repr__ and __str__
 	- transpose
-	- overloaded operators: * / + - @ (no mixing of ndarray and scalar expressions yet)
+	- overloaded operators: * / + - @, mixing of ndarray and scalar expressions
 	
 - empty, array, copy
 - hsplit, vsplit

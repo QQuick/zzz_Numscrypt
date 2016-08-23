@@ -1,6 +1,6 @@
 	__nest__ (
 		__all__,
-		'a_linalg', {
+		'module_linalg', {
 			__all__: {
 				__inited__: false,
 				__init__: function (__all__) {
@@ -9,7 +9,7 @@
 						var linalg =  __init__ (__world__.numscrypt.linalg);
 					}
 					var run = function (autoTester) {
-						var a = num.array (list ([list ([0, -2, -1]), list ([2, 1, 3]), list ([1, 1, 2])]));
+						var a = num.array (list ([list ([0, -(2), -(1)]), list ([2, 1, 3]), list ([1, 1, 2])]));
 						autoTester.check ('Matrix a', a.astype ('int32').tolist (), '<br>');
 						var ai = linalg.inv (a);
 						autoTester.check ('Matrix ai', ai.astype ('int32').tolist (), '<br>');

@@ -1,15 +1,16 @@
 	(function () {
+		var __symbols__ = ['__esv5__'];
 		var ns =  __init__ (__world__.numscrypt);
 		var random =  __init__ (__world__.numscrypt.random);
 		var linalg =  __init__ (__world__.numscrypt.linalg);
 		var result = '';
-		var __iter0__ = tuple ([false, true]);
-		for (var __index0__ = 0; __index0__ < __iter0__.length; __index0__++) {
-			var optim_space = __iter0__ [__index0__];
+		var __iterable0__ = tuple ([false, true]);
+		for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
+			var optim_space = __iterable0__ [__index0__];
 			ns.ns_settings.optim_space = optim_space;
-			var __iter1__ = tuple ([false, true]);
-			for (var __index1__ = 0; __index1__ < __iter1__.length; __index1__++) {
-				var transpose = __iter1__ [__index1__];
+			var __iterable1__ = tuple ([false, true]);
+			for (var __index1__ = 0; __index1__ < __iterable1__.length; __index1__++) {
+				var transpose = __iterable1__ [__index1__];
 				var a = random.rand (30, 30);
 				var timeStartTranspose = new Date ();
 				if (transpose) {
@@ -20,7 +21,11 @@
 				var timeStartMul = new Date ();
 				var id = __matmul__ (a, ai);
 				var timeEnd = new Date ();
-				result += '<pre>\nOptimized for space instead of time: {}\n\t\n{}: a @ ai [0:5, 0:5] =\n\n{}\n\nTranspose took: {} ms\nInverse took: {} ms\nProduct took: {} ms\n\t\t\t</pre>'.format (optim_space, (a.ns_natural ? 'natural' : 'unnatural'), str (ns.round (id.__getitem__ ([tuple ([0, 5, 1]), tuple ([0, 5, 1])]), 2)).py_replace (' ', '\t'), timeStartInv - timeStartTranspose, timeStartMul - timeStartInv, timeEnd - timeStartMul);
+				result += '\n<pre>\nOptimized for space instead of time: {}\n\t\n{}: a @ ai [0:5, 0:5] =\n\n{}\n'.format (optim_space, (a.ns_natural ? 'natural' : 'unnatural'), str (ns.round (id.__getitem__ ([tuple ([0, 5, 1]), tuple ([0, 5, 1])]), 2)).py_replace (' ', '\t'));
+				if (transpose) {
+					result += '\nTranspose took: {} ms'.format (timeStartInv - timeStartTranspose);
+				}
+				result += '\nInverse took: {} ms\nProduct took: {} ms\n</pre>\n'.format (timeStartMul - timeStartInv, timeEnd - timeStartMul);
 			}
 		}
 		document.getElementById ('result').innerHTML = result;

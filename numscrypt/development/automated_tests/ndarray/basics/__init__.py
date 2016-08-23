@@ -21,6 +21,7 @@ def run (autoTester):
 	autoTester.check ('Identity', i.tolist (), '<br>')
 	
 	# shape: 2 blocks x 3 rows x 4 columns
+	
 	a = num.array ([
 		[
 			[1, 1, 2, 3],
@@ -198,3 +199,37 @@ def run (autoTester):
 	autoTester.check ('sub_3a', sub_3a.tolist (), '<br>')
 	autoTester.check ('neg_a', neg_a.tolist (), '<br>')
 	
+	__pragma__ ('opov')
+	comp_a = num.array ([
+		[1 + 2j, 2 - 1j, 3],
+		[4, 5 + 3j, 7]
+	], 'complex128')	
+	comp_b = num.array ([
+		[6, 8 - 1j],
+		[9 + 3j, 10],
+		[11, 12 -6j]
+	], 'complex128')
+	comp_c = comp_a @ comp_b
+	__pragma__ ('noopov')
+	
+	autoTester.check ('comp_a', comp_a.tolist (), '<br>')
+	autoTester.check ('comp_b', comp_b.tolist (), '<br>')
+	autoTester.check ('comp_c', comp_c.tolist (), '<br>')
+	
+	__pragma__ ('opov')
+	comp_a_square = comp_a [ : , : 2]
+	comp_b_square = comp_b [1 : , : ]
+	
+	comp_c_square = comp_a_square * comp_b_square
+	comp_d_square = comp_a_square / comp_b_square
+	comp_e_square = comp_a_square + comp_b_square
+	comp_f_square = comp_a_square - comp_b_square
+	
+	__pragma__ ('noopov')
+	
+	autoTester.check ('comp_a_square', comp_a_square.tolist (), '<br>')
+	autoTester.check ('comp_b_square', comp_b_square.tolist (), '<br>')
+	autoTester.check ('comp_c_square', comp_c_square.tolist (), '<br>')
+	autoTester.check ('comp_d_square', num.round (comp_d_square, 2).tolist (), '<br>')
+	autoTester.check ('comp_e_square', comp_e_square.tolist (), '<br>')
+	autoTester.check ('comp_f_square', comp_f_square.tolist (), '<br>')
