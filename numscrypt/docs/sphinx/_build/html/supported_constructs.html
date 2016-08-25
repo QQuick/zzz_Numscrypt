@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Currently available features &mdash; Transcrypt 0.0.29 documentation</title>
+    <title>2. Currently available features &mdash; Transcrypt 0.0.30 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.29',
+        VERSION:     '0.0.30',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Transcrypt 0.0.29 documentation" href="index.html" />
+    <link rel="top" title="Transcrypt 0.0.30 documentation" href="index.html" />
     <link rel="prev" title="1. Getting started" href="installation_use.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.29 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.30 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -350,6 +350,84 @@ def run (autoTester):
 </div>
 <div class="section" id="linalg-matrix-inversion">
 <h2>3.2. Linalg: matrix inversion<a class="headerlink" href="#linalg-matrix-inversion" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper container" id="testlet-module-linalg">
+<div class="code-block-caption"><span class="caption-text">Testlet: module_linalg</span><a class="headerlink" href="#testlet-module-linalg" title="Permalink to this code">¶</a></div>
+<div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
+from org.transcrypt.stubs.browser import __main__, __envir__, __pragma__
+
+# Imports for Transcrypt, resolved run time
+if __envir__.executor_name == __envir__.transpiler_name:
+    import numscrypt as num
+    import numscrypt.linalg as linalg
+
+# Imports for CPython, resolved compile time
+__pragma__ (&#39;skip&#39;)
+import numpy as num
+import numpy.linalg as linalg
+__pragma__ (&#39;noskip&#39;)
+
+def run (autoTester):
+
+    # Real
+
+    r = num.array ([
+        [2.12, -2.11, -1.23], 
+        [2.31, 1.14, 3.15], 
+        [1.13, 1.98, 2.81]
+    ])
+    
+    autoTester.check (&#39;Matrix r&#39;, num.round (r, 2) .tolist (), &#39;&lt;br&gt;&#39;)
+    
+    ri = linalg.inv (r)
+    
+    autoTester.check (&#39;Matrix ri&#39;, num.round (ri, 2) .tolist (), &#39;&lt;br&gt;&#39;)
+    
+    __pragma__ (&#39;opov&#39;)
+    rid = r @ ri
+    __pragma__ (&#39;noopov&#39;)
+    
+    autoTester.check (&#39;r @ ri&#39;, [[int (round (elem)) for elem in row] for row in rid.tolist ()], &#39;&lt;br&gt;&#39;)
+    
+    __pragma__ (&#39;opov&#39;)
+    delta = 0.001
+    autoTester.check (&#39;r * r&#39;, num.round (r * r + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;r / r&#39;, num.round (r / r + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;r + r&#39;, num.round (r + r + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;r - r&#39;, num.round (r - r + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
+    __pragma__ (&#39;noopov&#39;)
+
+    # Complex
+    
+    __pragma__ (&#39;opov&#39;)
+    c = num.array ([
+        [2.12 - 3.15j, -2.11, -1.23], 
+        [2.31, 1.14, 3.15 + 2.75j], 
+        [1.13, 1.98 - 4.33j, 2.81]
+    ], &#39;complex128&#39;)
+    __pragma__ (&#39;noopov&#39;)
+    
+    autoTester.check (&#39;Matrix c&#39;,  num.round (c, 2) .tolist (), &#39;&lt;br&gt;&#39;)
+    
+    ci = linalg.inv (c)
+    
+    autoTester.check (&#39;Matrix ci&#39;, num.round (ci, 2) .tolist (), &#39;&lt;br&gt;&#39;)
+    
+    __pragma__ (&#39;opov&#39;)
+    cid = c @ ci
+    __pragma__ (&#39;noopov&#39;)
+    
+    autoTester.check (&#39;c @ ci&#39;, [[&#39;{} + j{}&#39;.format (int (round (elem.real)), int (round (elem.imag))) for elem in row] for row in cid.tolist ()], &#39;&lt;br&gt;&#39;)
+    
+    __pragma__ (&#39;opov&#39;)
+    delta = 0.001 + 0.001j
+    autoTester.check (&#39;c * c&#39;, num.round (c * c + delta , 3) .tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;c / c&#39;, num.round (c / c + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;c + c&#39;, num.round (c + c + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
+    autoTester.check (&#39;c - c&#39;, num.round (c - c + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
+    __pragma__ (&#39;noopov&#39;)
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="some-more-examples-interactive-tests">
@@ -360,6 +438,112 @@ def run (autoTester):
 For <em>&#64;</em> this happens by copying arrays to &#8216;natural stride order&#8217;.
 Setting ns_settings.optimize_space to True will avoid this copying to save memory space.
 In general this is DISADVISED, since it will considerably slow down execution of the <em>&#64;</em> operator, which is O (n^3).</p>
+<div class="literal-block-wrapper container" id="benchmark-slicing-optimization">
+<div class="code-block-caption"><span class="caption-text">Benchmark: slicing_optimization</span><a class="headerlink" href="#benchmark-slicing-optimization" title="Permalink to this code">¶</a></div>
+<div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
+from org.transcrypt.stubs.browser import __pragma__
+
+import numscrypt as num
+import numscrypt.random as num_rand
+import numscrypt.linalg as linalg
+import random
+
+result = &#39;&#39;
+
+for useComplex in (False, True):
+    for optim_space in (False, True):
+        num.ns_settings.optim_space = optim_space
+
+        for transpose in (False, True):
+            if useComplex:
+                a = num.array ([
+                    [complex (random.random (), random.random ()) for iCol in range (30)]
+                    for iRow in range (30)
+                ], &#39;complex128&#39;)
+            else:
+                a = num_rand.rand (30, 30)
+            
+            timeStartTranspose = __new__ (Date ())
+            if transpose:
+                a = a.transpose ()
+
+            timeStartInv = __new__ (Date ())
+            ai = linalg.inv (a)
+            
+            timeStartMul = __new__ (Date ()) 
+            __pragma__ (&#39;opov&#39;)
+            id = a @ ai
+            __pragma__ (&#39;noopov&#39;)
+            
+            timeStartScalp = __new__ (Date ()) 
+            __pragma__ (&#39;opov&#39;)
+            sp = a * a
+            __pragma__ (&#39;noopov&#39;)
+            
+            timeStartDiv = __new__ (Date ()) 
+            __pragma__ (&#39;opov&#39;)
+            sp = a / a
+            __pragma__ (&#39;noopov&#39;)
+            
+            timeStartAdd = __new__ (Date ()) 
+            __pragma__ (&#39;opov&#39;)
+            sp = a + a
+            __pragma__ (&#39;noopov&#39;)
+            
+            timeStartSub = __new__ (Date ()) 
+            __pragma__ (&#39;opov&#39;)
+            sp = a - a
+            __pragma__ (&#39;noopov&#39;)
+            
+            timeEnd = __new__ (Date ())
+            
+            result += (
+&#39;&#39;&#39;
+&lt;pre&gt;
+   Optimized for space instead of time: {}
+================================================
+    
+{}: a @ ai [0:5, 0:5] =
+
+{}
+&#39;&#39;&#39; 
+        ) .format (
+                optim_space,
+                &#39;natural&#39; if a.ns_natural else &#39;unnatural&#39;,
+                str (num.round (id [0:5, 0:5], 2)) .replace (&#39; &#39;, &#39;\t&#39;),
+            )
+
+            if transpose:
+                result += (
+&#39;&#39;&#39;
+Transpose took: {} ms&#39;&#39;&#39;
+                ).format (
+                    timeStartInv - timeStartTranspose
+                )
+                
+            result += (
+&#39;&#39;&#39;
+Inverse took: {} ms
+Matrix product (@) took: {} ms
+Elementwise product (*) took: {} ms
+Division took: {} ms
+Addition took: {} ms
+Subtraction took: {} ms
+&lt;/pre&gt;
+&#39;&#39;&#39;
+            ) .format (
+                timeStartMul - timeStartInv,
+                timeStartScalp - timeStartMul,
+                timeStartDiv - timeStartScalp,
+                timeStartAdd - timeStartDiv,
+                timeStartSub - timeStartAdd,
+                timeEnd - timeStartSub
+            )
+            
+document.getElementById (&#39;result&#39;) .innerHTML = result
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -422,7 +606,7 @@ In general this is DISADVISED, since it will considerably slow down execution of
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.29 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.30 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

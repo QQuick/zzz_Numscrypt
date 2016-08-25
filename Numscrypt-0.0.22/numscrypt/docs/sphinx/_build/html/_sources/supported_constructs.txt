@@ -44,9 +44,9 @@ Basics: creating and using arrays
 Linalg: matrix inversion
 ------------------------
 
-.. literalinclude:: ../../development/automated_tests/ndarray/a_linalg/__init__.py
+.. literalinclude:: ../../development/automated_tests/ndarray/module_linalg/__init__.py
 	:tab-width: 4
-	:caption: Testlet: a_linalg
+	:caption: Testlet: module_linalg
 	
 Some more examples: interactive tests
 =====================================
@@ -59,7 +59,7 @@ For *@* this happens by copying arrays to 'natural stride order'.
 Setting ns_settings.optimize_space to True will avoid this copying to save memory space.
 In general this is DISADVISED, since it will considerably slow down execution of the *@* operator, which is O (n^3).
 
-.. literalinclude:: ../../development/interactive_tests/slicing_optimization/test.py
+.. literalinclude:: ../../development/manual_tests/slicing_optimization/test.py
 	:tab-width: 4
 	:caption: Benchmark: slicing_optimization
 	

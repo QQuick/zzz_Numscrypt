@@ -30,6 +30,7 @@ What's new
 
 N.B. Always use the newest version of Transcrypt to be able to use the newest features of Numscrypt.
 
+- Examples in documentation fixed
 - Low hanging fruit optimizations done for complex and real arrays, e.g. multiplication in natural order 30x faster
 - For educational and demonstration purposes a simple, non-optimized implementation of complex arrays was added
 - Ndarray's mixable with scalars for overloaded ops
