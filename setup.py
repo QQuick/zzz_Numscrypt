@@ -2,7 +2,7 @@ import os
 import sys
 
 sys.path.append ('numscrypt')
-import base
+import __base__
 
 from setuptools import setup
 
@@ -12,7 +12,7 @@ def read (*paths):
 
 setup (
 	name = 'Numscrypt',
-	version = base.ns_version,
+	version = __base__.ns_version,
 	description = 'A tiny bit of NumPy for Transcrypt using JavaScript typed arrays',
 	long_description = (
 		read ('README.rst') + '\n\n' +

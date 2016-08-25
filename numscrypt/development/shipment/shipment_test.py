@@ -14,16 +14,18 @@ def test (relPath, fileNamePrefix, run = False):
 	if run:
 		os.chdir (getAbsPath (relPath))
 		os.system ('run_transcrypt -r {}.py'.format (fileNamePrefix))		
-	
+		
 	webbrowser.open ('file://{}/{}.html'.format (getAbsPath (relPath), fileNamePrefix), new = 2)
-	webbrowser.open ('file://{}/{}.min.html'.format (getAbsPath (relPath), fileNamePrefix), new = 2)
+	# webbrowser.open ('file://{}/{}.min.html'.format (getAbsPath (relPath), fileNamePrefix), new = 2)
 
 def autoTest (*args):
 	test (*args, True)
 	
-for fcallSwitch in ('', '-f '):
+os.system ('python35 test_install.py')
+	
+for fcallSwitch in (' '): # , '-f '):
 	autoTest ('development/automated_tests/ndarray', 'autotest')
-	test ('development/manual_tests/slicing_optimization', 'test')
+	#test ('development/manual_tests/slicing_optimization', 'test')
 
 	if fcallSwitch:
 		print ('Shipment test completed')

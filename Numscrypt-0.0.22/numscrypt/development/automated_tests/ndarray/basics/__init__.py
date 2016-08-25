@@ -34,8 +34,6 @@ def run (autoTester):
 		]
 	])
 	
-	# print (a)
-	
 	autoTester.check ('Matrix a', a.tolist (), '<br>')
 	autoTester.check ('Transpose of a', a.transpose () .tolist (), '<br>')
 	

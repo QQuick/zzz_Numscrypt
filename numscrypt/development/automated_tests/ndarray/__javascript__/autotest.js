@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2016-08-23 14:54:47
+// Transcrypt'ed from Python, 2016-08-25 14:31:26
 function autotest () {
 	var __all__ = {};
 	var __world__ = __all__;
@@ -2059,12 +2059,60 @@ function autotest () {
 						var linalg =  __init__ (__world__.numscrypt.linalg);
 					}
 					var run = function (autoTester) {
-						var a = num.array (list ([list ([0, -(2), -(1)]), list ([2, 1, 3]), list ([1, 1, 2])]));
-						autoTester.check ('Matrix a', a.astype ('int32').tolist (), '<br>');
-						var ai = linalg.inv (a);
-						autoTester.check ('Matrix ai', ai.astype ('int32').tolist (), '<br>');
-						var id = __matmul__ (a, ai);
-						autoTester.check ('a @ ai', id.astype ('int32').tolist (), '<br>');
+						var r = num.array (list ([list ([2.12, -(2.11), -(1.23)]), list ([2.31, 1.14, 3.15]), list ([1.13, 1.98, 2.81])]));
+						autoTester.check ('Matrix r', num.round (r, 2).tolist (), '<br>');
+						var ri = linalg.inv (r);
+						autoTester.check ('Matrix ri', num.round (ri, 2).tolist (), '<br>');
+						var rid = __matmul__ (r, ri);
+						autoTester.check ('r @ ri', function () {
+							var __accu0__ = [];
+							var __iterable0__ = rid.tolist ();
+							for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
+								var row = __iterable0__ [__index0__];
+								__accu0__.append (function () {
+									var __accu1__ = [];
+									var __iterable1__ = row;
+									for (var __index1__ = 0; __index1__ < __iterable1__.length; __index1__++) {
+										var elem = __iterable1__ [__index1__];
+										__accu1__.append (int (round (elem)));
+									}
+									return __accu1__;
+								} ());
+							}
+							return __accu0__;
+						} (), '<br>');
+						var delta = 0.001;
+						__call__ (autoTester.check, 'r * r', __call__ (__call__ (num.round, __add__ (__mul__ (r, r), delta), 3).tolist), '<br>');
+						__call__ (autoTester.check, 'r / r', __call__ (__call__ (num.round, __add__ (__div__ (r, r), delta), 3).tolist), '<br>');
+						__call__ (autoTester.check, 'r + r', __call__ (__call__ (num.round, __add__ (__add__ (r, r), delta), 3).tolist), '<br>');
+						__call__ (autoTester.check, 'r - r', __call__ (__call__ (num.round, __add__ (__sub__ (r, r), delta), 3).tolist), '<br>');
+						var c = __call__ (num.array, list ([list ([__sub__ (2.12, complex (0, 3.15)), __neg__ (2.11), __neg__ (1.23)]), list ([2.31, 1.14, __add__ (3.15, complex (0, 2.75))]), list ([1.13, __sub__ (1.98, complex (0, 4.33)), 2.81])]), 'complex128');
+						autoTester.check ('Matrix c', num.round (c, 2).tolist (), '<br>');
+						var ci = linalg.inv (c);
+						autoTester.check ('Matrix ci', num.round (ci, 2).tolist (), '<br>');
+						var cid = __matmul__ (c, ci);
+						autoTester.check ('c @ ci', function () {
+							var __accu0__ = [];
+							var __iterable0__ = cid.tolist ();
+							for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
+								var row = __iterable0__ [__index0__];
+								__accu0__.append (function () {
+									var __accu1__ = [];
+									var __iterable1__ = row;
+									for (var __index1__ = 0; __index1__ < __iterable1__.length; __index1__++) {
+										var elem = __iterable1__ [__index1__];
+										__accu1__.append ('{} + j{}'.format (int (round (elem.real)), int (round (elem.imag))));
+									}
+									return __accu1__;
+								} ());
+							}
+							return __accu0__;
+						} (), '<br>');
+						var delta = __add__ (0.001, complex (0, 0.001));
+						__call__ (autoTester.check, 'c * c', __call__ (__call__ (num.round, __add__ (__mul__ (c, c), delta), 3).tolist), '<br>');
+						__call__ (autoTester.check, 'c / c', __call__ (__call__ (num.round, __add__ (__div__ (c, c), delta), 3).tolist), '<br>');
+						__call__ (autoTester.check, 'c + c', __call__ (__call__ (num.round, __add__ (__add__ (c, c), delta), 3).tolist), '<br>');
+						__call__ (autoTester.check, 'c - c', __call__ (__call__ (num.round, __add__ (__sub__ (c, c), delta), 3).tolist), '<br>');
 					};
 					__pragma__ ('<use>' +
 						'numscrypt' +
@@ -2149,7 +2197,7 @@ function autotest () {
 								}
 							}
 							self.size = ns_size (self.shape);
-							if (self.size < self.data.length) {
+							if ((self.ns_complex ? 2 * self.size : self.size) < self.data.length) {
 								self.ns_natural = false;
 							}
 							self.nbytes = self.size * self.itemsize;
@@ -2182,7 +2230,7 @@ function autotest () {
 							return tolist_recur (0, list ([]));
 						});},
 						get __repr__ () {return __get__ (this, function (self) {
-							return 'ndarray ({})'.format (str (self.tolist ()));
+							return 'array({})'.format (repr (self.tolist ()));
 						});},
 						get __str__ () {return __get__ (this, function (self) {
 							return str (self.tolist ()).py_replace (']], [[', ']]\n\n[[').py_replace ('], ', ']\n').py_replace (',', '');
@@ -2228,7 +2276,6 @@ function autotest () {
 								}
 								if (isslice) {
 									var result = ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides);
-									print (result);
 									return result;
 								}
 								else {
@@ -2398,7 +2445,7 @@ function autotest () {
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && !(self.ns_complex) && isarr && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
@@ -2454,7 +2501,7 @@ function autotest () {
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && !(self.ns_complex) && isarr && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
@@ -2510,13 +2557,21 @@ function autotest () {
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && !(self.ns_complex) && isarr && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
 								var o = __left0__ [2];
-								for (var i = 0; i < self.data.length; i++) {
-									r [i] = s [i] * o [i];
+								if (self.ns_complex) {
+									for (var i = 0; i < self.data.length; i += 2) {
+										r [i] = s [i] * o [i] - s [i + 1] * o [i + 1];
+										r [i + 1] = s [i] * o [i + 1] + s [i + 1] * o [i];
+									}
+								}
+								else {
+									for (var i = 0; i < self.data.length; i++) {
+										r [i] = s [i] * o [i];
+									}
 								}
 							}
 							else {
@@ -2566,13 +2621,22 @@ function autotest () {
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && !(self.ns_complex) && isarr && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
 								var o = __left0__ [2];
-								for (var i = 0; i < self.data.length; i++) {
-									r [i] = s [i] / o [i];
+								if (self.ns_complex) {
+									for (var i = 0; i < self.data.length; i += 2) {
+										var denom = o [i] * o [i] + o [i + 1] * o [i + 1];
+										r [i] = (s [i] * o [i] + s [i + 1] * o [i + 1]) / denom;
+										r [i + 1] = (s [i + 1] * o [i] - s [i] * o [i + 1]) / denom;
+									}
+								}
+								else {
+									for (var i = 0; i < self.data.length; i++) {
+										r [i] = s [i] / o [i];
+									}
 								}
 							}
 							else {
@@ -2599,27 +2663,49 @@ function autotest () {
 							var ncols = __left0__ [1];
 							var nterms = __left0__ [2];
 							var result = empty (tuple ([nrows, ncols]), self.dtype);
-							if (self.ns_natural || self.ns_complex || ns_settings.optim_space) {
+							if (self.ns_natural || ns_settings.optim_space) {
 								var self2 = self;
 							}
 							else {
 								var self2 = copy (self);
 							}
-							if (other.ns_natural || other.ns_complex || ns_settings.optim_space) {
+							if (other.ns_natural || ns_settings.optim_space) {
 								var other2 = other;
 							}
 							else {
 								var other2 = copy (other);
 							}
-							if (self2.ns_natural && !(self.ns_complex) && other2.ns_natural) {
-								for (var irow = 0; irow < nrows; irow++) {
-									for (var icol = 0; icol < ncols; icol++) {
-										var __left0__ = tuple ([result.data, self2.data, other2.data]);
-										var r = __left0__ [0];
-										var s = __left0__ [1];
-										var o = __left0__ [2];
-										for (var iterm = 0; iterm < nterms; iterm++) {
-											r [irow * ncols + icol] += s [irow * nterms + iterm] * o [iterm * ncols + icol];
+							if (self2.ns_natural && other2.ns_natural) {
+								if (self.ns_complex) {
+									for (var irow = 0; irow < nrows; irow++) {
+										for (var icol = 0; icol < ncols; icol++) {
+											var __left0__ = tuple ([result.data, self2.data, other2.data]);
+											var r = __left0__ [0];
+											var s = __left0__ [1];
+											var o = __left0__ [2];
+											var baser = 2 * (irow * ncols + icol);
+											r [baser] = 0;
+											r [baser + 1] = 0;
+											for (var iterm = 0; iterm < nterms; iterm++) {
+												var bases = 2 * (irow * nterms + iterm);
+												var baseo = 2 * (iterm * ncols + icol);
+												r [baser] += s [bases] * o [baseo] - s [bases + 1] * o [baseo + 1];
+												r [baser + 1] += s [bases] * o [baseo + 1] + s [bases + 1] * o [baseo];
+											}
+										}
+									}
+								}
+								else {
+									for (var irow = 0; irow < nrows; irow++) {
+										for (var icol = 0; icol < ncols; icol++) {
+											var __left0__ = tuple ([result.data, self2.data, other2.data]);
+											var r = __left0__ [0];
+											var s = __left0__ [1];
+											var o = __left0__ [2];
+											r [irow * ncols + icol] = 0;
+											for (var iterm = 0; iterm < nterms; iterm++) {
+												r [irow * ncols + icol] += s [irow * nterms + iterm] * o [iterm * ncols + icol];
+											}
 										}
 									}
 								}
@@ -2652,7 +2738,8 @@ function autotest () {
 						if (typeof dtype == 'undefined' || (dtype != null && dtype .__class__ == __kwargdict__)) {;
 							var dtype = 'float64';
 						};
-						return ndarray (shape, dtype, new ns_ctors [dtype] ((ns_iscomplex (dtype) ? 2 * ns_size (shape) : ns_size (shape))));
+						var result = ndarray (shape, dtype, new ns_ctors [dtype] ((ns_iscomplex (dtype) ? 2 * ns_size (shape) : ns_size (shape))));
+						return result;
 					};
 					var array = function (obj, dtype, copy) {
 						if (typeof dtype == 'undefined' || (dtype != null && dtype .__class__ == __kwargdict__)) {;
@@ -2675,7 +2762,7 @@ function autotest () {
 						if (obj.__class__ == ndarray) {
 							if (copy) {
 								var result = empty (obj.shape, dtype);
-								if (obj.ns_natural && !(obj.ns_complex)) {
+								if (obj.ns_natural) {
 									var __left0__ = tuple ([obj.data, result.data]);
 									var o = __left0__ [0];
 									var r = __left0__ [1];
@@ -2865,9 +2952,9 @@ function autotest () {
 						};
 						var result = zeros (tuple ([n, n]), dtype);
 						var r = result.data;
-						if (self.ns_complex) {
-							for (var i = 0; i < r.length; i += 2) {
-								r [i * result.shape [1] + i] = 1;
+						if (result.ns_complex) {
+							for (var i = 0; i < n; i++) {
+								r [2 * (i * result.shape [1] + i)] = 1;
 							}
 						}
 						else {
@@ -2911,18 +2998,26 @@ function autotest () {
 				__init__: function (__all__) {
 					var ns =  __init__ (__world__.numscrypt);
 					var inv = function (a) {
+						if (a.ns_complex) {
+							return cinv (a);
+						}
+						else {
+							return rinv (a);
+						}
+					};
+					var rinv = function (a) {
 						var b = ns.hstack (tuple ([a, ns.identity (a.shape [0], a.dtype)]));
+						var d = b.data;
 						var __left0__ = b.shape;
 						var nrows = __left0__ [0];
 						var ncols = __left0__ [1];
-						var d = b.data;
 						for (var ipiv = 0; ipiv < nrows; ipiv++) {
 							if (!(d [ipiv * ncols + ipiv])) {
 								for (var irow = ipiv + 1; irow < nrows; irow++) {
 									if (d [irow * ncols + ipiv]) {
 										for (var icol = 0; icol < ncols; icol++) {
 											var t = d [irow * ncols + icol];
-											d [irow * ncols + icol] = b.__getitem__ ([ipiv * ncols, icol]);
+											d [irow * ncols + icol] = b [ipiv * ncols + icol];
 											d [ipiv * ncols + icol] = t;
 										}
 										break;
@@ -2944,11 +3039,66 @@ function autotest () {
 						}
 						return ns.hsplit (b, 2) [1];
 					};
+					var cinv = function (a) {
+						var b = ns.hstack (tuple ([a, ns.identity (a.shape [0], a.dtype)]));
+						var d = b.data;
+						var __left0__ = b.shape;
+						var nrows = __left0__ [0];
+						var ncols = __left0__ [1];
+						for (var ipiv = 0; ipiv < nrows; ipiv++) {
+							var ibase = 2 * (ipiv * ncols + ipiv);
+							if (!(d [ibase]) && !(d [ibase + 1])) {
+								for (var irow = ipiv + 1; irow < nrows; irow++) {
+									var ibase = 2 * (irow * ncols + ipiv);
+									if (d [ibase] || d [ibase + 1]) {
+										for (var icol = 0; icol < ncols; icol++) {
+											var ibase0 = 2 * (irow * ncols + icol);
+											var ibase1 = 2 * (ipiv * ncols + icol);
+											var tre = d [ibase0];
+											var tim = d [ibase0 + 1];
+											d [ibase0] = b [ibase1];
+											d [ibase0 + 1] = b [ibase1 + 1];
+											d [ibase1] = tre;
+											d [ibase1 + 1] = tim;
+										}
+										break;
+									}
+								}
+							}
+							var ibase = 2 * (ipiv * ncols + ipiv);
+							var pivre = d [ibase];
+							var pivim = d [ibase + 1];
+							for (var icol = ipiv; icol < ncols; icol++) {
+								var ibase = 2 * (ipiv * ncols + icol);
+								var denom = pivre * pivre + pivim * pivim;
+								var oldre = d [ibase];
+								var oldim = d [ibase + 1];
+								d [ibase] = (oldre * pivre + oldim * pivim) / denom;
+								d [ibase + 1] = (oldim * pivre - oldre * pivim) / denom;
+							}
+							for (var irow = 0; irow < nrows; irow++) {
+								if (irow != ipiv) {
+									var ibase = 2 * (irow * ncols + ipiv);
+									var facre = d [ibase];
+									var facim = d [ibase + 1];
+									for (var icol = 0; icol < ncols; icol++) {
+										var ibase0 = 2 * (irow * ncols + icol);
+										var ibase1 = 2 * (ipiv * ncols + icol);
+										d [ibase0] -= facre * d [ibase1] - facim * d [ibase1 + 1];
+										d [ibase0 + 1] -= facre * d [ibase1 + 1] + facim * d [ibase1];
+									}
+								}
+							}
+						}
+						return ns.hsplit (b, 2) [1];
+					};
 					__pragma__ ('<use>' +
 						'numscrypt' +
 					'</use>')
 					__pragma__ ('<all>')
+						__all__.cinv = cinv;
 						__all__.inv = inv;
+						__all__.rinv = rinv;
 					__pragma__ ('</all>')
 				}
 			}

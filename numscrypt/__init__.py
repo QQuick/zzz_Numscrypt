@@ -1,4 +1,4 @@
-# For performance reasons, real arrays or scalars and complex arrays or scalars cannot be mixed
+# For performance reasons, real arrays or scalars and complex arrays can only be mixed in a limited way
 # In general real arrays in natural order are fastest
 # Real arrays in non-natural order are slower
 # Complex arrays are slowest
@@ -78,7 +78,7 @@ class ndarray:
 				break;
 		
 		self.size = ns_size (self.shape)
-		if self.size < self.data.length:
+		if (2 * self.size if self.ns_complex else self.size) < self.data.length:
 			self.ns_natural = False
 		
 		self.nbytes = self.size * self.itemsize
@@ -99,7 +99,7 @@ class ndarray:
 		return tolist_recur (0, [])
 					
 	def __repr__ (self):
-		return 'ndarray ({})'.format (str (self.tolist ()))
+		return 'array({})'.format (repr (self.tolist ()))
 
 	def __str__ (self):
 		return str (self.tolist ()). replace (']], [[', ']]\n\n[[') .replace ('], ', ']\n') .replace (',', '')
@@ -140,7 +140,6 @@ class ndarray:
 			
 			if isslice:
 				result = ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides)
-				print (result)
 				return result
 			else:
 				if self.ns_complex:
@@ -266,7 +265,7 @@ class ndarray:
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and not self.ns_complex and isarr and other.ns_natural:
+		if self.ns_natural and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
 			for i in range (self.data.length):
 				r [i] = s [i] + o [i]
@@ -304,7 +303,7 @@ class ndarray:
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and not self.ns_complex and isarr and other.ns_natural:
+		if self.ns_natural and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
 			for i in range (self.data.length):
 				r [i] = s [i] - o [i]
@@ -342,10 +341,15 @@ class ndarray:
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and not self.ns_complex and isarr and other.ns_natural:
+		if self.ns_natural and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
-			for i in range (self.data.length):
-				r [i] = s [i] * o [i]
+			if self.ns_complex:
+				for i in range (0, self.data.length, 2):
+					r [i] = s [i] * o [i] - s [i + 1] * o [i + 1]
+					r [i + 1] = s [i] * o [i + 1] + s [i + 1] * o [i]
+			else:
+				for i in range (self.data.length):
+					r [i] = s [i] * o [i]
 		elif self.ns_natural and not self.ns_complex and not isarr:
 			r, s = result.data, self.data
 			for i in range (self.data.length):
@@ -380,10 +384,16 @@ class ndarray:
 		
 		result = empty (self.shape, self.dtype)
 		
-		if self.ns_natural and not self.ns_complex and isarr and other.ns_natural:
+		if self.ns_natural and isarr and other.ns_natural:
 			r, s, o = result.data, self.data, other.data
-			for i in range (self.data.length):
-				r [i] = s [i] / o [i]
+			if self.ns_complex:
+				for i in range (0, self.data.length, 2):
+					denom = o [i] * o [i] + o [i + 1] * o [i + 1]			
+					r [i] = (s [i] * o [i] + s [i + 1] * o [i + 1]) / denom
+					r [i + 1] = (s [i + 1] * o [i] - s [i] * o [i + 1]) / denom
+			else:
+				for i in range (self.data.length):
+					r [i] = s [i] / o [i]
 		elif self.ns_natural and not self.ns_complex and not isarr:
 			r, s = result.data, self.data
 			for i in range (self.data.length):
@@ -400,22 +410,36 @@ class ndarray:
 		nrows, ncols, nterms  = self.shape [0], other.shape [1], self.shape [1]
 		result = empty ((nrows, ncols), self.dtype)
 		
-		if self.ns_natural or self.ns_complex or ns_settings.optim_space:
+		if self.ns_natural or ns_settings.optim_space:
 			self2 = self
 		else:
 			self2 = copy (self)	# Will place items in natural order for fast multiplication
 			
-		if other.ns_natural or other.ns_complex or ns_settings.optim_space:
+		if other.ns_natural or ns_settings.optim_space:
 			other2 = other
 		else:
 			other2 = copy (other)
 		
-		if self2.ns_natural and not self.ns_complex and other2.ns_natural:
-			for irow in range (nrows):
-				for icol in range (ncols):
-					r, s, o = result.data, self2.data, other2.data
-					for iterm in range (nterms):
-						r [irow * ncols + icol] += s [irow * nterms + iterm] * o [iterm * ncols + icol]
+		if self2.ns_natural and other2.ns_natural:
+			if self.ns_complex:
+				for irow in range (nrows):
+					for icol in range (ncols):
+						r, s, o = result.data, self2.data, other2.data
+						baser = 2 * (irow * ncols + icol)
+						r [baser] = 0
+						r [baser + 1] = 0
+						for iterm in range (nterms):
+							bases = 2 * (irow * nterms + iterm)
+							baseo = 2 * (iterm * ncols + icol)
+							r [baser] += s [bases] * o [baseo] - s [bases + 1] * o [baseo + 1]
+							r [baser + 1] += s [bases] * o [baseo + 1] + s [bases + 1] * o [baseo]
+			else:
+				for irow in range (nrows):
+					for icol in range (ncols):
+						r, s, o = result.data, self2.data, other2.data
+						r [irow * ncols + icol] = 0
+						for iterm in range (nterms):
+							r [irow * ncols + icol] += s [irow * nterms + iterm] * o [iterm * ncols + icol]
 		else:
 			for irow in range (nrows):
 				for icol in range (ncols):
@@ -433,11 +457,12 @@ class ndarray:
 		return result
 		
 def empty (shape, dtype = 'float64'):
-	return ndarray (
+	result = ndarray (
 		shape,
 		dtype,
 		__new__ (ns_ctors [dtype] (2 * ns_size (shape) if ns_iscomplex (dtype) else ns_size (shape)))
 	)
+	return result
 	
 def array (obj, dtype = 'float64', copy = True):
 	def copy_recur (idim, key):
@@ -452,7 +477,7 @@ def array (obj, dtype = 'float64', copy = True):
 		if copy:
 			result = empty (obj.shape, dtype)
 			
-			if obj.ns_natural and not obj.ns_complex:
+			if obj.ns_natural:
 				o, r = obj.data, result.data
 				for i in range (o.length):
 					r [i] = o [i]
@@ -599,9 +624,9 @@ def ones (shape, dtype = 'float64'):
 def identity (n, dtype = 'float64'):
 	result = zeros ((n, n), dtype)
 	r = result.data
-	if self.ns_complex:
-		for i in range (0, r.length, 2):
-			r [i * result.shape [1] + i] = 1
+	if result.ns_complex:
+		for i in range (n):
+			r [2 * (i * result.shape [1] + i)] = 1
 	else:
 		for i in range (n):
 			r [i * result.shape [1] + i] = 1

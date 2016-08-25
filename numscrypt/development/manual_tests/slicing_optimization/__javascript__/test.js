@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2016-08-23 14:54:03
+// Transcrypt'ed from Python, 2016-08-25 14:13:40
 function test () {
 	var __all__ = {};
 	var __world__ = __all__;
@@ -303,6 +303,80 @@ function test () {
 							return __accu0__;
 						} ();
 					};
+					var complex = __class__ ('complex', [object], {
+						get __init__ () {return __get__ (this, function (self, real, imag) {
+							self.real = real;
+							self.imag = imag;
+						});},
+						get __neg__ () {return __get__ (this, function (self) {
+							return complex (-(self.real), -(self.imag));
+						});},
+						get __exp__ () {return __get__ (this, function (self) {
+							var modulus = Math.exp (self.real);
+							return complex (modulus * Math.cos (self.imag), modulus * Math.sin (self.imag));
+						});},
+						get __log__ () {return __get__ (this, function (self) {
+							return complex (Math.log (Math.sqrt (self.real * self.real + self.imag * self.imag)), Math.atan2 (self.imag, self.real));
+						});},
+						get __pow__ () {return __get__ (this, function (self, other) {
+							return self.__log__ ().__mul__ (other).__exp__ ();
+						});},
+						get __rpow__ () {return __get__ (this, function (self, real) {
+							return self.__mul__ (Math.log (real)).__exp__ ();
+						});},
+						get __mul__ () {return __get__ (this, function (self, other) {
+							if (typeof other === 'number') {
+								return complex (self.real * other, self.imag * other);
+							}
+							else {
+								return complex (self.real * other.real - self.imag * other.imag, self.real * other.imag + self.imag * other.real);
+							}
+						});},
+						get __rmul__ () {return __get__ (this, function (self, real) {
+							return complex (self.real * real, self.imag * real);
+						});},
+						get __div__ () {return __get__ (this, function (self, other) {
+							if (typeof other === 'number') {
+								return complex (self.real / other, self.imag / other);
+							}
+							else {
+								var denom = other.real * other.real + other.imag * other.imag;
+								return complex ((self.real * other.real + self.imag * other.imag) / denom, (self.imag * other.real - self.real * other.imag) / denom);
+							}
+						});},
+						get __rdiv__ () {return __get__ (this, function (self, real) {
+							var denom = self.real * self.real;
+							return complex ((real * self.real) / denom, (real * self.imag) / denom);
+						});},
+						get __add__ () {return __get__ (this, function (self, other) {
+							if (typeof other === 'number') {
+								return complex (self.real + other, self.imag);
+							}
+							else {
+								return complex (self.real + other.real, self.imag + other.imag);
+							}
+						});},
+						get __radd__ () {return __get__ (this, function (self, real) {
+							return complex (self.real + real, self.imag);
+						});},
+						get __sub__ () {return __get__ (this, function (self, other) {
+							if (typeof other === 'number') {
+								return complex (self.real - other, self.imag);
+							}
+							else {
+								return complex (self.real - other.real, self.imag - other.imag);
+							}
+						});},
+						get __rsub__ () {return __get__ (this, function (self, real) {
+							return complex (real - self.real, -(self.imag));
+						});},
+						get __repr__ () {return __get__ (this, function (self) {
+							return '({}{}{}j)'.format (self.real, (self.imag >= 0 ? '+' : ''), self.imag);
+						});},
+						get __str__ () {return __get__ (this, function (self) {
+							return __repr__ (self).__getslice__ (1, -(1), 1);
+						});}
+					});
 					var __Terminal__ = __class__ ('__Terminal__', [object], {
 						get __init__ () {return __get__ (this, function (self) {
 							try {
@@ -399,6 +473,7 @@ function test () {
 						__all__.__Terminal__ = __Terminal__;
 						__all__.__sort__ = __sort__;
 						__all__.__terminal__ = __terminal__;
+						__all__.complex = complex;
 						__all__.filter = filter;
 						__all__.map = map;
 						__all__.sorted = sorted;
@@ -433,6 +508,7 @@ function test () {
 	var map = __all__.map;
 	var filter = __all__.filter;
 	
+	var complex = __all__.complex;
 	
 	__all__.print = __all__.__terminal__.print;
 	__all__.input = __all__.__terminal__.input;
@@ -727,8 +803,14 @@ function test () {
 	__all__.min = min;
 	
 	// Absolute value
-	var abs = Math.abs;
-	__all__.abs = abs;
+	var abs = function (x) {
+		try {
+			return Math.abs (x);
+		}
+		catch (exception) {
+			return Math.sqrt (x.real * x.real + x.imag * x.imag);
+		}
+	}
 	
 	// Bankers rounding
 	var round = function (number, ndigits) {
@@ -1869,7 +1951,7 @@ function test () {
 								}
 							}
 							self.size = ns_size (self.shape);
-							if (self.size < self.data.length) {
+							if ((self.ns_complex ? 2 * self.size : self.size) < self.data.length) {
 								self.ns_natural = false;
 							}
 							self.nbytes = self.size * self.itemsize;
@@ -1902,7 +1984,7 @@ function test () {
 							return tolist_recur (0, list ([]));
 						});},
 						get __repr__ () {return __get__ (this, function (self) {
-							return 'ndarray ({})'.format (str (self.tolist ()));
+							return 'array({})'.format (str (self.tolist ()));
 						});},
 						get __str__ () {return __get__ (this, function (self) {
 							return str (self.tolist ()).py_replace (']], [[', ']]\n\n[[').py_replace ('], ', ']\n').py_replace (',', '');
@@ -1948,7 +2030,6 @@ function test () {
 								}
 								if (isslice) {
 									var result = ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides);
-									print (result);
 									return result;
 								}
 								else {
@@ -2118,7 +2199,7 @@ function test () {
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && !(self.ns_complex) && isarr && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
@@ -2174,7 +2255,7 @@ function test () {
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && !(self.ns_complex) && isarr && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
@@ -2230,13 +2311,21 @@ function test () {
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && !(self.ns_complex) && isarr && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
 								var o = __left0__ [2];
-								for (var i = 0; i < self.data.length; i++) {
-									r [i] = s [i] * o [i];
+								if (self.ns_complex) {
+									for (var i = 0; i < self.data.length; i += 2) {
+										r [i] = s [i] * o [i] + s [i + 1] * o [i + 1];
+										r [i + 1] = s [i] * o [i + 1] + s [i + 1] * o [i];
+									}
+								}
+								else {
+									for (var i = 0; i < self.data.length; i++) {
+										r [i] = s [i] * o [i];
+									}
 								}
 							}
 							else {
@@ -2286,13 +2375,22 @@ function test () {
 								}
 							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && !(self.ns_complex) && isarr && other.ns_natural) {
+							if (self.ns_natural && isarr && other.ns_natural) {
 								var __left0__ = tuple ([result.data, self.data, other.data]);
 								var r = __left0__ [0];
 								var s = __left0__ [1];
 								var o = __left0__ [2];
-								for (var i = 0; i < self.data.length; i++) {
-									r [i] = s [i] / o [i];
+								if (self.ns_complex) {
+									for (var i = 0; i < self.data.length; i += 2) {
+										var denom = o [i] * o [i] + o [i + 1] * o [i + 1];
+										r [i] = (s [i] * o [i] + s [i + 1] * o [i + 1]) / denom;
+										r [i] = (s [i + 1] * o [i] - s [i] * o [i + 1]) / denom;
+									}
+								}
+								else {
+									for (var i = 0; i < self.data.length; i++) {
+										r [i] = s [i] / o [i];
+									}
 								}
 							}
 							else {
@@ -2319,27 +2417,49 @@ function test () {
 							var ncols = __left0__ [1];
 							var nterms = __left0__ [2];
 							var result = empty (tuple ([nrows, ncols]), self.dtype);
-							if (self.ns_natural || self.ns_complex || ns_settings.optim_space) {
+							if (self.ns_natural || ns_settings.optim_space) {
 								var self2 = self;
 							}
 							else {
 								var self2 = copy (self);
 							}
-							if (other.ns_natural || other.ns_complex || ns_settings.optim_space) {
+							if (other.ns_natural || ns_settings.optim_space) {
 								var other2 = other;
 							}
 							else {
 								var other2 = copy (other);
 							}
-							if (self2.ns_natural && !(self.ns_complex) && other2.ns_natural) {
-								for (var irow = 0; irow < nrows; irow++) {
-									for (var icol = 0; icol < ncols; icol++) {
-										var __left0__ = tuple ([result.data, self2.data, other2.data]);
-										var r = __left0__ [0];
-										var s = __left0__ [1];
-										var o = __left0__ [2];
-										for (var iterm = 0; iterm < nterms; iterm++) {
-											r [irow * ncols + icol] += s [irow * nterms + iterm] * o [iterm * ncols + icol];
+							if (self2.ns_natural && other2.ns_natural) {
+								if (self.ns_complex) {
+									for (var irow = 0; irow < nrows; irow++) {
+										for (var icol = 0; icol < ncols; icol++) {
+											var __left0__ = tuple ([result.data, self2.data, other2.data]);
+											var r = __left0__ [0];
+											var s = __left0__ [1];
+											var o = __left0__ [2];
+											var baser = 2 * (irow * ncols + icol);
+											r [baser] = 0;
+											r [baser + 1] = 0;
+											for (var iterm = 0; iterm < nterms; iterm++) {
+												var bases = 2 * (irow * nterms + iterm);
+												var baseo = 2 * (iterm * ncols + icol);
+												r [baser] += s [bases] * o [baseo] - s [bases + 1] * o [baseo + 1];
+												r [baser + 1] += s [bases] * o [baseo + 1] + s [bases + 1] * o [baseo];
+											}
+										}
+									}
+								}
+								else {
+									for (var irow = 0; irow < nrows; irow++) {
+										for (var icol = 0; icol < ncols; icol++) {
+											var __left0__ = tuple ([result.data, self2.data, other2.data]);
+											var r = __left0__ [0];
+											var s = __left0__ [1];
+											var o = __left0__ [2];
+											r [irow * ncols + icol] = 0;
+											for (var iterm = 0; iterm < nterms; iterm++) {
+												r [irow * ncols + icol] += s [irow * nterms + iterm] * o [iterm * ncols + icol];
+											}
 										}
 									}
 								}
@@ -2372,7 +2492,8 @@ function test () {
 						if (typeof dtype == 'undefined' || (dtype != null && dtype .__class__ == __kwargdict__)) {;
 							var dtype = 'float64';
 						};
-						return ndarray (shape, dtype, new ns_ctors [dtype] ((ns_iscomplex (dtype) ? 2 * ns_size (shape) : ns_size (shape))));
+						var result = ndarray (shape, dtype, new ns_ctors [dtype] ((ns_iscomplex (dtype) ? 2 * ns_size (shape) : ns_size (shape))));
+						return result;
 					};
 					var array = function (obj, dtype, copy) {
 						if (typeof dtype == 'undefined' || (dtype != null && dtype .__class__ == __kwargdict__)) {;
@@ -2395,7 +2516,7 @@ function test () {
 						if (obj.__class__ == ndarray) {
 							if (copy) {
 								var result = empty (obj.shape, dtype);
-								if (obj.ns_natural && !(obj.ns_complex)) {
+								if (obj.ns_natural) {
 									var __left0__ = tuple ([obj.data, result.data]);
 									var o = __left0__ [0];
 									var r = __left0__ [1];
@@ -2585,9 +2706,9 @@ function test () {
 						};
 						var result = zeros (tuple ([n, n]), dtype);
 						var r = result.data;
-						if (self.ns_complex) {
-							for (var i = 0; i < r.length; i += 2) {
-								r [i * result.shape [1] + i] = 1;
+						if (result.ns_complex) {
+							for (var i = 0; i < n; i++) {
+								r [2 * (i * result.shape [1] + i)] = 1;
 							}
 						}
 						else {
@@ -2631,18 +2752,26 @@ function test () {
 				__init__: function (__all__) {
 					var ns =  __init__ (__world__.numscrypt);
 					var inv = function (a) {
+						if (a.ns_complex) {
+							return cinv (a);
+						}
+						else {
+							return rinv (a);
+						}
+					};
+					var rinv = function (a) {
 						var b = ns.hstack (tuple ([a, ns.identity (a.shape [0], a.dtype)]));
+						var d = b.data;
 						var __left0__ = b.shape;
 						var nrows = __left0__ [0];
 						var ncols = __left0__ [1];
-						var d = b.data;
 						for (var ipiv = 0; ipiv < nrows; ipiv++) {
 							if (!(d [ipiv * ncols + ipiv])) {
 								for (var irow = ipiv + 1; irow < nrows; irow++) {
 									if (d [irow * ncols + ipiv]) {
 										for (var icol = 0; icol < ncols; icol++) {
 											var t = d [irow * ncols + icol];
-											d [irow * ncols + icol] = b.__getitem__ ([ipiv * ncols, icol]);
+											d [irow * ncols + icol] = b [ipiv * ncols + icol];
 											d [ipiv * ncols + icol] = t;
 										}
 										break;
@@ -2664,11 +2793,66 @@ function test () {
 						}
 						return ns.hsplit (b, 2) [1];
 					};
+					var cinv = function (a) {
+						var b = ns.hstack (tuple ([a, ns.identity (a.shape [0], a.dtype)]));
+						var d = b.data;
+						var __left0__ = b.shape;
+						var nrows = __left0__ [0];
+						var ncols = __left0__ [1];
+						for (var ipiv = 0; ipiv < nrows; ipiv++) {
+							var ibase = 2 * (ipiv * ncols + ipiv);
+							if (!(d [ibase]) && !(d [ibase + 1])) {
+								for (var irow = ipiv + 1; irow < nrows; irow++) {
+									var ibase = 2 * (irow * ncols + ipiv);
+									if (d [ibase] || d [ibase + 1]) {
+										for (var icol = 0; icol < ncols; icol++) {
+											var ibase0 = 2 * (irow * ncols + icol);
+											var ibase1 = 2 * (ipiv * ncols + icol);
+											var tre = d [ibase0];
+											var tim = d [ibase0 + 1];
+											d [ibase0] = b [ibase1];
+											d [ibase0 + 1] = b [ibase1 + 1];
+											d [ibase1] = tre;
+											d [ibase1 + 1] = tim;
+										}
+										break;
+									}
+								}
+							}
+							var ibase = 2 * (ipiv * ncols + ipiv);
+							var pivre = d [ibase];
+							var pivim = d [ibase + 1];
+							for (var icol = ipiv; icol < ncols; icol++) {
+								var ibase = 2 * (ipiv * ncols + icol);
+								var denom = pivre * pivre + pivim * pivim;
+								var oldre = d [ibase];
+								var oldim = d [ibase + 1];
+								d [ibase] = (oldre * pivre + oldim * pivim) / denom;
+								d [ibase + 1] = (oldim * pivre - oldre * pivim) / denom;
+							}
+							for (var irow = 0; irow < nrows; irow++) {
+								if (irow != ipiv) {
+									var ibase = 2 * (irow * ncols + ipiv);
+									var facre = d [ibase];
+									var facim = d [ibase + 1];
+									for (var icol = 0; icol < ncols; icol++) {
+										var ibase0 = 2 * (irow * ncols + icol);
+										var ibase1 = 2 * (ipiv * ncols + icol);
+										d [ibase0] -= facre * d [ibase1] - facim * d [ibase1 + 1];
+										d [ibase0 + 1] -= facre * d [ibase1 + 1] + facim * d [ibase1];
+									}
+								}
+							}
+						}
+						return ns.hsplit (b, 2) [1];
+					};
 					__pragma__ ('<use>' +
 						'numscrypt' +
 					'</use>')
 					__pragma__ ('<all>')
+						__all__.cinv = cinv;
 						__all__.inv = inv;
+						__all__.rinv = rinv;
 					__pragma__ ('</all>')
 				}
 			}
@@ -2699,34 +2883,139 @@ function test () {
 			}
 		}
 	);
+	__nest__ (
+		__all__,
+		'random', {
+			__all__: {
+				__inited__: false,
+				__init__: function (__all__) {
+					var _array = function () {
+						var __accu0__ = [];
+						for (var i = 0; i < 624; i++) {
+							__accu0__.append (0);
+						}
+						return __accu0__;
+					} ();
+					var _index = 0;
+					var _bitmask1 = Math.pow (2, 32) - 1;
+					var _bitmask2 = Math.pow (2, 31);
+					var _bitmask3 = Math.pow (2, 31) - 1;
+					var _fill_array = function () {
+						for (var i = 0; i < 624; i++) {
+							var y = (_array [i] & _bitmask2) + (_array [(i + 1) % 624] & _bitmask3);
+							_array [i] = _array [(i + 397) % 624] ^ y >> 1;
+							if (y % 2 != 0) {
+								_array [i] ^= 2567483615;
+							}
+						}
+					};
+					var _random_integer = function () {
+						if (_index == 0) {
+							_fill_array ();
+						}
+						var y = _array [_index];
+						y ^= y >> 11;
+						y ^= y << 7 & 2636928640;
+						y ^= y << 15 & 4022730752;
+						y ^= y >> 18;
+						_index = (_index + 1) % 624;
+						return y;
+					};
+					var seed = function (x) {
+						if (typeof x == 'undefined' || (x != null && x .__class__ == __kwargdict__)) {;
+							var x = int (_bitmask3 * Math.random ());
+						};
+						_array [0] = x;
+						for (var i = 1; i < 624; i++) {
+							_array [i] = (1812433253 * _array [i - 1] ^ (_array [i - 1] >> 30) + i) & _bitmask1;
+						}
+					};
+					var randint = function (a, b) {
+						return a + _random_integer () % ((b - a) + 1);
+					};
+					var choice = function (seq) {
+						return seq [randint (0, len (seq) - 1)];
+					};
+					var random = function () {
+						return _random_integer () / _bitmask3;
+					};
+					seed ();
+					__pragma__ ('<all>')
+						__all__._array = _array;
+						__all__._bitmask1 = _bitmask1;
+						__all__._bitmask2 = _bitmask2;
+						__all__._bitmask3 = _bitmask3;
+						__all__._fill_array = _fill_array;
+						__all__._index = _index;
+						__all__._random_integer = _random_integer;
+						__all__.choice = choice;
+						__all__.randint = randint;
+						__all__.random = random;
+						__all__.seed = seed;
+					__pragma__ ('</all>')
+				}
+			}
+		}
+	);
 	(function () {
-		var __symbols__ = ['__esv5__'];
-		var ns =  __init__ (__world__.numscrypt);
-		var random =  __init__ (__world__.numscrypt.random);
+		var __symbols__ = ['__complex__', '__esv5__'];
+		var random = {};
+		var num =  __init__ (__world__.numscrypt);
+		var num_rand =  __init__ (__world__.numscrypt.random);
 		var linalg =  __init__ (__world__.numscrypt.linalg);
+		__nest__ (random, '', __init__ (__world__.random));
 		var result = '';
 		var __iterable0__ = tuple ([false, true]);
 		for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-			var optim_space = __iterable0__ [__index0__];
-			ns.ns_settings.optim_space = optim_space;
+			var useComplex = __iterable0__ [__index0__];
 			var __iterable1__ = tuple ([false, true]);
 			for (var __index1__ = 0; __index1__ < __iterable1__.length; __index1__++) {
-				var transpose = __iterable1__ [__index1__];
-				var a = random.rand (30, 30);
-				var timeStartTranspose = new Date ();
-				if (transpose) {
-					var a = a.transpose ();
+				var optim_space = __iterable1__ [__index1__];
+				num.ns_settings.optim_space = optim_space;
+				var __iterable2__ = tuple ([false, true]);
+				for (var __index2__ = 0; __index2__ < __iterable2__.length; __index2__++) {
+					var transpose = __iterable2__ [__index2__];
+					if (useComplex) {
+						var a = num.array (function () {
+							var __accu0__ = [];
+							for (var iRow = 0; iRow < 30; iRow++) {
+								__accu0__.append (function () {
+									var __accu1__ = [];
+									for (var iCol = 0; iCol < 30; iCol++) {
+										__accu1__.append (complex (random.random (), random.random ()));
+									}
+									return __accu1__;
+								} ());
+							}
+							return __accu0__;
+						} (), 'complex128');
+					}
+					else {
+						var a = num_rand.rand (30, 30);
+					}
+					var timeStartTranspose = new Date ();
+					if (transpose) {
+						var a = a.transpose ();
+					}
+					var timeStartInv = new Date ();
+					var ai = linalg.inv (a);
+					var timeStartMul = new Date ();
+					var id = __matmul__ (a, ai);
+					var timeStartScalp = new Date ();
+					var sp = __mul__ (a, a);
+					var timeStartDiv = new Date ();
+					var sp = __div__ (a, a);
+					var timeStartAdd = new Date ();
+					var sp = __add__ (a, a);
+					var timeStartSub = new Date ();
+					var sp = __sub__ (a, a);
+					var timeEnd = new Date ();
+					result += '\n<pre>\n   Optimized for space instead of time: {}\n================================================\n\t\n{}: a @ ai [0:5, 0:5] =\n\n{}\n'.format (optim_space, (a.ns_natural ? 'natural' : 'unnatural'), str (num.round (id.__getitem__ ([tuple ([0, 5, 1]), tuple ([0, 5, 1])]), 2)).py_replace (' ', '\t'));
+					if (transpose) {
+						result += '\nTranspose took: {} ms'.format (timeStartInv - timeStartTranspose);
+					}
+					result += '\nInverse took: {} ms\nMatrix product (@) took: {} ms\nElementwise product (*) took: {} ms\nDivision took: {} ms\nAddition took: {} ms\nSubtraction took: {} ms\n</pre>\n'.format (timeStartMul - timeStartInv, timeStartScalp - timeStartMul, timeStartDiv - timeStartScalp, timeStartAdd - timeStartDiv, timeStartSub - timeStartAdd, timeEnd - timeStartSub);
 				}
-				var timeStartInv = new Date ();
-				var ai = linalg.inv (a);
-				var timeStartMul = new Date ();
-				var id = __matmul__ (a, ai);
-				var timeEnd = new Date ();
-				result += '\n<pre>\nOptimized for space instead of time: {}\n\t\n{}: a @ ai [0:5, 0:5] =\n\n{}\n'.format (optim_space, (a.ns_natural ? 'natural' : 'unnatural'), str (ns.round (id.__getitem__ ([tuple ([0, 5, 1]), tuple ([0, 5, 1])]), 2)).py_replace (' ', '\t'));
-				if (transpose) {
-					result += '\nTranspose took: {} ms'.format (timeStartInv - timeStartTranspose);
-				}
-				result += '\nInverse took: {} ms\nProduct took: {} ms\n</pre>\n'.format (timeStartMul - timeStartInv, timeEnd - timeStartMul);
 			}
 		}
 		document.getElementById ('result').innerHTML = result;
@@ -2734,6 +3023,7 @@ function test () {
 			'numscrypt' +
 			'numscrypt.linalg' +
 			'numscrypt.random' +
+			'random' +
 		'</use>')
 		__pragma__ ('<all>')
 			__all__.a = a;
@@ -2741,11 +3031,17 @@ function test () {
 			__all__.id = id;
 			__all__.optim_space = optim_space;
 			__all__.result = result;
+			__all__.sp = sp;
 			__all__.timeEnd = timeEnd;
+			__all__.timeStartAdd = timeStartAdd;
+			__all__.timeStartDiv = timeStartDiv;
 			__all__.timeStartInv = timeStartInv;
 			__all__.timeStartMul = timeStartMul;
+			__all__.timeStartScalp = timeStartScalp;
+			__all__.timeStartSub = timeStartSub;
 			__all__.timeStartTranspose = timeStartTranspose;
 			__all__.transpose = transpose;
+			__all__.useComplex = useComplex;
 		__pragma__ ('</all>')
 	}) ();
 	return __all__;

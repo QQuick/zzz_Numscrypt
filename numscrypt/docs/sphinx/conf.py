@@ -2,7 +2,7 @@ import sys
 
 sys.path.append ('../..')
 
-import base
+import __base__
 
 # -*- coding: utf-8 -*-
 #
@@ -54,7 +54,7 @@ copyright = u'2016, Jacques de Hooge'
 # built documents.
 #
 # The short X.Y version.
-version = base.ns_version
+version = __base__.ns_version
 # The full version, including alpha/beta/rc tags.
 release = version
 
