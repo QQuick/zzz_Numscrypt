@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2016-08-25 14:31:26
+// Transcrypt'ed from Python, 2016-08-26 14:13:59
 function autotest () {
 	var __all__ = {};
 	var __world__ = __all__;
@@ -145,7 +145,7 @@ function autotest () {
 					var __Envir__ = __class__ ('__Envir__', [object], {
 						get __init__ () {return __get__ (this, function (self) {
 							self.transpiler_name = 'transcrypt';
-							self.transpiler_version = '3.5.214';
+							self.transpiler_version = '3.5.216';
 							self.target_subdir = '__javascript__';
 						});}
 					});
@@ -2050,6 +2050,180 @@ function autotest () {
 	);
 	__nest__ (
 		__all__,
+		'math', {
+			__all__: {
+				__inited__: false,
+				__init__: function (__all__) {
+					var pi = Math.PI;
+					var e = Math.E;
+					var exp = Math.exp;
+					var expm1 = function (x) {
+						return Math.exp (x) - 1;
+					};
+					var log = function (x, base) {
+						return (base === undefined ? Math.log (x) : Math.log (x) / Math.log (base));
+					};
+					var log1p = function (x) {
+						return Math.log (x + 1);
+					};
+					var log2 = function (x) {
+						return Math.log (x) / Math.LN2;
+					};
+					var log10 = function (x) {
+						return Math.log (x) / Math.LN10;
+					};
+					var pow = Math.pow;
+					var sqrt = Math.sqrt;
+					var sin = Math.sin;
+					var cos = Math.cos;
+					var tan = Math.tan;
+					var asin = Math.asin;
+					var acos = Math.acos;
+					var atan = Math.atan;
+					var atan2 = Math.atan2;
+					var hypot = Math.hypot;
+					var degrees = function (x) {
+						return (x * 180) / Math.PI;
+					};
+					var radians = function (x) {
+						return (x * Math.PI) / 180;
+					};
+					var sinh = Math.sinh;
+					var cosh = Math.cosh;
+					var tanh = Math.tanh;
+					var asinh = Math.asinh;
+					var acosh = Math.acosh;
+					var atanh = Math.atanh;
+					var floor = Math.floor;
+					var ceil = Math.ceil;
+					var trunc = Math.trunc;
+					var inf = Infinity;
+					var nan = NaN;
+					__pragma__ ('<all>')
+						__all__.acos = acos;
+						__all__.acosh = acosh;
+						__all__.asin = asin;
+						__all__.asinh = asinh;
+						__all__.atan = atan;
+						__all__.atan2 = atan2;
+						__all__.atanh = atanh;
+						__all__.ceil = ceil;
+						__all__.cos = cos;
+						__all__.cosh = cosh;
+						__all__.degrees = degrees;
+						__all__.e = e;
+						__all__.exp = exp;
+						__all__.expm1 = expm1;
+						__all__.floor = floor;
+						__all__.hypot = hypot;
+						__all__.inf = inf;
+						__all__.log = log;
+						__all__.log10 = log10;
+						__all__.log1p = log1p;
+						__all__.log2 = log2;
+						__all__.nan = nan;
+						__all__.pi = pi;
+						__all__.pow = pow;
+						__all__.radians = radians;
+						__all__.sin = sin;
+						__all__.sinh = sinh;
+						__all__.sqrt = sqrt;
+						__all__.tan = tan;
+						__all__.tanh = tanh;
+						__all__.trunc = trunc;
+					__pragma__ ('</all>')
+				}
+			}
+		}
+	);
+	__nest__ (
+		__all__,
+		'module_fft', {
+			__all__: {
+				__inited__: false,
+				__init__: function (__all__) {
+					var sin = __init__ (__world__.math).sin;
+					var cos = __init__ (__world__.math).cos;
+					var pi = __init__ (__world__.math).pi;
+					var transpiled = __envir__.executor_name == __envir__.transpiler_name;
+					if (__envir__.executor_name == __envir__.transpiler_name) {
+						var num =  __init__ (__world__.numscrypt);
+						var fft =  __init__ (__world__.numscrypt.fft);
+					}
+					var fSample = 4096;
+					var tTotal = 2;
+					var fSin = 30;
+					var fCos = 50;
+					var getNow = function () {
+						return new Date ();
+					};
+					var tCurrent = function (iCurrent) {
+						return iCurrent / fSample;
+					};
+					var run = function (autoTester) {
+						var orig = num.array (function () {
+							var __accu0__ = [];
+							var __iterable0__ = function () {
+								var __accu1__ = [];
+								for (var iSample = 0; iSample < tTotal * fSample; iSample++) {
+									__accu1__.append (iSample / fSample);
+								}
+								return __accu1__;
+							} ();
+							for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
+								var t = __iterable0__ [__index0__];
+								__accu0__.append (complex ((0.3 + sin (((2 * pi) * fSin) * t)) + 0.5 * cos (((2 * pi) * fCos) * t), 0));
+							}
+							return __accu0__;
+						} (), 'complex128');
+						var delta = __add__ (0.001, complex (0, 0.001));
+						var cut = 102;
+						__call__ (autoTester.check, 'Original samples', __getslice__ (__call__ (__call__ (num.round, __add__ (orig, delta), 3).tolist), 0, cut, 1), '<br>');
+						if (transpiled) {
+							var timeStartFft = __call__ (getNow);
+						}
+						var freqs = __call__ (fft.fft, orig);
+						if (transpiled) {
+							var timeStopFft = __call__ (getNow);
+						}
+						__call__ (autoTester.check, 'Frequencies', __getslice__ (__call__ (__call__ (num.round, __add__ (freqs, delta), 3).tolist), 0, cut, 1), '<br>');
+						if (transpiled) {
+							var timeStartIfft = __call__ (getNow);
+						}
+						var reconstr = __call__ (fft.ifft, freqs);
+						if (transpiled) {
+							var timeStopIfft = __call__ (getNow);
+						}
+						__call__ (autoTester.check, 'Reconstructed samples', __getslice__ (__call__ (__call__ (num.round, __add__ (reconstr, delta), 3).tolist), 0, cut, 1), '<br>');
+						if (transpiled) {
+							print ('FFT for {} samples took {} ms'.format (tTotal * fSample, timeStopFft - timeStartFft));
+							print ('IFFT for {} samples took {} ms'.format (tTotal * fSample, timeStopIfft - timeStartIfft));
+						}
+					};
+					__pragma__ ('<use>' +
+						'math' +
+						'numscrypt' +
+						'numscrypt.fft' +
+					'</use>')
+					__pragma__ ('<all>')
+						__all__.cos = cos;
+						__all__.fCos = fCos;
+						__all__.fSample = fSample;
+						__all__.fSin = fSin;
+						__all__.getNow = getNow;
+						__all__.pi = pi;
+						__all__.run = run;
+						__all__.sin = sin;
+						__all__.tCurrent = tCurrent;
+						__all__.tTotal = tTotal;
+						__all__.transpiled = transpiled;
+					__pragma__ ('</all>')
+				}
+			}
+		}
+	);
+	__nest__ (
+		__all__,
 		'module_linalg', {
 			__all__: {
 				__inited__: false,
@@ -2138,6 +2312,7 @@ function autotest () {
 					ns_settings.optim_space = false;
 					var ns_itemsizes = dict ({'int32': 4, 'float32': 4, 'float64': 8, 'complex64': 8, 'complex128': 16});
 					var ns_ctors = dict ({'int32': Int32Array, 'float32': Float32Array, 'float64': Float64Array, 'complex64': Float32Array, 'complex128': Float64Array});
+					var ns_realtypes = dict ({'complex64': 'float32', 'complex128': 'float64'});
 					var ns_size = function (shape) {
 						var result = shape [0];
 						var __iterable0__ = shape.__getslice__ (1, null, 1);
@@ -2353,6 +2528,20 @@ function autotest () {
 									self.data [self.ns_shift + key * self.ns_skips [0]] = value;
 								}
 							}
+						});},
+						get real () {return __get__ (this, function (self) {
+							var result = empty (self.shape, ns_realtypes [self.dtype]);
+							for (var i = 0; i < result.data.length; i++) {
+								result.data [i] = self.data [2 * i];
+							}
+							return result;
+						});},
+						get imag () {return __get__ (this, function (self) {
+							var result = empty (self.shape, ns_realtypes [self.dtype]);
+							for (var i = 0; i < result.data.length; i++) {
+								result.data [i] = self.data [2 * i + 1];
+							}
+							return result;
 						});},
 						get __neg__ () {return __get__ (this, function (self) {
 							var neg_recur = function (idim, key) {
@@ -2978,6 +3167,7 @@ function autotest () {
 						__all__.ns_ctors = ns_ctors;
 						__all__.ns_iscomplex = ns_iscomplex;
 						__all__.ns_itemsizes = ns_itemsizes;
+						__all__.ns_realtypes = ns_realtypes;
 						__all__.ns_settings = ns_settings;
 						__all__.ns_size = ns_size;
 						__all__.ones = ones;
@@ -2985,6 +3175,165 @@ function autotest () {
 						__all__.vsplit = vsplit;
 						__all__.vstack = vstack;
 						__all__.zeros = zeros;
+					__pragma__ ('</all>')
+				}
+			}
+		}
+	);
+	__nest__ (
+		__all__,
+		'numscrypt.fft', {
+			__all__: {
+				__inited__: false,
+				__init__: function (__all__) {
+					var ns =  __init__ (__world__.numscrypt);
+					/* 
+					 * Free FFT and convolution (JavaScript)
+					 * 
+					 * Copyright (c) 2014 Project Nayuki
+					 * http://www.nayuki.io/page/free-small-fft-in-multiple-languages
+					 *
+					 * (MIT License)
+					 * Permission is hereby granted, free of charge, to any person obtaining a copy of
+					 * this software and associated documentation files (the "Software"), to deal in
+					 * the Software without restriction, including without limitation the rights to
+					 * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+					 * the Software, and to permit persons to whom the Software is furnished to do so,
+					 * subject to the following conditions:
+					 * - The above copyright notice and this permission notice shall be included in
+					 *   all copies or substantial portions of the Software.
+					 * - The Software is provided "as is", without warranty of any kind, express or
+					 *   implied, including but not limited to the warranties of merchantability,
+					 *   fitness for a particular purpose and noninfringement. In no event shall the
+					 *   authors or copyright holders be liable for any claim, damages or other
+					 *   liability, whether in an action of contract, tort or otherwise, arising from,
+					 *   out of or in connection with the Software or the use or other dealings in the
+					 *   Software.
+					 *
+					 * Slightly restructured by Chris Cannam, cannam@all-day-breakfast.com
+					 *
+					 * Fix added by Jacques de Hooge, jdeh@geatec.com: 'this' added to inverse.
+					 */
+					
+					
+					
+					/* 
+					 * Construct an object for calculating the discrete Fourier transform (DFT) of size n, where n is a power of 2.
+					 */
+					function FFTNayuki(n) {
+					    
+					    this.n = n;
+					    this.levels = -1;
+					
+					    for (var i = 0; i < 32; i++) {
+					        if (1 << i == n) {
+					            this.levels = i;  // Equal to log2(n)
+						}
+					    }
+					    if (this.levels == -1) {
+					        throw "Length is not a power of 2";
+					    }
+					
+					    this.cosTable = new Array(n / 2);
+					    this.sinTable = new Array(n / 2);
+					    for (var i = 0; i < n / 2; i++) {
+					        this.cosTable[i] = Math.cos(2 * Math.PI * i / n);
+					        this.sinTable[i] = Math.sin(2 * Math.PI * i / n);
+					    }
+					
+					    /* 
+					     * Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
+					     * The vector's length must be equal to the size n that was passed to the object constructor, and this must be a power of 2. Uses the Cooley-Tukey decimation-in-time radix-2 algorithm.
+					     */
+					    this.forward = function(real, imag) {
+					
+						var n = this.n;
+						
+						// Bit-reversed addressing permutation
+						for (var i = 0; i < n; i++) {
+					            var j = reverseBits(i, this.levels);
+					            if (j > i) {
+							var temp = real[i];
+							real[i] = real[j];
+							real[j] = temp;
+							temp = imag[i];
+							imag[i] = imag[j];
+							imag[j] = temp;
+					            }
+						}
+					    
+						// Cooley-Tukey decimation-in-time radix-2 FFT
+						for (var size = 2; size <= n; size *= 2) {
+					            var halfsize = size / 2;
+					            var tablestep = n / size;
+					            for (var i = 0; i < n; i += size) {
+							for (var j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
+					                    var tpre =  real[j+halfsize] * this.cosTable[k] +
+								        imag[j+halfsize] * this.sinTable[k];
+					                    var tpim = -real[j+halfsize] * this.sinTable[k] +
+								        imag[j+halfsize] * this.cosTable[k];
+					                    real[j + halfsize] = real[j] - tpre;
+					                    imag[j + halfsize] = imag[j] - tpim;
+					                    real[j] += tpre;
+					                    imag[j] += tpim;
+							}
+					            }
+						}
+					    
+						// Returns the integer whose value is the reverse of the lowest 'bits' bits of the integer 'x'.
+						function reverseBits(x, bits) {
+					            var y = 0;
+					            for (var i = 0; i < bits; i++) {
+							y = (y << 1) | (x & 1);
+							x >>>= 1;
+					            }
+					            return y;
+						}
+					    }
+					
+					    /* 
+					     * Computes the inverse discrete Fourier transform (IDFT) of the given complex vector, storing the result back into the vector.
+					     * The vector's length must be equal to the size n that was passed to the object constructor, and this must be a power of 2. This is a wrapper function. This transform does not perform scaling, so the inverse is not a true inverse.
+					     */
+					    this.inverse = function(real, imag) {
+						this.forward(imag, real);	// Fix by JdeH: 'this' added
+					    }
+					}
+					
+					
+					var fft = function (a) {
+						var fftn = new FFTNayuki (a.size);
+						var dre = a.real ().data;
+						var dim = a.imag ().data;
+						fftn.forward (dre, dim);
+						var result = ns.empty (a.shape, a.dtype);
+						for (var i = 0; i < a.size; i++) {
+							var ibase = 2 * i;
+							result.data [ibase] = dre [i];
+							result.data [ibase + 1] = dim [i];
+						}
+						return result;
+					};
+					var ifft = function (a) {
+						var fftn = new FFTNayuki (a.size);
+						var dre = a.real ().data;
+						var dim = a.imag ().data;
+						fftn.inverse (dre, dim);
+						var result = ns.empty (a.shape, a.dtype);
+						var s = a.size;
+						for (var i = 0; i < s; i++) {
+							var ibase = 2 * i;
+							result.data [ibase] = dre [i] / s;
+							result.data [ibase + 1] = dim [i] / s;
+						}
+						return result;
+					};
+					__pragma__ ('<use>' +
+						'numscrypt' +
+					'</use>')
+					__pragma__ ('<all>')
+						__all__.fft = fft;
+						__all__.ifft = ifft;
 					__pragma__ ('</all>')
 				}
 			}
@@ -3291,17 +3640,21 @@ function autotest () {
 	(function () {
 		var __symbols__ = ['__complex__', '__esv5__'];
 		var basics = {};
+		var module_fft = {};
 		var module_linalg = {};
 		var org = {};
 		__nest__ (org, 'transcrypt.autotester', __init__ (__world__.org.transcrypt.autotester));
 		__nest__ (basics, '', __init__ (__world__.basics));
 		__nest__ (module_linalg, '', __init__ (__world__.module_linalg));
+		__nest__ (module_fft, '', __init__ (__world__.module_fft));
 		var autoTester = org.transcrypt.autotester.AutoTester ();
 		autoTester.run (basics, 'basics');
 		autoTester.run (module_linalg, 'module_linalg');
+		autoTester.run (module_fft, 'module_fft');
 		autoTester.done ();
 		__pragma__ ('<use>' +
 			'basics' +
+			'module_fft' +
 			'module_linalg' +
 			'org.transcrypt.autotester' +
 		'</use>')

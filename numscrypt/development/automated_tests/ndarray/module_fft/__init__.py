@@ -1,6 +1,11 @@
 from org.transcrypt.stubs.browser import *
 from org.transcrypt.stubs.browser import __main__, __envir__, __pragma__
 
+from math import sin, cos, pi
+
+transpiled = __envir__.executor_name == __envir__.transpiler_name
+
+
 # Imports for Transcrypt, resolved run time
 if __envir__.executor_name == __envir__.transpiler_name:
 	import numscrypt as num
@@ -12,31 +17,50 @@ import numpy as num
 import numpy.fft as fft
 __pragma__ ('noskip')
 
-fSample = 2048
+fSample = 4096
 tTotal = 2
 fSin = 30
 fCos = 50
+
+def getNow ():	# Avoid operator overloading, which would result in the dysfunctional: __new__ __call__ (Date)
+	return __new__ (Date ())
 
 def tCurrent (iCurrent):
 	return iCurrent / fSample
 
 def run (autoTester):
-	samples = num.array ([
-		sin (2 * pi * fSin * t) + 0.5 (2 * pi * fCos * t)
+	orig = num.array ([
+		complex (0.3 + sin (2 * pi * fSin * t) + 0.5 * cos (2 * pi * fCos * t), 0)
 		for t in [
 			iSample / fSample
 			for iSample in range (tTotal * fSample)
 		]
-	])
-)	
-	autoTester.check ('Matrix a', a.astype ('int32') .tolist (), '<br>')
-	
-	ai = linalg.inv (a)
-	
-	autoTester.check ('Matrix ai', ai.astype ('int32') .tolist (), '<br>')
+	], 'complex128')
 	
 	__pragma__ ('opov')
-	id = a @ ai
-	__pragma__ ('noopov')
+
+	delta = 0.001 + 0.001j
+	cut = 102
+	autoTester.check ('Original samples', num.round (orig + delta, 3) .tolist ()[ : cut], '<br>')
+
+	if transpiled:
+		timeStartFft = getNow ()
+	freqs = fft.fft (orig)
+	if transpiled:
+		timeStopFft = getNow ()	
+		
+	autoTester.check ('Frequencies', num.round (freqs + delta, 3) .tolist ()[ : cut], '<br>')
 	
-	autoTester.check ('a @ ai', id.astype ('int32') .tolist (), '<br>')
+	if transpiled:
+		timeStartIfft = getNow ()	
+	reconstr = fft.ifft (freqs)
+	if transpiled:
+		timeStopIfft = getNow ()	
+	
+	autoTester.check ('Reconstructed samples', num.round (reconstr + delta, 3) .tolist ()[ : cut], '<br>')
+	
+	__pragma__ ('noopov')
+		
+	if transpiled:
+		print ('FFT for {} samples took {} ms'.format (tTotal * fSample, timeStopFft - timeStartFft))
+		print ('IFFT for {} samples took {} ms'.format (tTotal * fSample, timeStopIfft - timeStartIfft))

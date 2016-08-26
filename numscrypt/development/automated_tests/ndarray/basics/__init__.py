@@ -113,6 +113,7 @@ def run (autoTester):
 	v1 = num.array ((1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
 	
 	__pragma__ ('opov')
+	
 	a [1, 0, 2] = 177
 	el = b [1, 2, 3]
 
@@ -215,6 +216,7 @@ def run (autoTester):
 	autoTester.check ('comp_c', comp_c.tolist (), '<br>')
 	
 	__pragma__ ('opov')
+	
 	comp_a_square = comp_a [ : , : 2]
 	comp_b_square = comp_b [1 : , : ]
 	

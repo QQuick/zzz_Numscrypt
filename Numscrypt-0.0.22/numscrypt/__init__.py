@@ -30,6 +30,11 @@ ns_ctors = {
 	'complex128': Float64Array
 }
 
+ns_realtypes = {
+	'complex64': 'float32',
+	'complex128': 'float64'
+}
+
 def ns_size (shape):
 	result = shape [0]
 	for dim in shape [1 : ]:
@@ -196,6 +201,18 @@ class ndarray:
 				self.data [ibase], self.data [ibase + 1] = value.real, value.imag
 			else:
 				self.data [self.ns_shift + key * self.ns_skips [0]] = value
+				
+	def real (self):
+		result = empty (self.shape, ns_realtypes [self.dtype])
+		for i in range (result.data.length):
+			result.data [i] = self.data [2 * i]
+		return result
+	
+	def imag (self):
+		result = empty (self.shape, ns_realtypes [self.dtype])
+		for i in range (result.data.length):
+			result.data [i] = self.data [2 * i + 1]
+		return result
 			
 	def __neg__ (self):
 		def neg_recur (idim, key):

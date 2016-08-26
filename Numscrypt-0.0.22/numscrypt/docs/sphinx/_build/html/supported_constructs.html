@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Currently available features &mdash; Transcrypt 0.0.30 documentation</title>
+    <title>2. Currently available features &mdash; Transcrypt 0.0.31 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.30',
+        VERSION:     '0.0.31',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Transcrypt 0.0.30 documentation" href="index.html" />
+    <link rel="top" title="Transcrypt 0.0.31 documentation" href="index.html" />
     <link rel="prev" title="1. Getting started" href="installation_use.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.30 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.31 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -95,13 +95,13 @@ Since they systematically cover all the library constructs, they are also very e
 
 <span class="kn">import</span> <span class="nn">basics</span>
 <span class="kn">import</span> <span class="nn">module_linalg</span>
-<span class="c">#import module_fft</span>
+<span class="kn">import</span> <span class="nn">module_fft</span>
 
 <span class="n">autoTester</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="n">transcrypt</span><span class="o">.</span><span class="n">autotester</span><span class="o">.</span><span class="n">AutoTester</span> <span class="p">()</span>
 
 <span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">basics</span><span class="p">,</span> <span class="s">&#39;basics&#39;</span><span class="p">)</span>
 <span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">module_linalg</span><span class="p">,</span> <span class="s">&#39;module_linalg&#39;</span><span class="p">)</span>
-<span class="c">#autoTester.run (module_fft, &#39;module_fft&#39;)</span>
+<span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">module_fft</span><span class="p">,</span> <span class="s">&#39;module_fft&#39;</span><span class="p">)</span>
 
 <span class="n">autoTester</span><span class="o">.</span><span class="n">done</span> <span class="p">()</span>
 </pre></div>
@@ -226,6 +226,7 @@ def run (autoTester):
     v1 = num.array ((1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
     
     __pragma__ (&#39;opov&#39;)
+    
     a [1, 0, 2] = 177
     el = b [1, 2, 3]
 
@@ -328,6 +329,7 @@ def run (autoTester):
     autoTester.check (&#39;comp_c&#39;, comp_c.tolist (), &#39;&lt;br&gt;&#39;)
     
     __pragma__ (&#39;opov&#39;)
+    
     comp_a_square = comp_a [ : , : 2]
     comp_b_square = comp_b [1 : , : ]
     
@@ -606,7 +608,7 @@ document.getElementById (&#39;result&#39;) .innerHTML = result
         <li class="right" >
           <a href="installation_use.html" title="1. Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.30 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.31 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -1,7 +1,5 @@
-**Requires Transcrypt commit ba2c278 (not pip-installable, get it from GitHub)**
-
 Numscrypt is a port of a small part of NumPy to Transcrypt using JavaScript typed arrays.
-While some attention is paid to speed, e.g. by optimizing for-loops and operators in Transcrypt, that is currently not the main focus.
+While Numscrypt is no match for Numpy, some attention has been payed to speed.
 
 Whereas NumPy often has multiple way to do things, Numscrypt focuses on one obvious way. The clearest example is the NumPy type *matrix* type, that is a specialization of *ndarray* with confusingly deviating use of some operators. In Transcrypt *matrix* is deliberately left out, to keep it lean.
 
@@ -30,6 +28,7 @@ What's new
 
 N.B. Always use the newest version of Transcrypt to be able to use the newest features of Numscrypt.
 
+- Fourier transformation added for 2^n samples using complex arrays. Speed indication: 8192 samples took 14 ms on average using at 1.6 GHz in Chrome.
 - Examples in documentation fixed
 - Low hanging fruit optimizations done for complex and real arrays, e.g. multiplication in natural order 30x faster
 - For educational and demonstration purposes a simple, non-optimized implementation of complex arrays was added

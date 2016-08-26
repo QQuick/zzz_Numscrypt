@@ -9,7 +9,7 @@ def getAbsPath (relPath):
 
 def test (relPath, fileNamePrefix, run = False):
 	os.chdir (getAbsPath (relPath))
-	os.system ('run_transcrypt -b -c {}{}.py'.format (fcallSwitch, fileNamePrefix))	
+	os.system ('run_transcrypt -b -c -de {}{}.py'.format (fcallSwitch, fileNamePrefix))	
 
 	if run:
 		os.chdir (getAbsPath (relPath))
@@ -25,7 +25,7 @@ os.system ('python35 test_install.py')
 	
 for fcallSwitch in (' '): # , '-f '):
 	autoTest ('development/automated_tests/ndarray', 'autotest')
-	#test ('development/manual_tests/slicing_optimization', 'test')
+	test ('development/manual_tests/slicing_optimization', 'test')
 
 	if fcallSwitch:
 		print ('Shipment test completed')
