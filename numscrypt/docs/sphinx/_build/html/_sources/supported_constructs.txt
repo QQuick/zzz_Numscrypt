@@ -48,6 +48,13 @@ Linalg: matrix inversion
 	:tab-width: 4
 	:caption: Testlet: module_linalg
 	
+Fourier transform: FFT and IFFT for 2^n samples, using complex arrays
+---------------------------------------------------------------------
+
+.. literalinclude:: ../../development/automated_tests/ndarray/module_fft/__init__.py
+	:tab-width: 4
+	:caption: Testlet: module_fft
+	
 Some more examples: interactive tests
 =====================================
 

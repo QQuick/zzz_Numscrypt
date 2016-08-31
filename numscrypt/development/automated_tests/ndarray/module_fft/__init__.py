@@ -29,6 +29,10 @@ def tCurrent (iCurrent):
 	return iCurrent / fSample
 
 def run (autoTester):
+	cut = 102
+	autoTester.check ('Samples computed: {}<br>'.format (tTotal  * fSample))
+	autoTester.check ('Samples shown: {}<br>'.format (cut))
+
 	orig = num.array ([
 		complex (0.3 + sin (2 * pi * fSin * t) + 0.5 * cos (2 * pi * fCos * t), 0)
 		for t in [
@@ -40,7 +44,6 @@ def run (autoTester):
 	__pragma__ ('opov')
 
 	delta = 0.001 + 0.001j
-	cut = 102
 	autoTester.check ('Original samples', num.round (orig + delta, 3) .tolist ()[ : cut], '<br>')
 
 	if transpiled:

@@ -23,6 +23,9 @@
 						return iCurrent / fSample;
 					};
 					var run = function (autoTester) {
+						var cut = 102;
+						autoTester.check ('Samples computed: {}<br>'.format (tTotal * fSample));
+						autoTester.check ('Samples shown: {}<br>'.format (cut));
 						var orig = num.array (function () {
 							var __accu0__ = [];
 							var __iterable0__ = function () {
@@ -39,7 +42,6 @@
 							return __accu0__;
 						} (), 'complex128');
 						var delta = __add__ (0.001, complex (0, 0.001));
-						var cut = 102;
 						__call__ (autoTester.check, 'Original samples', __getslice__ (__call__ (__call__ (num.round, __add__ (orig, delta), 3).tolist), 0, cut, 1), '<br>');
 						if (transpiled) {
 							var timeStartFft = __call__ (getNow);

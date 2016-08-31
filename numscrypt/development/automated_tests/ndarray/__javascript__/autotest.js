@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2016-08-26 14:13:59
+// Transcrypt'ed from Python, 2016-08-31 20:01:31
 function autotest () {
 	var __all__ = {};
 	var __world__ = __all__;
@@ -145,7 +145,7 @@ function autotest () {
 					var __Envir__ = __class__ ('__Envir__', [object], {
 						get __init__ () {return __get__ (this, function (self) {
 							self.transpiler_name = 'transcrypt';
-							self.transpiler_version = '3.5.216';
+							self.transpiler_version = '3.5.217';
 							self.target_subdir = '__javascript__';
 						});}
 					});
@@ -282,9 +282,9 @@ function autotest () {
 					var map = function (func, iterable) {
 						return function () {
 							var __accu0__ = [];
-							var __iterable0__ = iterable;
-							for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-								var item = __iterable0__ [__index0__];
+							var __iterator0__ = py_iter (iterable);
+							while (true) {
+								try {var item = py_next (__iterator0__);} catch (exception) {break;}
 								__accu0__.append (func (item));
 							}
 							return __accu0__;
@@ -293,9 +293,9 @@ function autotest () {
 					var filter = function (func, iterable) {
 						return function () {
 							var __accu0__ = [];
-							var __iterable0__ = iterable;
-							for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-								var item = __iterable0__ [__index0__];
+							var __iterator0__ = py_iter (iterable);
+							while (true) {
+								try {var item = py_next (__iterator0__);} catch (exception) {break;}
 								if (func (item)) {
 									__accu0__.append (item);
 								}
@@ -305,8 +305,23 @@ function autotest () {
 					};
 					var complex = __class__ ('complex', [object], {
 						get __init__ () {return __get__ (this, function (self, real, imag) {
-							self.real = real;
-							self.imag = imag;
+							if (typeof imag == 'undefined' || (imag != null && imag .__class__ == __kwargdict__)) {;
+								var imag = null;
+							};
+							if (imag == null) {
+								if (type (real) == complex) {
+									self.real = real.real;
+									self.imag = real.imag;
+								}
+								else {
+									self.real = real;
+									self.imag = 0;
+								}
+							}
+							else {
+								self.real = real;
+								self.imag = imag;
+							}
 						});},
 						get __neg__ () {return __get__ (this, function (self) {
 							return complex (-(self.real), -(self.imag));
@@ -415,9 +430,9 @@ function autotest () {
 							if (self.element) {
 								self.buffer = '{}{}{}'.format (self.buffer, sep.join (function () {
 									var __accu0__ = [];
-									var __iterable0__ = args;
-									for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-										var arg = __iterable0__ [__index0__];
+									var __iterator0__ = py_iter (args);
+									while (true) {
+										try {var arg = py_next (__iterator0__);} catch (exception) {break;}
 										__accu0__.append (str (arg));
 									}
 									return __accu0__;
@@ -428,9 +443,9 @@ function autotest () {
 							else {
 								console.log (sep.join (function () {
 									var __accu0__ = [];
-									var __iterable0__ = args;
-									for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-										var arg = __iterable0__ [__index0__];
+									var __iterator0__ = py_iter (args);
+									while (true) {
+										try {var arg = py_next (__iterator0__);} catch (exception) {break;}
 										__accu0__.append (str (arg));
 									}
 									return __accu0__;
@@ -978,25 +993,25 @@ function autotest () {
 	// Any, all and sum
 	
 	function any (iterable) {
-		for (var index = 0; index < iterable.length; index++) {
-			if (bool (iterable [index])) {
+		for (let item of iterable) {
+			if (bool (item)) {
 				return true;
 			}
 		}
 		return false;
 	}
 	function all (iterable) {
-		for (var index = 0; index < iterable.length; index++) {
-			if (! bool (iterable [index])) {
+		for (let item of iterable) {
+			if (! bool (item)) {
 				return false;
 			}
 		}
 		return true;
 	}
 	function sum (iterable) {
-		var result = 0;
-		for (var index = 0; index < iterable.length; index++) {
-			result += iterable [index];
+		let result = 0;
+		for (let item of iterable) {
+			result += item;
 		}
 		return result;
 	}
@@ -1048,7 +1063,7 @@ function autotest () {
 	// List extensions to Array
 	
 	function list (iterable) {										// All such creators should be callable without new
-		var instance = iterable ? [] .slice.apply (iterable) : [];	// Spread iterable, n.b. array.slice (), so array before dot
+		var instance = iterable ? Array.from (iterable) : [];
 		// Sort is the normal JavaScript sort, Python sort is a non-member function
 		return instance;
 	}
@@ -1567,6 +1582,7 @@ function autotest () {
 	};
 	
 	String.prototype.join = function (strings) {
+		strings = Array.from (strings);	// Much faster than iterating through strings char by char
 		return strings.join (this);
 	};
 	
@@ -1807,42 +1823,42 @@ function autotest () {
 	};
 	__all__.__ge__ = __ge__;
 		
-	var __getitem__ = function (container, key) {
+	var __getitem__ = function (container, key) {							// Slice c.q. index, direct generated call to runtime switch
 		if (typeof container == 'object' && '__getitem__' in container) {
-			return container.__getitem__ (key);
+			return container.__getitem__ (key);								// Overloaded on container
 		}
 		else {
-			return container [key];
+			return container [key];											// Container must support bare JavaScript brackets
 		}
 	};
 	__all__.__getitem__ = __getitem__;
 
-	var __setitem__ = function (container, key, value) {
+	var __setitem__ = function (container, key, value) {					// Slice c.q. index, direct generated call to runtime switch
 		if (typeof container == 'object' && '__setitem__' in container) {
-			container.__setitem__ (key, value);
+			container.__setitem__ (key, value);								// Overloaded on container
 		}
 		else {
-			container [key] = value;
+			container [key] = value;										// Container must support bare JavaScript brackets
 		}
 	};
 	__all__.__setitem__ = __setitem__;
 
-	var __getslice__ = function (container, lower, upper, step) {
+	var __getslice__ = function (container, lower, upper, step) {			// Slice only, no index, direct generated call to runtime switch
 		if (typeof container == 'object' && '__getitem__' in container) {
-			return container.__getitem__ ([lower, upper, step]);
+			return container.__getitem__ ([lower, upper, step]);			// Container supports overloaded slicing c.q. indexing
 		}
 		else {
-			return container.__getslice__ (lower, upper, step);
+			return container.__getslice__ (lower, upper, step);				// Container only supports slicing injected natively in prototype
 		}
 	};
 	__all__.__getslice__ = __getslice__;
 
-	var __setslice__ = function (container, lower, upper, step, value) {
+	var __setslice__ = function (container, lower, upper, step, value) {	// Slice, no index, direct generated call to runtime switch
 		if (typeof container == 'object' && '__setitem__' in container) {
-			container.__setitem__ ([lower, upper, step], value);
+			container.__setitem__ ([lower, upper, step], value);			// Container supports overloaded slicing c.q. indexing
 		}
 		else {
-			container.__setslice__ (lower, upper, step, value);
+			container.__setslice__ (lower, upper, step, value);				// Container only supports slicing injected natively in prototype
 		}
 	};
 	__all__.__setslice__ = __setslice__;
@@ -1868,24 +1884,24 @@ function autotest () {
 						var num =  __init__ (__world__.numscrypt);
 					}
 					var run = function (autoTester) {
-						var z = num.zeros (tuple ([4, 3, 2]), 'int32');
+						var z = num.zeros (tuple ([4, 3]), 'int32');
 						autoTester.check ('Zeros', z.tolist (), '<br>');
-						var o = num.ones (tuple ([1, 2, 3]));
+						var o = num.ones (tuple ([4, 5]));
 						autoTester.check ('Ones', o.astype ('int32').tolist ());
 						var i = num.identity (3, 'int32');
 						autoTester.check ('Identity', i.tolist (), '<br>');
-						var a = num.array (list ([list ([list ([1, 1, 2, 3]), list ([4, 5, 6, 7]), list ([8, 9, 10, 12])]), list ([list ([100, 101, 102, 103]), list ([104, 105, 106, 107]), list ([108, 109, 110, 112])])]));
+						var a = num.array (list ([list ([1, 1, 2, 3]), list ([4, 5, 6, 7]), list ([8, 9, 10, 12])]));
 						autoTester.check ('Matrix a', a.tolist (), '<br>');
 						autoTester.check ('Transpose of a', a.transpose ().tolist (), '<br>');
-						var b = num.array (list ([list ([list ([2, 2, 4, 6]), list ([8, 10, 12, 14]), list ([16, 18, 20, 24])]), list ([list ([200, 202, 204, 206]), list ([208, 210, 212, 214]), list ([216, 218, 220, 224])])]));
-						var bp = b.transpose (tuple ([2, 1, 0]));
+						var b = num.array (list ([list ([2, 2, 4, 6]), list ([8, 10, 12, 14]), list ([16, 18, 20, 24])]));
+						var bp = b.transpose ();
 						autoTester.check ('Matrix b', b.tolist (), '<br>');
 						autoTester.check ('Permutation of b', bp.tolist (), '<br>');
 						var c = num.array (list ([list ([1, 2, 3, 4]), list ([5, 6, 7, 8]), list ([9, 10, 11, 12])]), 'int32');
-						autoTester.check ('Shape strides c', tuple (c.shape), tuple (c.strides), '<br>');
+						autoTester.check ('Shape c', tuple (c.shape), '<br>');
 						autoTester.check ('Matrix c', c.tolist (), '<br>');
 						var ct = c.transpose ();
-						autoTester.check ('Shape strids ct', tuple (ct.shape), tuple (ct.strides), '<br>');
+						autoTester.check ('Shape ct', tuple (ct.shape), '<br>');
 						autoTester.check ('Transpose of c', ct.tolist (), '<br>');
 						var __left0__ = num.hsplit (c, 2);
 						var cs0 = __left0__ [0];
@@ -1927,24 +1943,24 @@ function autotest () {
 						autoTester.check ('Matrix dti', dti.tolist (), '<br>');
 						var v0 = num.array (range (10));
 						var v1 = num.array (tuple ([1, 2, 3, 1, 2, 3, 1, 2, 3, 1]));
-						a.__setitem__ ([1, 0, 2], 177);
-						var el = b.__getitem__ ([1, 2, 3]);
-						var bsl0 = b.__getitem__ ([1, tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
-						var bsl1 = b.__getitem__ ([tuple ([1, 2, 1]), tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
-						var bsl2 = b.__getitem__ ([1, 1, tuple ([0, 0, 1])]);
-						var bsl3 = b.__getitem__ ([1, tuple ([1, 3, 1]), 1]);
-						var bsl4 = b.__getitem__ ([tuple ([0, 0, 1]), 1, 1]);
-						var bsl5 = b.__getitem__ ([1, tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
-						var bsl6 = b.__getitem__ ([1, tuple ([1, 3, 1]), tuple ([1, 4, 1])]);
-						var bsl7 = b.__getitem__ ([1, tuple ([2, 3, 1]), tuple ([2, 4, 1])]);
-						var bpsl0 = bp.__getitem__ ([1, tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
-						var bpsl1 = bp.__getitem__ ([tuple ([1, 2, 1]), tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
-						var bpsl2 = bp.__getitem__ ([1, 1, tuple ([0, 0, 1])]);
-						var bpsl3 = bp.__getitem__ ([1, tuple ([1, 3, 1]), 1]);
-						var bpsl4 = bp.__getitem__ ([tuple ([0, 0, 1]), 1, 1]);
-						var bpsl5 = bp.__getitem__ ([3, tuple ([1, 3, 1]), tuple ([0, 0, 1])]);
-						var bpsl6 = bp.__getitem__ ([tuple ([2, 4, 1]), tuple ([1, 3, 1]), tuple ([0, 1, 1])]);
-						var bpsl7 = bp.__getitem__ ([tuple ([2, 4, 1]), tuple ([2, 3, 1]), tuple ([1, 2, 1])]);
+						a.__setitem__ ([1, 0], 177);
+						var el = b.__getitem__ ([1, 2]);
+						var bsl0 = b.__getitem__ ([1, tuple ([1, 3, 1])]);
+						var bsl1 = b.__getitem__ ([tuple ([1, 2, 1]), tuple ([1, 3, 1])]);
+						var bsl2 = b.__getitem__ ([tuple ([1, 2, 1]), 1]);
+						var bsl3 = b.__getitem__ ([1, tuple ([1, 3, 1])]);
+						var bsl4 = b.__getitem__ ([tuple ([0, null, 1]), 1]);
+						var bsl5 = b.__getitem__ ([1, tuple ([1, 3, 1])]);
+						var bsl6 = b.__getitem__ ([1, tuple ([1, 3, 1])]);
+						var bsl7 = b.__getitem__ ([1, tuple ([2, 3, 1])]);
+						var bpsl0 = bp.__getitem__ ([1, tuple ([1, 3, 1])]);
+						var bpsl1 = bp.__getitem__ ([tuple ([1, 2, 1]), tuple ([1, 3, 1])]);
+						var bpsl2 = bp.__getitem__ ([1, tuple ([0, null, 1])]);
+						var bpsl3 = bp.__getitem__ ([1, tuple ([1, 3, 1])]);
+						var bpsl4 = bp.__getitem__ ([tuple ([0, null, 1]), 1]);
+						var bpsl5 = bp.__getitem__ ([3, tuple ([1, 3, 1])]);
+						var bpsl6 = bp.__getitem__ ([tuple ([2, 4, 1]), tuple ([1, 3, 1])]);
+						var bpsl7 = bp.__getitem__ ([tuple ([2, 4, 1]), tuple ([2, 3, 1])]);
 						var sum = __add__ (a, b);
 						var dif = __sub__ (a, b);
 						var prod = __mul__ (a, b);
@@ -2004,8 +2020,8 @@ function autotest () {
 						autoTester.check ('comp_a', comp_a.tolist (), '<br>');
 						autoTester.check ('comp_b', comp_b.tolist (), '<br>');
 						autoTester.check ('comp_c', comp_c.tolist (), '<br>');
-						var comp_a_square = comp_a.__getitem__ ([tuple ([0, 0, 1]), tuple ([0, 2, 1])]);
-						var comp_b_square = comp_b.__getitem__ ([tuple ([1, 0, 1]), tuple ([0, 0, 1])]);
+						var comp_a_square = comp_a.__getitem__ ([tuple ([0, null, 1]), tuple ([0, 2, 1])]);
+						var comp_b_square = comp_b.__getitem__ ([tuple ([1, null, 1]), tuple ([0, null, 1])]);
 						var comp_c_square = __mul__ (comp_a_square, comp_b_square);
 						var comp_d_square = __div__ (comp_a_square, comp_b_square);
 						var comp_e_square = __add__ (comp_a_square, comp_b_square);
@@ -2016,6 +2032,12 @@ function autotest () {
 						autoTester.check ('comp_d_square', num.round (comp_d_square, 2).tolist (), '<br>');
 						autoTester.check ('comp_e_square', comp_e_square.tolist (), '<br>');
 						autoTester.check ('comp_f_square', comp_f_square.tolist (), '<br>');
+						var sliceable_a = __call__ (num.array, list ([list ([1, 2, 3, 4]), list ([5, 6, 7, 8]), list ([9, 10, 11, 12]), list ([13, 14, 15, 16])]));
+						__call__ (autoTester.check, 'sliceable_a', __call__ (sliceable_a.tolist));
+						var slice_a = sliceable_a.__getitem__ ([tuple ([1, null, 1]), tuple ([1, null, 1])]);
+						__call__ (autoTester.check, 'slice_a');
+						var sliceable_at = __call__ (sliceable_a.transpose);
+						var slice_at = __getslice__ (sliceable_at, 1, null, 1);
 					};
 					__pragma__ ('<use>' +
 						'numscrypt' +
@@ -2033,268 +2055,318 @@ function autotest () {
 			__all__: {
 				__inited__: false,
 				__init__: function (__all__) {
-					var chain = function () {
-						var args = [] .slice.apply (arguments);
-						var result = [];
-						for (var index = 0; index < args.length; index++) {
-							result = result.concat (args [index]);
+					var count = function* (start, step) {
+						if (start == undefined) {
+							start = 0;
+						}
+						if (step == undefined) {
+							step = 1;
+						}
+						while (true) {
+							yield start;
+							start += step;
+						}
+					}
+					var cycle = function* (iterable) {						
+						let buffer = Array.from (iterable);	// Can't reset, Chrome can't obtain iter from gener
+						while (true) {
+							for (let item of buffer) {
+								yield item;
+							}
+						}
+					}
+					var repeat = function* (item, n) {
+						if (typeof n == 'undefined') {
+							while (true) {
+								yield item;
+							}
+						}
+						else {
+							for (let index = 0; index < n; index++) {
+								yield item;
+							}
+						}
+					}
+					var accumulate = function* (iterable, func) {
+						let sum;
+						let first = true;
+						if (func) {
+							for (let item of iterable) {
+								if (first) {
+									sum = item;
+									first = false;
+								}
+								else {
+									sum = func (sum, item);
+								}
+								yield sum;
+							}
+						}
+						else {
+							for (let item of iterable) {
+								if (first) {
+									sum = item;
+									first = false;
+								}
+								else {
+									sum = sum + item;
+								}
+								yield sum;
+							}
+						}
+					}
+					var chain = function* () {
+						let args = [] .slice.apply (arguments);							
+						for (let arg of args) {
+							for (let item of arg) {
+								yield item;
+							}
+						}
+					}
+					chain.from_iterable = function* (iterable) {						
+						for (let item of iterable) {
+							for (let subItem of item) {
+								yield subItem;
+							}
+						}
+					}
+					var compress = function* (data, selectors) {
+						let dataIterator = data [Symbol.iterator] .call (data);
+						let selectorsIterator = selectors [Symbol.iterator] ();
+						while (true) {
+							let dataItem = dataIterator.next ();
+							let selectorsItem = selectorsIterator.next ();
+							if (dataItem.done || selectorsItem.done) {
+								break;
+							}
+							else {
+								if (selectorsItem.value) {
+									yield dataItem.value;
+								}
+							}
+						}
+					}
+					var dropwhile = function* (pred, seq) {
+						let started = false;
+						for (let item of seq) {
+							if (started) {
+								yield item;
+							}
+							else if (!pred (item)) {
+								started = true;
+								yield item;
+							}
+						}
+					}
+					var filterfalse = function* (pred, seq) {
+						for (let item of seq) {
+							if (!pred (item)) {
+								yield item;
+							}
+						}
+					}
+					var groupby = function* (iterable, keyfunc) {
+						let anIterator = iterable [Symbol.iterator] ();
+						let item = anIterator.next ();
+						
+						if (item.done) {
+							return;
+						}
+						
+						let groupKey = keyfunc (item.value);
+						let more = true;
+						
+						function* group () {
+							while (true) {
+								yield (item.value);
+								item = anIterator.next ();
+								
+								if (item.done) {
+									more = false;
+									return;
+								}
+								
+								let key = keyfunc (item.value);
+								
+								if (key != groupKey) {
+									groupKey = key;
+									return;
+								}
+							}
+						}
+						
+						while (more) {
+							yield tuple ([groupKey, group ()]);
+						}
+					}
+					
+					var islice = function* () {
+						let start;	// Have to be defined at function level, or Closure compiler will loose them after a yield 
+						let stop;	//
+						let step;	//
+						
+						let args = [] .slice.apply (arguments);
+						let anIterator = args [0][Symbol.iterator] ();
+						if (args.length == 2) {
+							stop = args [1];
+							start = 0;
+							step = 1;
+						}
+						else {
+							start = args [1];
+							stop = args [2];
+							if (args.length == 4) {
+								step = args [3];
+							}
+							else {
+								step = 1;
+							}
+						}
+						for (let index = 0; index < start; index++) {
+							if (anIterator.next (). done) {
+								return;
+							}
+						}
+						for (let index = 0; index < stop - start; index++) {
+							let next = anIterator.next ();
+							if (next.done) {
+								return;
+							}
+							if (index % step == 0) {
+								yield next.value;
+							}
+						}
+					}
+					var starmap = function* (func, seq) {
+						let anIterator = seq [Symbol.iterator] ();
+						while (true) {
+							let next = anIterator.next ()
+							if (next.done) {
+								return;
+							}
+							else {
+								yield func (...next.value); 
+							}
+						}
+					}
+					var takewhile = function* (pred, seq) {
+						for (let item of seq) {
+							if (pred (item)) {
+								yield item;
+							}
+							else {
+								return;
+							}
+						}
+					}
+					var tee = function (iterable, n) {
+						if (n == undefined) {
+							n = 2;
+						}
+						let all = [];								// Don't return iterator since destructuring assignment cannot yet deal with that
+						let one = list (iterable);
+						for (let i = 0; i < n; i++) {
+							all.append (one [Symbol.iterator] ());	// Iterator rather than list, exhaustable for semantic equivalence
+						}
+						return list (all);
+					}
+					
+					var product = function () {
+						let args = [] .slice.apply (arguments);
+						if (args.length && args [args.length - 1] .__class__ == __kwargdict__) {
+							var repeat = args.pop () ['repeat']; 
+						}
+						else {
+							var repeat = 1;
+						}
+						
+						let oldMolecules = [tuple ([])];
+						for (let i = 0; i < repeat; i++) {
+							for (let arg of args) {
+								let newMolecules = [];
+								for (let oldMolecule of oldMolecules) {
+									for (let atom of arg) {
+										newMolecules.append (tuple (oldMolecule.concat (atom)));
+									}
+								}
+								oldMolecules = newMolecules;
+							}
+						}
+						return list (oldMolecules);	// Also works if args is emptpy
+					}
+					var permutations = function (iterable, r) {
+						if (r == undefined) {
+							try {
+								r = len (iterable);
+							}
+							catch (exception) {
+								r = len (list (iterable));
+							}
+						}
+						let aProduct = product (iterable, __kwargdict__ ({repeat: r}));
+						let result = [];
+						for (let molecule of aProduct) {
+							if (len (set (molecule)) == r) {	// Weed out doubles
+								result.append (molecule);
+							}
 						}
 						return list (result);
 					}
-					//<all>
-					__all__.chain = chain;
-					//</all>
-				}
-			}
-		}
-	);
-	__nest__ (
-		__all__,
-		'math', {
-			__all__: {
-				__inited__: false,
-				__init__: function (__all__) {
-					var pi = Math.PI;
-					var e = Math.E;
-					var exp = Math.exp;
-					var expm1 = function (x) {
-						return Math.exp (x) - 1;
-					};
-					var log = function (x, base) {
-						return (base === undefined ? Math.log (x) : Math.log (x) / Math.log (base));
-					};
-					var log1p = function (x) {
-						return Math.log (x + 1);
-					};
-					var log2 = function (x) {
-						return Math.log (x) / Math.LN2;
-					};
-					var log10 = function (x) {
-						return Math.log (x) / Math.LN10;
-					};
-					var pow = Math.pow;
-					var sqrt = Math.sqrt;
-					var sin = Math.sin;
-					var cos = Math.cos;
-					var tan = Math.tan;
-					var asin = Math.asin;
-					var acos = Math.acos;
-					var atan = Math.atan;
-					var atan2 = Math.atan2;
-					var hypot = Math.hypot;
-					var degrees = function (x) {
-						return (x * 180) / Math.PI;
-					};
-					var radians = function (x) {
-						return (x * Math.PI) / 180;
-					};
-					var sinh = Math.sinh;
-					var cosh = Math.cosh;
-					var tanh = Math.tanh;
-					var asinh = Math.asinh;
-					var acosh = Math.acosh;
-					var atanh = Math.atanh;
-					var floor = Math.floor;
-					var ceil = Math.ceil;
-					var trunc = Math.trunc;
-					var inf = Infinity;
-					var nan = NaN;
-					__pragma__ ('<all>')
-						__all__.acos = acos;
-						__all__.acosh = acosh;
-						__all__.asin = asin;
-						__all__.asinh = asinh;
-						__all__.atan = atan;
-						__all__.atan2 = atan2;
-						__all__.atanh = atanh;
-						__all__.ceil = ceil;
-						__all__.cos = cos;
-						__all__.cosh = cosh;
-						__all__.degrees = degrees;
-						__all__.e = e;
-						__all__.exp = exp;
-						__all__.expm1 = expm1;
-						__all__.floor = floor;
-						__all__.hypot = hypot;
-						__all__.inf = inf;
-						__all__.log = log;
-						__all__.log10 = log10;
-						__all__.log1p = log1p;
-						__all__.log2 = log2;
-						__all__.nan = nan;
-						__all__.pi = pi;
-						__all__.pow = pow;
-						__all__.radians = radians;
-						__all__.sin = sin;
-						__all__.sinh = sinh;
-						__all__.sqrt = sqrt;
-						__all__.tan = tan;
-						__all__.tanh = tanh;
-						__all__.trunc = trunc;
-					__pragma__ ('</all>')
-				}
-			}
-		}
-	);
-	__nest__ (
-		__all__,
-		'module_fft', {
-			__all__: {
-				__inited__: false,
-				__init__: function (__all__) {
-					var sin = __init__ (__world__.math).sin;
-					var cos = __init__ (__world__.math).cos;
-					var pi = __init__ (__world__.math).pi;
-					var transpiled = __envir__.executor_name == __envir__.transpiler_name;
-					if (__envir__.executor_name == __envir__.transpiler_name) {
-						var num =  __init__ (__world__.numscrypt);
-						var fft =  __init__ (__world__.numscrypt.fft);
-					}
-					var fSample = 4096;
-					var tTotal = 2;
-					var fSin = 30;
-					var fCos = 50;
-					var getNow = function () {
-						return new Date ();
-					};
-					var tCurrent = function (iCurrent) {
-						return iCurrent / fSample;
-					};
-					var run = function (autoTester) {
-						var orig = num.array (function () {
-							var __accu0__ = [];
-							var __iterable0__ = function () {
-								var __accu1__ = [];
-								for (var iSample = 0; iSample < tTotal * fSample; iSample++) {
-									__accu1__.append (iSample / fSample);
+					var combinations = function (iterable, r) {
+						let tail = list (iterable);
+						function recurse (tail, molecule, rNext) {
+							for (let index = 0; index < len (tail) - rNext; index++) {
+								let newMolecule = molecule.concat (tail.slice (index, index + 1));
+
+								if (rNext) {
+									recurse (tail.slice (index + 1), newMolecule, rNext - 1);
 								}
-								return __accu1__;
-							} ();
-							for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-								var t = __iterable0__ [__index0__];
-								__accu0__.append (complex ((0.3 + sin (((2 * pi) * fSin) * t)) + 0.5 * cos (((2 * pi) * fCos) * t), 0));
+								else {
+									result.append (tuple (newMolecule));
+								}
 							}
-							return __accu0__;
-						} (), 'complex128');
-						var delta = __add__ (0.001, complex (0, 0.001));
-						var cut = 102;
-						__call__ (autoTester.check, 'Original samples', __getslice__ (__call__ (__call__ (num.round, __add__ (orig, delta), 3).tolist), 0, cut, 1), '<br>');
-						if (transpiled) {
-							var timeStartFft = __call__ (getNow);
 						}
-						var freqs = __call__ (fft.fft, orig);
-						if (transpiled) {
-							var timeStopFft = __call__ (getNow);
-						}
-						__call__ (autoTester.check, 'Frequencies', __getslice__ (__call__ (__call__ (num.round, __add__ (freqs, delta), 3).tolist), 0, cut, 1), '<br>');
-						if (transpiled) {
-							var timeStartIfft = __call__ (getNow);
-						}
-						var reconstr = __call__ (fft.ifft, freqs);
-						if (transpiled) {
-							var timeStopIfft = __call__ (getNow);
-						}
-						__call__ (autoTester.check, 'Reconstructed samples', __getslice__ (__call__ (__call__ (num.round, __add__ (reconstr, delta), 3).tolist), 0, cut, 1), '<br>');
-						if (transpiled) {
-							print ('FFT for {} samples took {} ms'.format (tTotal * fSample, timeStopFft - timeStartFft));
-							print ('IFFT for {} samples took {} ms'.format (tTotal * fSample, timeStopIfft - timeStartIfft));
-						}
-					};
-					__pragma__ ('<use>' +
-						'math' +
-						'numscrypt' +
-						'numscrypt.fft' +
-					'</use>')
-					__pragma__ ('<all>')
-						__all__.cos = cos;
-						__all__.fCos = fCos;
-						__all__.fSample = fSample;
-						__all__.fSin = fSin;
-						__all__.getNow = getNow;
-						__all__.pi = pi;
-						__all__.run = run;
-						__all__.sin = sin;
-						__all__.tCurrent = tCurrent;
-						__all__.tTotal = tTotal;
-						__all__.transpiled = transpiled;
-					__pragma__ ('</all>')
-				}
-			}
-		}
-	);
-	__nest__ (
-		__all__,
-		'module_linalg', {
-			__all__: {
-				__inited__: false,
-				__init__: function (__all__) {
-					if (__envir__.executor_name == __envir__.transpiler_name) {
-						var num =  __init__ (__world__.numscrypt);
-						var linalg =  __init__ (__world__.numscrypt.linalg);
+						let result = [];
+						recurse (tail, tail.slice (0, 0), r - 1);
+						return list (result);
 					}
-					var run = function (autoTester) {
-						var r = num.array (list ([list ([2.12, -(2.11), -(1.23)]), list ([2.31, 1.14, 3.15]), list ([1.13, 1.98, 2.81])]));
-						autoTester.check ('Matrix r', num.round (r, 2).tolist (), '<br>');
-						var ri = linalg.inv (r);
-						autoTester.check ('Matrix ri', num.round (ri, 2).tolist (), '<br>');
-						var rid = __matmul__ (r, ri);
-						autoTester.check ('r @ ri', function () {
-							var __accu0__ = [];
-							var __iterable0__ = rid.tolist ();
-							for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-								var row = __iterable0__ [__index0__];
-								__accu0__.append (function () {
-									var __accu1__ = [];
-									var __iterable1__ = row;
-									for (var __index1__ = 0; __index1__ < __iterable1__.length; __index1__++) {
-										var elem = __iterable1__ [__index1__];
-										__accu1__.append (int (round (elem)));
-									}
-									return __accu1__;
-								} ());
+					var combinations_with_replacement = function (iterable, r) {
+						let tail = list (iterable);
+						function recurse (tail, molecule, rNext) {
+							for (let index = 0; index < len (tail); index++) {
+								let newMolecule = molecule.concat (tail.slice (index, index + 1));
+
+								if (rNext) {
+									recurse (tail.slice (index), newMolecule, rNext - 1);
+								}
+								else {
+									result.append (tuple (newMolecule));
+								}
 							}
-							return __accu0__;
-						} (), '<br>');
-						var delta = 0.001;
-						__call__ (autoTester.check, 'r * r', __call__ (__call__ (num.round, __add__ (__mul__ (r, r), delta), 3).tolist), '<br>');
-						__call__ (autoTester.check, 'r / r', __call__ (__call__ (num.round, __add__ (__div__ (r, r), delta), 3).tolist), '<br>');
-						__call__ (autoTester.check, 'r + r', __call__ (__call__ (num.round, __add__ (__add__ (r, r), delta), 3).tolist), '<br>');
-						__call__ (autoTester.check, 'r - r', __call__ (__call__ (num.round, __add__ (__sub__ (r, r), delta), 3).tolist), '<br>');
-						var c = __call__ (num.array, list ([list ([__sub__ (2.12, complex (0, 3.15)), __neg__ (2.11), __neg__ (1.23)]), list ([2.31, 1.14, __add__ (3.15, complex (0, 2.75))]), list ([1.13, __sub__ (1.98, complex (0, 4.33)), 2.81])]), 'complex128');
-						autoTester.check ('Matrix c', num.round (c, 2).tolist (), '<br>');
-						var ci = linalg.inv (c);
-						autoTester.check ('Matrix ci', num.round (ci, 2).tolist (), '<br>');
-						var cid = __matmul__ (c, ci);
-						autoTester.check ('c @ ci', function () {
-							var __accu0__ = [];
-							var __iterable0__ = cid.tolist ();
-							for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-								var row = __iterable0__ [__index0__];
-								__accu0__.append (function () {
-									var __accu1__ = [];
-									var __iterable1__ = row;
-									for (var __index1__ = 0; __index1__ < __iterable1__.length; __index1__++) {
-										var elem = __iterable1__ [__index1__];
-										__accu1__.append ('{} + j{}'.format (int (round (elem.real)), int (round (elem.imag))));
-									}
-									return __accu1__;
-								} ());
-							}
-							return __accu0__;
-						} (), '<br>');
-						var delta = __add__ (0.001, complex (0, 0.001));
-						__call__ (autoTester.check, 'c * c', __call__ (__call__ (num.round, __add__ (__mul__ (c, c), delta), 3).tolist), '<br>');
-						__call__ (autoTester.check, 'c / c', __call__ (__call__ (num.round, __add__ (__div__ (c, c), delta), 3).tolist), '<br>');
-						__call__ (autoTester.check, 'c + c', __call__ (__call__ (num.round, __add__ (__add__ (c, c), delta), 3).tolist), '<br>');
-						__call__ (autoTester.check, 'c - c', __call__ (__call__ (num.round, __add__ (__sub__ (c, c), delta), 3).tolist), '<br>');
-					};
-					__pragma__ ('<use>' +
-						'numscrypt' +
-						'numscrypt.linalg' +
-					'</use>')
-					__pragma__ ('<all>')
-						__all__.run = run;
-					__pragma__ ('</all>')
+						}
+						let result = [];
+						recurse (tail, tail.slice (0, 0), r - 1);
+						return list (result);
+					}
+					//<all>
+					__all__.count = count;
+					__all__.cycle = cycle;
+					__all__.repeat = repeat;
+					__all__.accumulate = accumulate;
+					__all__.chain = chain;
+					__all__.compress = compress;
+					__all__.dropwhile = dropwhile;
+					__all__.filterfalse = filterfalse;
+					__all__.groupby = groupby;
+					__all__.islice = islice;
+					__all__.starmap = starmap;
+					__all__.takewhile = takewhile;
+					__all__.tee = tee;
+					__all__.product = product;
+					__all__.permutations = permutations;
+					__all__.combinations = combinations;
+					__all__.combinations_with_replacement = combinations_with_replacement;
+					//</all>
 				}
 			}
 		}
@@ -2310,350 +2382,481 @@ function autotest () {
 					var ns_settings = __class__ ('ns_settings', [object], {
 					});
 					ns_settings.optim_space = false;
-					var ns_itemsizes = dict ({'int32': 4, 'float32': 4, 'float64': 8, 'complex64': 8, 'complex128': 16});
 					var ns_ctors = dict ({'int32': Int32Array, 'float32': Float32Array, 'float64': Float64Array, 'complex64': Float32Array, 'complex128': Float64Array});
-					var ns_realtypes = dict ({'complex64': 'float32', 'complex128': 'float64'});
-					var ns_size = function (shape) {
-						var result = shape [0];
-						var __iterable0__ = shape.__getslice__ (1, null, 1);
-						for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-							var dim = __iterable0__ [__index0__];
-							result *= dim;
-						}
-						return result;
-					};
-					var ns_iscomplex = function (dtype) {
+					var ns_complex = function (dtype) {
 						return __in__ (dtype, tuple (['complex64', 'complex128']));
 					};
+					var ns_buftype = function (dtype) {
+						return (dtype == 'float32' ? 'complex64' : (dtype == 'float64' ? 'complex128' : dtype));
+					};
+					var ns_createbuf = function (imag, dtype, size) {
+						return (!(imag) || ns_complex (dtype) ? new ns_ctors [ns_buftype (dtype)] (size) : null);
+					};
 					var ndarray = __class__ ('ndarray', [object], {
-						get __init__ () {return __get__ (this, function (self, shape, dtype, buffer, offset, strides) {
-							if (typeof offset == 'undefined' || (offset != null && offset .__class__ == __kwargdict__)) {;
-								var offset = 0;
+						get __init__ () {return __get__ (this, function (self, shape, dtype, realbuf, imagbuf) {
+							if (typeof realbuf == 'undefined' || (realbuf != null && realbuf .__class__ == __kwargdict__)) {;
+								var realbuf = null;
 							};
-							if (typeof strides == 'undefined' || (strides != null && strides .__class__ == __kwargdict__)) {;
-								var strides = null;
+							if (typeof imagbuf == 'undefined' || (imagbuf != null && imagbuf .__class__ == __kwargdict__)) {;
+								var imagbuf = null;
 							};
 							self.dtype = dtype;
-							self.ns_complex = ns_iscomplex (self.dtype);
-							self.itemsize = ns_itemsizes [self.dtype];
-							self.offset = offset;
-							self.ns_shift = self.offset / self.itemsize;
-							self.data = buffer;
-							self.reshape (shape, strides);
+							self.ns_complex = ns_complex (dtype);
+							self.realbuf = realbuf;
+							if (self.ns_complex) {
+								self.imagbuf = imagbuf;
+							}
+							self.setshape (shape);
 						});},
-						get reshape () {return __get__ (this, function (self, shape, strides) {
+						get setshape () {return __get__ (this, function (self, shape) {
 							self.shape = shape;
-							self.ndim = len (self.shape);
-							if (strides) {
-								self.strides = strides;
+							self.ndim = shape.length;
+							self.ns_nrows = shape [0];
+							if (self.ndim == 1) {
+								self.size = self.ns_nrows;
 							}
 							else {
-								self.strides = list ([self.itemsize]);
-								var __iterable0__ = py_reversed (self.shape.__getslice__ (1, null, 1));
-								for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-									var dim = __iterable0__ [__index0__];
-									self.strides.insert (0, self.strides [0] * dim);
-								}
+								self.ns_ncols = shape [1];
+								self.size = self.ns_nrows * self.ns_ncols;
 							}
-							self.ns_skips = function () {
-								var __accu0__ = [];
-								var __iterable0__ = self.strides;
-								for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-									var stride = __iterable0__ [__index0__];
-									__accu0__.append (stride / self.itemsize);
-								}
-								return __accu0__;
-							} ();
-							self.ns_natural = self.offset == 0;
-							for (var i = 0; i < self.ndim - 1; i++) {
-								if (self.ns_skips [i + 1] > self.ns_skips [i]) {
-									self.ns_natural = false;
-									break;
-								}
-							}
-							self.size = ns_size (self.shape);
-							if ((self.ns_complex ? 2 * self.size : self.size) < self.data.length) {
-								self.ns_natural = false;
-							}
-							self.nbytes = self.size * self.itemsize;
 						});},
 						get astype () {return __get__ (this, function (self, dtype) {
-							var itemsize = ns_itemsizes [dtype];
-							return ndarray (self.shape, dtype, ns_ctors [dtype].from (self.data), itemsize * self.ns_shift, function () {
-								var __accu0__ = [];
-								var __iterable0__ = self.ns_skips;
-								for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-									var skip = __iterable0__ [__index0__];
-									__accu0__.append (itemsize * skip);
-								}
-								return __accu0__;
-							} ());
+							var result = empty (self.shape, dtype);
+							result.realbuf.set (self.realbuf);
+							if (self.ns_complex) {
+								result.imagbuf.set (self.imagbuf);
+							}
+							return result;
 						});},
 						get tolist () {return __get__ (this, function (self) {
-							var tolist_recur = function (idim, key) {
-								var result = list ([]);
-								for (var i = 0; i < self.shape [idim]; i++) {
-									if (idim < self.ndim - 1) {
-										result.append (tolist_recur (idim + 1, itertools.chain (key, list ([i]))));
+							if (self.ns_complex) {
+								var flat = function () {
+									var __accu0__ = [];
+									var __iterator0__ = py_iter (zip (list (self.realbuf), list (self.imagbuf)));
+									while (true) {
+										try {var __left0__ = py_next (__iterator0__);
+											var real = __left0__ [0];
+											var imag = __left0__ [1];} catch (exception) {break;}
+										__accu0__.append (complex (real, imag));
 									}
-									else {
-										result.append (self.__getitem__ (itertools.chain (key, list ([i]))));
+									return __accu0__;
+								} ();
+							}
+							else {
+								var flat = self.realbuf;
+							}
+							if (self.ndim == 1) {
+								return list (flat);
+							}
+							else {
+								return function () {
+									var __accu0__ = [];
+									for (var irow = 0; irow < self.ns_nrows; irow++) {
+										__accu0__.append (function () {
+											var __accu1__ = [];
+											for (var icol = 0; icol < self.ns_ncols; icol++) {
+												__accu1__.append (flat [self.ns_ncols * irow + icol]);
+											}
+											return __accu1__;
+										} ());
 									}
-								}
-								return result;
-							};
-							return tolist_recur (0, list ([]));
+									return __accu0__;
+								} ();
+							}
 						});},
 						get __repr__ () {return __get__ (this, function (self) {
 							return 'array({})'.format (repr (self.tolist ()));
 						});},
 						get __str__ () {return __get__ (this, function (self) {
-							return str (self.tolist ()).py_replace (']], [[', ']]\n\n[[').py_replace ('], ', ']\n').py_replace (',', '');
+							if (self.ndim == 1) {
+								return str (self.tolist ());
+							}
+							else {
+								return '[\n\t{}\n]\n'.format ('\n\t{}'.join (function () {
+									var __accu0__ = [];
+									var __iterator0__ = py_iter (self.tolist ());
+									while (true) {
+										try {var row = py_next (__iterator0__);} catch (exception) {break;}
+										__accu0__.append (str (row));
+									}
+									return __accu0__;
+								} ()));
+							}
+						});},
+						get reshape () {return __get__ (this, function (self, shape) {
+							if (self.ndim == 1) {
+								return tuple ([array (self, self.dtype)]);
+							}
+							else {
+								var result = array (self, self.dtype);
+								result.setshape (self.ns_ncols, self.ns_nrows);
+								return result;
+							}
 						});},
 						get transpose () {return __get__ (this, function (self) {
-							var axes = tuple ([].slice.apply (arguments).slice (1));
-							if (len (axes)) {
-								if (Array.isArray (axes [0])) {
-									var axes = axes [0];
+							if (self.ndim == 1) {
+								var result = array (self, dtype);
+							}
+							else {
+								var result = empty (tuple ([self.ns_ncols, self.ns_nrows]), self.dtype);
+							}
+							if (self.ns_complex) {
+								for (var irow = 0; irow < self.ns_nrows; irow++) {
+									for (var icol = 0; icol < self.ns_ncols; icol++) {
+										var itarget = result.ns_ncols * icol + irow;
+										result.imagbuf [itarget] = self.imagbuf [isource];
+										result.realbuf [itarget] = self.realbuf [isource];
+									}
 								}
 							}
-							return ndarray ((len (axes) ? function () {
-								var __accu0__ = [];
-								for (var i = 0; i < self.ndim; i++) {
-									__accu0__.append (self.shape [axes [i]]);
+							else {
+								for (var irow = 0; irow < self.ns_nrows; irow++) {
+									for (var icol = 0; icol < self.ns_ncols; icol++) {
+										result.realbuf [result.ns_ncols * icol + irow] = self.realbuf [self.ns_ncols * irow + icol];
+									}
 								}
-								return __accu0__;
-							} () : py_reversed (self.shape)), self.dtype, self.data, null, (len (axes) ? function () {
-								var __accu0__ = [];
-								for (var i = 0; i < self.ndim; i++) {
-									__accu0__.append (self.strides [axes [i]]);
-								}
-								return __accu0__;
-							} () : py_reversed (self.strides)));
+							}
+							return result;
 						});},
 						get __getitem__ () {return __get__ (this, function (self, key) {
-							if (type (key) == list) {
-								var ns_shift = self.ns_shift;
-								var shape = list ([]);
-								var strides = list ([]);
-								var isslice = false;
-								for (var idim = 0; idim < self.ndim; idim++) {
-									var subkey = key [idim];
-									if (type (subkey) == tuple) {
-										var isslice = true;
-										ns_shift += subkey [0] * self.ns_skips [idim];
-										shape.append ((subkey [1] ? (subkey [1] - subkey [0]) / subkey [2] : (self.shape [idim] - subkey [0]) / subkey [2]));
-										strides.append (subkey [2] * self.strides [idim]);
+							if (self.ndim == 1) {
+								if (type (key) == tuple) {
+									if (key [1] == null) {
+										key [1] = self.size;
 									}
 									else {
-										ns_shift += subkey * self.ns_skips [idim];
+										if (key [1] < 0) {
+											key [1] += self.size;
+										}
 									}
-								}
-								if (isslice) {
-									var result = ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides);
+									var result = empty (list ([(key [1] - key [0]) / key [2]]), self.dtype);
+									var itarget = 0;
+									if (self.ns_complex) {
+										var __iterator0__ = py_iter (range (...self.shape));
+										while (true) {
+											try {var isource = py_next (__iterator0__);} catch (exception) {break;}
+											result.realbuf [itarget] = self.realbuf [isource];
+											result.imagbuf [itarget++] = self.realbuf [isource];
+										}
+									}
+									else {
+										var __iterator0__ = py_iter (range (...self.shape));
+										while (true) {
+											try {var isource = py_next (__iterator0__);} catch (exception) {break;}
+											result.realbuf [itarget++] = self.realbuf [isource];
+										}
+									}
 									return result;
 								}
 								else {
 									if (self.ns_complex) {
-										var ibase = 2 * ns_shift;
-										return complex (self.data [ibase], self.data [ibase + 1]);
+										return complex (self.realbuf [key], self.imagbuf [key]);
 									}
 									else {
-										return self.data [ns_shift];
+										return self.realbuf [key];
 									}
 								}
 							}
 							else {
-								if (self.ns_complex) {
-									var ibase = 2 * (self.ns_shift + key * self.ns_skips [0]);
-									return complex (self.data [ibase], self.data [ibase + 1]);
+								var rowkey = key [0];
+								var colkey = key [1];
+								var rowistup = type (rowkey) == tuple;
+								var colistup = type (colkey) == tuple;
+								if (rowistup) {
+									if (rowkey [1] == null) {
+										rowkey [1] = self.ns_nrows;
+									}
+									else {
+										if (rowkey [1] < 0) {
+											rowkey [1] += self.ns_nrows;
+										}
+									}
+								}
+								if (colistup) {
+									if (colkey [1] == null) {
+										colkey [1] = self.ns_ncols;
+									}
+									else {
+										if (colkey [1] < 0) {
+											colkey [1] += self.ns_ncols;
+										}
+									}
+								}
+								if (rowistup || colistup) {
+									if (!(rowistup)) {
+										var result = empty (tuple ([(colkey [1] - colkey [0]) / colkey [2]]), self.dtype);
+										var itarget = 0;
+										if (self.ns_complex) {
+											var __iterator0__ = py_iter (range (...colkey));
+											while (true) {
+												try {var isourcecol = py_next (__iterator0__);} catch (exception) {break;}
+												var isource = self.ns_ncols * rowkey + isourcecol;
+												result.realbuf [itarget] = self.realbuf [isource];
+												result.imagbuf [itarget++] = self.imagbuf [isource];
+											}
+										}
+										else {
+											var __iterator0__ = py_iter (range (...colkey));
+											while (true) {
+												try {var isourcecol = py_next (__iterator0__);} catch (exception) {break;}
+												result.realbuf [itarget++] = self.realbuf [self.ns_ncols * rowkey + isourcecol];
+											}
+										}
+									}
+									else {
+										if (!(colistup)) {
+											var result = empty (tuple ([(rowkey [1] - rowkey [0]) / rowkey [2]]), self.dtype);
+											var itarget = 0;
+											if (self.ns_complex) {
+												var __iterator0__ = py_iter (range (...rowkey));
+												while (true) {
+													try {var isourcerow = py_next (__iterator0__);} catch (exception) {break;}
+													var isource = self.ns_ncols * isourcerow + colkey;
+													result.realbuf [itarget] = self.realbuf [isource];
+													result.imagbuf [itarget++] = self.imagbuf [isource];
+												}
+											}
+											else {
+												var __iterator0__ = py_iter (range (...rowkey));
+												while (true) {
+													try {var isourcerow = py_next (__iterator0__);} catch (exception) {break;}
+													result.realbuf [itarget++] = self.realbuf [self.ns_ncols * isourcerow + colkey];
+												}
+											}
+										}
+										else {
+											var result = empty (tuple ([(key [0] [1] - key [0] [0]) / key [0] [2], (key [1] [1] - key [1] [0]) / key [1] [2]]), self.dtype);
+											var itarget = 0;
+											if (self.ns_complex) {
+												var __iterator0__ = py_iter (range (...rowkey));
+												while (true) {
+													try {var isourcerow = py_next (__iterator0__);} catch (exception) {break;}
+													var __iterator1__ = py_iter (range (...colkey));
+													while (true) {
+														try {var isourcecol = py_next (__iterator1__);} catch (exception) {break;}
+														var isource = self.ns_ncols * isourcerow + isourcecol;
+														result.realbuf [itarget] = self.realbuf [isource];
+														result.imagbuf [itarget++] = self.imagbuf [isource];
+													}
+												}
+											}
+											else {
+												var __iterator0__ = py_iter (range (...rowkey));
+												while (true) {
+													try {var isourcerow = py_next (__iterator0__);} catch (exception) {break;}
+													var __iterator1__ = py_iter (range (...colkey));
+													while (true) {
+														try {var isourcecol = py_next (__iterator1__);} catch (exception) {break;}
+														result.realbuf [itarget++] = self.realbuf [self.ns_ncols * isourcerow + isourcecol];
+													}
+												}
+											}
+										}
+									}
+									return result;
 								}
 								else {
-									return self.data [self.ns_shift + key * self.ns_skips [0]];
+									if (self.ns_complex) {
+										var isource = self.ns_ncols * key [0] + key [1];
+										return complex (self.realbuf [isource], self.imagbuf [isource]);
+									}
+									else {
+										return self.realbuf [self.ns_ncols * key [0] + key [1]];
+									}
 								}
 							}
 						});},
 						get __setitem__ () {return __get__ (this, function (self, key, value) {
-							var setitem_recur = function (key, target, value) {
-								if (len (key) < target.ndim) {
-									for (var i = 0; i < target.shape [len (key)]; i++) {
-										setitem_recur (itertools.chain (key, list ([i])), target, value);
-									}
-								}
-								else {
-									target.__setitem__ (key, value.__getitem__ (key));
-								}
-							};
-							if (type (key) == list) {
-								var ns_shift = self.ns_shift;
-								var shape = list ([]);
-								var strides = list ([]);
-								var isslice = false;
-								for (var idim = 0; idim < self.ndim; idim++) {
-									var subkey = key [idim];
-									if (type (subkey) == tuple) {
-										var isslice = true;
-										ns_shift += subkey [0] * self.ns_skips [idim];
-										shape.append ((subkey [1] ? (subkey [1] - subkey [0]) / subkey [2] : (self.shape [idim] - subkey [0]) / subkey [2]));
-										strides.append (subkey [2] * self.strides [idim]);
+							if (self.ndim == 1) {
+								if (type (key) == tuple) {
+									if (key [1] == null) {
+										key [1] = self.size;
 									}
 									else {
-										ns_shift += subkey * self.ns_skips [idim];
+										if (key [1] < 0) {
+											key [1] += self.size;
+										}
 									}
-								}
-								if (isslice) {
-									var target = ndarray (shape, self.dtype, self.data, ns_shift * self.itemsize, strides);
-									setitem_recur (list ([]), target, value);
+									var isource = 0;
+									if (self.ns_complex) {
+										var __iterator0__ = py_iter (range (...self.shape));
+										while (true) {
+											try {var itarget = py_next (__iterator0__);} catch (exception) {break;}
+											self.realbuf [itarget] = value.realbuf [isource];
+											self.imagbuf [itarget] = value.realbuf [isource++];
+										}
+									}
+									else {
+										var __iterator0__ = py_iter (range (...self.shape));
+										while (true) {
+											try {var itarget = py_next (__iterator0__);} catch (exception) {break;}
+											self.realbuf [itarget] = value.realbuf [isource++];
+										}
+									}
+									return result;
 								}
 								else {
 									if (self.ns_complex) {
-										var ibase = 2 * ns_shift;
-										var __left0__ = tuple ([value.real, value.imag]);
-										self.data [ibase] = __left0__ [0];
-										self.data [ibase + 1] = __left0__ [1];
+										self.realbuf [key] = value.real;
+										self.imagbuf [key] = value.imag;
 									}
 									else {
-										self.data [ns_shift] = value;
+										self.realbuf [key] = value;
+									}
+								}
+							}
+							else {
+								var rowkey = key [0];
+								var colkey = key [1];
+								var rowistup = type (rowkey) == tuple;
+								var colistup = type (colkey) == tuple;
+								if (rowistup || colistup) {
+									if (!(rowistup)) {
+										var isource = 0;
+										if (self.ns_complex) {
+											var __iterator0__ = py_iter (range (...colkey));
+											while (true) {
+												try {var itargetcol = py_next (__iterator0__);} catch (exception) {break;}
+												var itarget = self.ns_ncols * rowkey + itargetcol;
+												self.realbuf [itarget] = value.realbuf [isource];
+												self.imagbuf [itarget] = value.imagbuf [isource++];
+											}
+										}
+										else {
+											var __iterator0__ = py_iter (range (...colkey));
+											while (true) {
+												try {var itargetcol = py_next (__iterator0__);} catch (exception) {break;}
+												result.realbuf [self.ns_ncols * rowkey + itargetcol] = self.realbuf [isource++];
+											}
+										}
+									}
+									else {
+										if (!(colistup)) {
+											var result = empty (list ([(rowkey [1] - rowkey [0]) / rowkey [2]]), self.dtype);
+											var isource = 0;
+											if (self.ns_complex) {
+												var __iterator0__ = py_iter (range (...rowkey));
+												while (true) {
+													try {var itargetrow = py_next (__iterator0__);} catch (exception) {break;}
+													var itarget = self.ns_ncols * isourcerow + colkey;
+													self.realbuf [itarget] = value.realbuf [isource];
+													self.imagbuf [itarget] = value.imagbuf [isource++];
+												}
+											}
+											else {
+												var __iterator0__ = py_iter (range (...rowkey));
+												while (true) {
+													try {var isourcerow = py_next (__iterator0__);} catch (exception) {break;}
+													self.realbuf [self.ns_ncols * isourcerow + colkey] = value [isource++];
+												}
+											}
+										}
+										else {
+											var isource = 0;
+											if (self.ns_complex) {
+												var __iterator0__ = py_iter (range (...rowkey));
+												while (true) {
+													try {var itargetrow = py_next (__iterator0__);} catch (exception) {break;}
+													var __iterator1__ = py_iter (range (...colkey));
+													while (true) {
+														try {var itargetcol = py_next (__iterator1__);} catch (exception) {break;}
+														var itarget = self.ns_ncols * itargetrow + itargetcol;
+														self.realbuf [itarget] = value.realbuf [isource];
+														self.imagbuf [itarget] = value.imagbuf [isource++];
+													}
+												}
+											}
+											else {
+												var __iterator0__ = py_iter (range (...rowkey));
+												while (true) {
+													try {var isourcerow = py_next (__iterator0__);} catch (exception) {break;}
+													var __iterator1__ = py_iter (range (...colkey));
+													while (true) {
+														try {var isourcecol = py_next (__iterator1__);} catch (exception) {break;}
+														self.realbuf [self.ns_ncols * itargetrow + itargetcol] = value.realbuf [isource++];
+													}
+												}
+											}
+										}
+									}
+								}
+								else {
+									if (self.ns_complex) {
+										var itarget = self.ns_ncols * key [0] + key [1];
+										self.realbuf [itarget] = value.real;
+										self.imagbuf [itarget] = value.imag;
+									}
+									else {
+										self.realbuf [self.ns_ncols * key [0] + key [1]] = value;
+									}
+								}
+							}
+						});},
+						get real () {return __get__ (this, function (self) {
+							return ndarray (self.shape, ns_buftype (self.dtype), self.realbuf);
+						});},
+						get imag () {return __get__ (this, function (self) {
+							return ndarray (self.shape, ns_buftype (self.dtype), self.imagbuf);
+						});},
+						get __neg__ () {return __get__ (this, function (self) {
+							var result = empty (self.shape, self.dtype);
+							if (self.ns_complex) {
+								for (var i = 0; i < self.size; i++) {
+									result.realbuf [i] = -(self.realbuf [i]);
+									result.imagbuf [i] = -(self.imagbuf [i]);
+								}
+							}
+							else {
+								for (var i = 0; i < self.size; i++) {
+									result.realbuf [i] = -(self.realbuf [i]);
+								}
+							}
+							return result;
+						});},
+						get __ns_inv__ () {return __get__ (this, function (self) {
+							var result = empty (self.shape, self.dtype);
+							if (self.ns_complex) {
+								for (var i = 0; i < self.size; i++) {
+									var real = self.realbuf [i];
+									var imag = self.imagbuf [i];
+									var denom = real * real + imag * imag;
+									result.realbuf [i] = real / denom;
+									result.imagbuf [i] = -(imag) / denom;
+								}
+							}
+							else {
+								for (var i = 0; i < self.size; i++) {
+									result.realbuf [i] = 1 / self.realbuf [i];
+								}
+							}
+							return result;
+						});},
+						get __add__ () {return __get__ (this, function (self, other) {
+							var result = empty (self.shape, self.dtype);
+							if (type (other) == ndarray) {
+								if (self.ns_complex) {
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] + other.realbuf [i];
+										result.imagbuf [i] = self.imagbuf [i] + other.imagbuf [i];
+									}
+								}
+								else {
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] + other.realbuf [i];
 									}
 								}
 							}
 							else {
 								if (self.ns_complex) {
-									var ibase = 2 * (self.ns_shift + key * self.ns_skips [0]);
-									var __left0__ = tuple ([value.real, value.imag]);
-									self.data [ibase] = __left0__ [0];
-									self.data [ibase + 1] = __left0__ [1];
-								}
-								else {
-									self.data [self.ns_shift + key * self.ns_skips [0]] = value;
-								}
-							}
-						});},
-						get real () {return __get__ (this, function (self) {
-							var result = empty (self.shape, ns_realtypes [self.dtype]);
-							for (var i = 0; i < result.data.length; i++) {
-								result.data [i] = self.data [2 * i];
-							}
-							return result;
-						});},
-						get imag () {return __get__ (this, function (self) {
-							var result = empty (self.shape, ns_realtypes [self.dtype]);
-							for (var i = 0; i < result.data.length; i++) {
-								result.data [i] = self.data [2 * i + 1];
-							}
-							return result;
-						});},
-						get __neg__ () {return __get__ (this, function (self) {
-							var neg_recur = function (idim, key) {
-								for (var i = 0; i < self.shape [idim]; i++) {
-									if (idim < self.ndim - 1) {
-										neg_recur (idim + 1, itertools.chain (key, list ([i])));
-									}
-									else {
-										var key2 = itertools.chain (key, list ([i]));
-										if (self.ns_complex) {
-											result.__setitem__ (key2, self.__getitem__ (key2).__neg__ ());
-										}
-										else {
-											result.__setitem__ (key2, -(self.__getitem__ (key2)));
-										}
-									}
-								}
-							};
-							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && !(self.ns_complex)) {
-								var __left0__ = tuple ([result.data, self.data]);
-								var r = __left0__ [0];
-								var s = __left0__ [1];
-								for (var i = 0; i < self.data.length; i++) {
-									r [i] = -(s [i]);
-								}
-							}
-							else {
-								neg_recur (0, list ([]));
-							}
-							return result;
-						});},
-						get __ns_inv__ () {return __get__ (this, function (self) {
-							var ns_inv_recur = function (idim, key) {
-								for (var i = 0; i < self.shape [idim]; i++) {
-									if (idim < self.ndim - 1) {
-										ns_inv_recur (idim + 1, itertools.chain (key, list ([i])));
-									}
-									else {
-										var key2 = itertools.chain (key, list ([i]));
-										if (self.ns_complex) {
-											result.__setitem__ (key2, self.__getitem__ (key2).__rdiv__ (1));
-										}
-										else {
-											result.__setitem__ (key2, 1 / self.__getitem__ (key2));
-										}
-									}
-								}
-							};
-							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && !(self.ns_complex)) {
-								var __left0__ = tuple ([result.data, self.data]);
-								var r = __left0__ [0];
-								var s = __left0__ [1];
-								for (var i = 0; i < self.data.length; i++) {
-									r [i] = 1 / s [i];
-								}
-							}
-							else {
-								ns_inv_recur (0, list ([]));
-							}
-							return result;
-						});},
-						get __add__ () {return __get__ (this, function (self, other) {
-							var isarr = type (other) == ndarray;
-							var add_recur = function (idim, key) {
-								for (var i = 0; i < self.shape [idim]; i++) {
-									if (idim < self.ndim - 1) {
-										add_recur (idim + 1, itertools.chain (key, list ([i])));
-									}
-									else {
-										var key2 = itertools.chain (key, list ([i]));
-										if (self.ns_complex) {
-											if (isarr) {
-												result.__setitem__ (key2, self.__getitem__ (key2).__add__ (other.__getitem__ (key2)));
-											}
-											else {
-												result.__setitem__ (key2, self.__getitem__ (key2).__add__ (other));
-											}
-										}
-										else {
-											if (isarr) {
-												result.__setitem__ (key2, self.__getitem__ (key2) + other.__getitem__ (key2));
-											}
-											else {
-												result.__setitem__ (key2, self.__getitem__ (key2) + other);
-											}
-										}
-									}
-								}
-							};
-							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && isarr && other.ns_natural) {
-								var __left0__ = tuple ([result.data, self.data, other.data]);
-								var r = __left0__ [0];
-								var s = __left0__ [1];
-								var o = __left0__ [2];
-								for (var i = 0; i < self.data.length; i++) {
-									r [i] = s [i] + o [i];
-								}
-							}
-							else {
-								if (self.ns_natural && !(self.ns_complex) && !(isarr)) {
-									var __left0__ = tuple ([result.data, self.data]);
-									var r = __left0__ [0];
-									var s = __left0__ [1];
-									for (var i = 0; i < self.data.length; i++) {
-										r [i] = s [i] + other;
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] + other.real;
+										result.imagbuf [i] = self.imagbuf [i] + other.imag;
 									}
 								}
 								else {
-									add_recur (0, list ([]));
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] + other;
+									}
 								}
 							}
 							return result;
@@ -2662,54 +2865,31 @@ function autotest () {
 							return self.__add__ (scalar);
 						});},
 						get __sub__ () {return __get__ (this, function (self, other) {
-							var isarr = type (other) == ndarray;
-							var sub_recur = function (idim, key) {
-								for (var i = 0; i < self.shape [idim]; i++) {
-									if (idim < self.ndim - 1) {
-										sub_recur (idim + 1, itertools.chain (key, list ([i])));
-									}
-									else {
-										var key2 = itertools.chain (key, list ([i]));
-										if (self.ns_complex) {
-											if (isarr) {
-												result.__setitem__ (key2, self.__getitem__ (key2).__sub__ (other.__getitem__ (key2)));
-											}
-											else {
-												result.__setitem__ (key2, self.__getitem__ (key2).__sub__ (other));
-											}
-										}
-										else {
-											if (isarr) {
-												result.__setitem__ (key2, self.__getitem__ (key2) - other.__getitem__ (key2));
-											}
-											else {
-												result.__setitem__ (key2, self.__getitem__ (key2) - other);
-											}
-										}
-									}
-								}
-							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && isarr && other.ns_natural) {
-								var __left0__ = tuple ([result.data, self.data, other.data]);
-								var r = __left0__ [0];
-								var s = __left0__ [1];
-								var o = __left0__ [2];
-								for (var i = 0; i < self.data.length; i++) {
-									r [i] = s [i] - o [i];
-								}
-							}
-							else {
-								if (self.ns_natural && !(self.ns_complex) && !(isarr)) {
-									var __left0__ = tuple ([result.data, self.data]);
-									var r = __left0__ [0];
-									var s = __left0__ [1];
-									for (var i = 0; i < self.data.length; i++) {
-										r [i] = s [i] - other;
+							if (type (other) == ndarray) {
+								if (self.ns_complex) {
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] - other.realbuf [i];
+										result.imagbuf [i] = self.imagbuf [i] - other.imagbuf [i];
 									}
 								}
 								else {
-									sub_recur (0, list ([]));
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] - other.realbuf [i];
+									}
+								}
+							}
+							else {
+								if (self.ns_complex) {
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] - other.real;
+										result.imagbuf [i] = self.imagbuf [i] - other.imag;
+									}
+								}
+								else {
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] - other;
+									}
 								}
 							}
 							return result;
@@ -2718,62 +2898,31 @@ function autotest () {
 							return self.__neg__ ().__add__ (scalar);
 						});},
 						get __mul__ () {return __get__ (this, function (self, other) {
-							var isarr = type (other) == ndarray;
-							var mul_recur = function (idim, key) {
-								for (var i = 0; i < self.shape [idim]; i++) {
-									if (idim < self.ndim - 1) {
-										mul_recur (idim + 1, itertools.chain (key, list ([i])));
-									}
-									else {
-										var key2 = itertools.chain (key, list ([i]));
-										if (self.ns_complex) {
-											if (isarr) {
-												result.__setitem__ (key2, self.__getitem__ (key2).__mul__ (other.__getitem__ (key2)));
-											}
-											else {
-												result.__setitem__ (key2, self.__getitem__ (key2).__mul__ (other));
-											}
-										}
-										else {
-											if (isarr) {
-												result.__setitem__ (key2, self.__getitem__ (key2) * other.__getitem__ (key2));
-											}
-											else {
-												result.__setitem__ (key2, self.__getitem__ (key2) * other);
-											}
-										}
-									}
-								}
-							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && isarr && other.ns_natural) {
-								var __left0__ = tuple ([result.data, self.data, other.data]);
-								var r = __left0__ [0];
-								var s = __left0__ [1];
-								var o = __left0__ [2];
+							if (type (other) == ndarray) {
 								if (self.ns_complex) {
-									for (var i = 0; i < self.data.length; i += 2) {
-										r [i] = s [i] * o [i] - s [i + 1] * o [i + 1];
-										r [i + 1] = s [i] * o [i + 1] + s [i + 1] * o [i];
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] * other.realbuf [i] - self.imagbuf [i] * other.imagbuf [i];
+										result.imagbuf [i] = self.realbuf [i] * other.imagbuf [i] + self.imagbuf [i] * other.realbuf [i];
 									}
 								}
 								else {
-									for (var i = 0; i < self.data.length; i++) {
-										r [i] = s [i] * o [i];
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] * other.realbuf [i];
 									}
 								}
 							}
 							else {
-								if (self.ns_natural && !(self.ns_complex) && !(isarr)) {
-									var __left0__ = tuple ([result.data, self.data]);
-									var r = __left0__ [0];
-									var s = __left0__ [1];
-									for (var i = 0; i < self.data.length; i++) {
-										r [i] = s [i] * other;
+								if (self.ns_complex) {
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] * other.real - self.imagbuf [i] * other.imag;
+										result.imagbuf [i] = self.realbuf [i] * other.imag + self.imagbuf [i] * other.real;
 									}
 								}
 								else {
-									mul_recur (0, list ([]));
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] * other;
+									}
 								}
 							}
 							return result;
@@ -2782,63 +2931,37 @@ function autotest () {
 							return self.__mul__ (scalar);
 						});},
 						get __div__ () {return __get__ (this, function (self, other) {
-							var isarr = type (other) == ndarray;
-							var div_recur = function (idim, key) {
-								for (var i = 0; i < self.shape [idim]; i++) {
-									if (idim < self.ndim - 1) {
-										div_recur (idim + 1, itertools.chain (key, list ([i])));
-									}
-									else {
-										var key2 = itertools.chain (key, list ([i]));
-										if (self.ns_complex) {
-											if (isarr) {
-												result.__setitem__ (key2, self.__getitem__ (key2).__div__ (other.__getitem__ (key2)));
-											}
-											else {
-												result.__setitem__ (key2, self.__getitem__ (key2).__div__ (other));
-											}
-										}
-										else {
-											if (isarr) {
-												result.__setitem__ (key2, self.__getitem__ (key2) / other.__getitem__ (key2));
-											}
-											else {
-												result.__setitem__ (key2, self.__getitem__ (key2) / other);
-											}
-										}
-									}
-								}
-							};
 							var result = empty (self.shape, self.dtype);
-							if (self.ns_natural && isarr && other.ns_natural) {
-								var __left0__ = tuple ([result.data, self.data, other.data]);
-								var r = __left0__ [0];
-								var s = __left0__ [1];
-								var o = __left0__ [2];
+							if (type (other) == ndarray) {
 								if (self.ns_complex) {
-									for (var i = 0; i < self.data.length; i += 2) {
-										var denom = o [i] * o [i] + o [i + 1] * o [i + 1];
-										r [i] = (s [i] * o [i] + s [i + 1] * o [i + 1]) / denom;
-										r [i + 1] = (s [i + 1] * o [i] - s [i] * o [i + 1]) / denom;
+									for (var i = 0; i < self.size; i++) {
+										var real = other.realbuf [i];
+										var imag = other.imagbuf [i];
+										var denom = real * real + imag * imag;
+										result.realbuf [i] = (self.realbuf [i] * real + self.imagbuf [i] * imag) / denom;
+										result.imagbuf [i] = (self.imagbuf [i] * real - self.realbuf [i] * imag) / denom;
 									}
 								}
 								else {
-									for (var i = 0; i < self.data.length; i++) {
-										r [i] = s [i] / o [i];
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] / other.realbuf [i];
 									}
 								}
 							}
 							else {
-								if (self.ns_natural && !(self.ns_complex) && !(isarr)) {
-									var __left0__ = tuple ([result.data, self.data]);
-									var r = __left0__ [0];
-									var s = __left0__ [1];
-									for (var i = 0; i < self.data.length; i++) {
-										r [i] = s [i] / other;
+								if (self.ns_complex) {
+									var real = other.real;
+									var imag = other.imag;
+									var denom = real * real + imag * imag;
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = (self.realbuf [i] * real + self.imagbuf [i] * imag) / denom;
+										result.imagbuf [i] = (self.imagbuf [i] * real - self.realbuf [i] * imag) / denom;
 									}
 								}
 								else {
-									div_recur (0, list ([]));
+									for (var i = 0; i < self.size; i++) {
+										result.realbuf [i] = self.realbuf [i] / other;
+									}
 								}
 							}
 							return result;
@@ -2847,76 +2970,36 @@ function autotest () {
 							return self.__ns_inv__ ().__mul__ (scalar);
 						});},
 						get __matmul__ () {return __get__ (this, function (self, other) {
-							var __left0__ = tuple ([self.shape [0], other.shape [1], self.shape [1]]);
-							var nrows = __left0__ [0];
-							var ncols = __left0__ [1];
-							var nterms = __left0__ [2];
-							var result = empty (tuple ([nrows, ncols]), self.dtype);
-							if (self.ns_natural || ns_settings.optim_space) {
-								var self2 = self;
-							}
-							else {
-								var self2 = copy (self);
-							}
-							if (other.ns_natural || ns_settings.optim_space) {
-								var other2 = other;
-							}
-							else {
-								var other2 = copy (other);
-							}
-							if (self2.ns_natural && other2.ns_natural) {
-								if (self.ns_complex) {
-									for (var irow = 0; irow < nrows; irow++) {
-										for (var icol = 0; icol < ncols; icol++) {
-											var __left0__ = tuple ([result.data, self2.data, other2.data]);
-											var r = __left0__ [0];
-											var s = __left0__ [1];
-											var o = __left0__ [2];
-											var baser = 2 * (irow * ncols + icol);
-											r [baser] = 0;
-											r [baser + 1] = 0;
-											for (var iterm = 0; iterm < nterms; iterm++) {
-												var bases = 2 * (irow * nterms + iterm);
-												var baseo = 2 * (iterm * ncols + icol);
-												r [baser] += s [bases] * o [baseo] - s [bases + 1] * o [baseo + 1];
-												r [baser + 1] += s [bases] * o [baseo + 1] + s [bases + 1] * o [baseo];
-											}
+							var result = empty (tuple ([self.ns_nrows, other.ns_ncols]), self.dtype);
+							if (self.ns_complex) {
+								var iresult = 0;
+								for (var irow = 0; irow < self.ns_nrows; irow++) {
+									for (var icol = 0; icol < other.ns_ncols; icol++) {
+										result.realbuf [iresult] = 0;
+										result.imagbuf [iresult] = 0;
+										var iself = self.ns_ncols * irow;
+										var iother = icol;
+										for (var iterm = 0; iterm < self.ns_ncols; iterm++) {
+											result.realbuf [iresult] += self.realbuf [iself] * other.realbuf [iother] - self.imagbuf [iself] * other.imagbuf [iother];
+											result.imagbuf [iresult] += self.realbuf [iself] * other.imagbuf [iother] + self.imagbuf [iself++] * other.realbuf [iother];
+											iother += other.ns_ncols;
 										}
-									}
-								}
-								else {
-									for (var irow = 0; irow < nrows; irow++) {
-										for (var icol = 0; icol < ncols; icol++) {
-											var __left0__ = tuple ([result.data, self2.data, other2.data]);
-											var r = __left0__ [0];
-											var s = __left0__ [1];
-											var o = __left0__ [2];
-											r [irow * ncols + icol] = 0;
-											for (var iterm = 0; iterm < nterms; iterm++) {
-												r [irow * ncols + icol] += s [irow * nterms + iterm] * o [iterm * ncols + icol];
-											}
-										}
+										iresult++;
 									}
 								}
 							}
 							else {
-								for (var irow = 0; irow < nrows; irow++) {
-									for (var icol = 0; icol < ncols; icol++) {
-										if (self.ns_complex) {
-											var sum = complex (0, 0);
+								var iresult = 0;
+								for (var irow = 0; irow < self.ns_nrows; irow++) {
+									for (var icol = 0; icol < other.ns_ncols; icol++) {
+										result.realbuf [iresult] = 0;
+										var iself = self.ns_ncols * irow;
+										var iother = icol;
+										for (var iterm = 0; iterm < self.ns_ncols; iterm++) {
+											result.realbuf [iresult] += self.realbuf [iself++] * other.realbuf [iother];
+											iother += other.ns_ncols;
 										}
-										else {
-											var sum = 0;
-										}
-										for (var iterm = 0; iterm < nterms; iterm++) {
-											if (self.ns_complex) {
-												var sum = sum.__add__ (self2.__getitem__ ([irow, iterm]).__mul__ (other2.__getitem__ ([iterm, icol])));
-											}
-											else {
-												sum += self2.__getitem__ ([irow, iterm]) * other2.__getitem__ ([iterm, icol]);
-											}
-										}
-										result.__setitem__ ([irow, icol], sum);
+										iresult++;
 									}
 								}
 							}
@@ -2927,180 +3010,216 @@ function autotest () {
 						if (typeof dtype == 'undefined' || (dtype != null && dtype .__class__ == __kwargdict__)) {;
 							var dtype = 'float64';
 						};
-						var result = ndarray (shape, dtype, new ns_ctors [dtype] ((ns_iscomplex (dtype) ? 2 * ns_size (shape) : ns_size (shape))));
+						var result = ndarray (shape, dtype);
+						result.realbuf = ns_createbuf (false, dtype, result.size);
+						result.imagbuf = ns_createbuf (true, dtype, result.size);
 						return result;
 					};
-					var array = function (obj, dtype, copy) {
+					var array = function (obj, dtype) {
 						if (typeof dtype == 'undefined' || (dtype != null && dtype .__class__ == __kwargdict__)) {;
 							var dtype = 'float64';
 						};
-						if (typeof copy == 'undefined' || (copy != null && copy .__class__ == __kwargdict__)) {;
-							var copy = true;
-						};
-						var copy_recur = function (idim, key) {
-							for (var i = 0; i < obj.shape [idim]; i++) {
-								if (idim < obj.ndim - 1) {
-									copy_recur (idim + 1, itertools.chain (key, list ([i])));
-								}
-								else {
-									var key2 = itertools.chain (key, list ([i]));
-									result.__setitem__ (key2, obj.__getitem__ (key2));
-								}
-							}
-						};
-						if (obj.__class__ == ndarray) {
-							if (copy) {
-								var result = empty (obj.shape, dtype);
-								if (obj.ns_natural) {
-									var __left0__ = tuple ([obj.data, result.data]);
-									var o = __left0__ [0];
-									var r = __left0__ [1];
-									for (var i = 0; i < o.length; i++) {
-										r [i] = o [i];
+						if (Array.isArray (obj)) {
+							if (len (obj)) {
+								if (Array.isArray (obj [0])) {
+									var result = empty (tuple ([obj.length, obj [0].length]), dtype);
+									var iresult = 0;
+									if (result.ns_complex) {
+										for (var irow = 0; irow < result.ns_nrows; irow++) {
+											for (var icol = 0; icol < result.ns_ncols; icol++) {
+												var element = complex (obj [irow] [icol]);
+												result.realbuf [iresult] = element.real;
+												result.imagbuf [iresult++] = element.imag;
+											}
+										}
+									}
+									else {
+										for (var irow = 0; irow < result.ns_nrows; irow++) {
+											for (var icol = 0; icol < result.ns_ncols; icol++) {
+												result.realbuf [iresult++] = obj [irow] [icol];
+											}
+										}
 									}
 								}
 								else {
-									copy_recur (0, list ([]));
+									var result = empty (tuple ([obj.length]), dtype);
+									if (result.ns_complex) {
+										for (var i = 0; i < result.size; i++) {
+											var element = complex (obj [i]);
+											result.realbuf [i] = element.real;
+											result.imagbuf [i] = element.imag;
+										}
+									}
+									else {
+										for (var i = 0; i < result.size; i++) {
+											result.realbuf [i] = obj [i];
+										}
+									}
 								}
-								return result;
 							}
 							else {
-								return ndarray (obj.shape, obj.dtype, obj.buffer, obj.offset, obj.strides);
+								var result = empty (tuple ([0]), dtype);
 							}
 						}
 						else {
-							var shape = list ([]);
-							var curr_obj = obj;
-							while (Array.isArray (curr_obj)) {
-								shape.append (curr_obj.length);
-								var curr_obj = curr_obj [0];
+							var result = empty (obj.shape, dtype);
+							result.realbuf.set (obj.realbuf);
+							if (obj.ns_complex) {
+								result.imagbuf.set (obj.imagbuf);
 							}
-							var flatten = function (obj) {
-								if (Array.isArray (obj [0])) {
-									return itertools.chain.apply (null, function () {
-										var __accu0__ = [];
-										var __iterable0__ = obj;
-										for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-											var sub_obj = __iterable0__ [__index0__];
-											__accu0__.append (flatten (sub_obj));
-										}
-										return __accu0__;
-									} ());
-								}
-								else {
-									return obj;
-								}
-							};
-							if (ns_iscomplex (dtype)) {
-								var untypedArray = itertools.chain.apply (null, function () {
-									var __accu0__ = [];
-									var __iterable0__ = flatten (obj);
-									for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-										var elem = __iterable0__ [__index0__];
-										__accu0__.append ((type (elem) == complex ? list ([elem.real, elem.imag]) : list ([elem, 0])));
-									}
-									return __accu0__;
-								} ());
-							}
-							else {
-								var untypedArray = flatten (obj);
-							}
-							return ndarray (shape, dtype, ns_ctors [dtype].from (untypedArray));
 						}
+						return result;
 					};
 					var copy = function (obj) {
-						return array (obj, obj.dtype, true);
+						return array (obj, obj.dtype);
 					};
-					var hsplit = function (arr, nparts) {
-						var result = list ([]);
-						var partshape = list ([arr.shape [0], arr.shape [1] / nparts]);
-						for (var ipart = 0; ipart < nparts; ipart++) {
-							result.append (ndarray (partshape.__getslice__ (0, null, 1), arr.dtype, arr.data, (ipart * partshape [1]) * arr.strides [1], arr.strides.__getslice__ (0, null, 1)));
+					var hsplit = function (ary, nparts) {
+						var result = function () {
+							var __accu0__ = [];
+							for (var ipart = 0; ipart < nparts; ipart++) {
+								__accu0__.append (empty (tuple ([ary.ns_nrows, ary.ns_ncols / nparts]), array.dtype));
+							}
+							return __accu0__;
+						} ();
+						var isource = 0;
+						if (ary.ns_complex) {
+							for (var irow = 0; irow < ary.ns_nrows; irow++) {
+								var __iterator0__ = py_iter (result);
+								while (true) {
+									try {var part = py_next (__iterator0__);} catch (exception) {break;}
+									var itarget = part.ns_ncols * irow;
+									for (var icol = 0; icol < part.ns_ncols; icol++) {
+										part.realbuf [istartcol + icol] = ary.realbuf [isource];
+										part.imagbuf [itarget++] = ary.imagbuf [isource++];
+									}
+								}
+							}
+						}
+						else {
+							for (var irow = 0; irow < ary.ns_nrows; irow++) {
+								var __iterator0__ = py_iter (result);
+								while (true) {
+									try {var part = py_next (__iterator0__);} catch (exception) {break;}
+									var itarget = part.ns_ncols * irow;
+									for (var icol = 0; icol < part.ns_ncols; icol++) {
+										part.realbuf [itarget++] = ary.realbuf [isource++];
+									}
+								}
+							}
 						}
 						return result;
 					};
-					var vsplit = function (arr, nparts) {
-						var result = list ([]);
-						var partshape = list ([arr.shape [0] / nparts, arr.shape [1]]);
-						for (var ipart = 0; ipart < nparts; ipart++) {
-							result.append (ndarray (partshape.__getslice__ (0, null, 1), arr.dtype, arr.data, (ipart * partshape [0]) * arr.strides [0], arr.strides.__getslice__ (0, null, 1)));
+					var vsplit = function (ary, nparts) {
+						var result = function () {
+							var __accu0__ = [];
+							for (var ipart = 0; ipart < nparts; ipart++) {
+								__accu0__.append (empty (tuple ([ary.ns_nrows / nparts, ary.ns_ncols]), array.dtype));
+							}
+							return __accu0__;
+						} ();
+						var isource = 0;
+						if (ary.ns_complex) {
+							var __iterator0__ = py_iter (result);
+							while (true) {
+								try {var part = py_next (__iterator0__);} catch (exception) {break;}
+								for (var itarget = 0; itarget < part.size; itarget++) {
+									part.realbuf [itarget] = ary.realbuf [isource];
+									part.imagbuf [itarget] = ary.imagbuf [isource++];
+								}
+							}
+						}
+						else {
+							var __iterator0__ = py_iter (result);
+							while (true) {
+								try {var part = py_next (__iterator0__);} catch (exception) {break;}
+								for (var itarget = 0; itarget < part.size; itarget++) {
+									part.realbuf [itarget] = ary.realbuf [isource++];
+								}
+							}
 						}
 						return result;
 					};
-					var hstack = function (arrs) {
+					var hstack = function (tup) {
 						var ncols = 0;
-						var __iterable0__ = arrs;
-						for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-							var arr = __iterable0__ [__index0__];
-							ncols += arr.shape [1];
+						var __iterator0__ = py_iter (tup);
+						while (true) {
+							try {var part = py_next (__iterator0__);} catch (exception) {break;}
+							ncols += part.ns_ncols;
 						}
-						var result = empty (list ([arrs [0].shape [0], ncols]), arrs [0].dtype);
-						var istartcol = 0;
-						var __iterable0__ = arrs;
-						for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-							var arr = __iterable0__ [__index0__];
-							for (var irow = 0; irow < arr.shape [0]; irow++) {
-								for (var icol = 0; icol < arr.shape [1]; icol++) {
-									result.__setitem__ ([irow, istartcol + icol], arr.__getitem__ ([irow, icol]));
+						var result = empty (tuple ([tup [0].ns_nrows, ncols]), tup [0].dtype);
+						var itarget = 0;
+						if (result.ns_complex) {
+							for (var irow = 0; irow < result.ns_nrows; irow++) {
+								var __iterator0__ = py_iter (tup);
+								while (true) {
+									try {var part = py_next (__iterator0__);} catch (exception) {break;}
+									var isource = part.ns_ncols * irow;
+									for (var icol = 0; icol < part.ns_ncols; icol++) {
+										result.realbuf [itarget] = part.realbuf [isource];
+										result.imagbuf [itarget++] = part.imagbuf [isource++];
+									}
 								}
 							}
-							istartcol += arr.shape [1];
+						}
+						else {
+							for (var irow = 0; irow < result.ns_nrows; irow++) {
+								var __iterator0__ = py_iter (tup);
+								while (true) {
+									try {var part = py_next (__iterator0__);} catch (exception) {break;}
+									var isource = part.ns_ncols * irow;
+									for (var icol = 0; icol < part.ns_ncols; icol++) {
+										result.realbuf [itarget++] = part.realbuf [isource++];
+									}
+								}
+							}
 						}
 						return result;
 					};
-					var vstack = function (arrs) {
+					var vstack = function (tup) {
 						var nrows = 0;
-						var __iterable0__ = arrs;
-						for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-							var arr = __iterable0__ [__index0__];
-							nrows += arr.shape [0];
+						var __iterator0__ = py_iter (tup);
+						while (true) {
+							try {var part = py_next (__iterator0__);} catch (exception) {break;}
+							nrows += part.ns_nrows;
 						}
-						var result = empty (list ([nrows, arrs [0].shape [1]]), arrs [0].dtype);
-						var istartrow = 0;
-						var __iterable0__ = arrs;
-						for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-							var arr = __iterable0__ [__index0__];
-							for (var irow = 0; irow < arr.shape [0]; irow++) {
-								for (var icol = 0; icol < arr.shape [1]; icol++) {
-									result.__setitem__ ([istartrow + irow, icol], arr.__getitem__ ([irow, icol]));
+						var result = empty (tuple ([nrows, tup [0].ns_ncols]), tup [0].dtype);
+						var itarget = 0;
+						if (result.ns_complex) {
+							var __iterator0__ = py_iter (tup);
+							while (true) {
+								try {var part = py_next (__iterator0__);} catch (exception) {break;}
+								for (var isource = 0; isource < part.size; isource++) {
+									result.realbuf [itarget] = part.realbuf [isource];
+									result.imagbuf [itarget++] = part.imagbuf [isource];
 								}
 							}
-							istartrow += arr.shape [0];
+						}
+						else {
+							var __iterator0__ = py_iter (tup);
+							while (true) {
+								try {var part = py_next (__iterator0__);} catch (exception) {break;}
+								for (var isource = 0; isource < part.size; isource++) {
+									result.realbuf [itarget++] = part.realbuf [isource];
+								}
+							}
 						}
 						return result;
 					};
-					var round = function (arr, decimals) {
+					var round = function (a, decimals) {
 						if (typeof decimals == 'undefined' || (decimals != null && decimals .__class__ == __kwargdict__)) {;
 							var decimals = 0;
 						};
-						var rnd_recur = function (idim, key) {
-							for (var i = 0; i < arr.shape [idim]; i++) {
-								if (idim < arr.ndim - 1) {
-									rnd_recur (idim + 1, itertools.chain (key, list ([i])));
-								}
-								else {
-									var key2 = itertools.chain (key, list ([i]));
-									if (arr.ns_complex) {
-										var c = arr.__getitem__ (key2);
-										result.__setitem__ (key2, complex (c.real.toFixed (decimals), c.imag.toFixed (decimals)));
-									}
-									else {
-										result.__setitem__ (key2, arr.__getitem__ (key2).toFixed (decimals));
-									}
-								}
-							}
-						};
-						var result = empty (arr.shape, arr.dtype);
-						if (arr.ns_natural && !(arr.ns_complex)) {
-							var __left0__ = tuple ([arr.data, result.data]);
-							var a = __left0__ [0];
-							var r = __left0__ [1];
-							for (var i = 0; i < a.length; i++) {
-								r [i] = a [i].toFixed (decimals);
+						var result = empty (a.shape, a.dtype);
+						if (a.ns_complex) {
+							for (var i = 0; i < a.size; i++) {
+								result.realbuf [i] = a.realbuf [i].toFixed (decimals);
+								result.imagbuf [i] = a.imagbuf [i].toFixed (decimals);
 							}
 						}
 						else {
-							rnd_recur (0, list ([]));
+							for (var i = 0; i < a.size; i++) {
+								result.realbuf [i] = a.realbuf [i].toFixed (decimals);
+							}
 						}
 						return result;
 					};
@@ -3109,9 +3228,16 @@ function autotest () {
 							var dtype = 'float64';
 						};
 						var result = empty (shape, dtype);
-						var r = result.data;
-						for (var i = 0; i < r.length; i++) {
-							r [i] = 0;
+						if (result.ns_complex) {
+							for (var i = 0; i < result.size; i++) {
+								result.realbuf [i] = 0;
+								result.imagbuf [i] = 0;
+							}
+						}
+						else {
+							for (var i = 0; i < result.size; i++) {
+								result.realbuf [i] = 0;
+							}
 						}
 						return result;
 					};
@@ -3120,17 +3246,15 @@ function autotest () {
 							var dtype = 'float64';
 						};
 						var result = empty (shape, dtype);
-						var r = result.data;
-						if (self.ns_complex) {
-							for (var i = 0; i < r.length; i += 2) {
-								var __left0__ = tuple ([1, 0]);
-								r [i] = __left0__ [0];
-								r [i + 1] = __left0__ [1];
+						if (result.ns_complex) {
+							for (var i = 0; i < result.size; i++) {
+								result.realbuf [i] = 1;
+								result.imagbuf [i] = 0;
 							}
 						}
 						else {
-							for (var i = 0; i < r.length; i++) {
-								r [i] = 1;
+							for (var i = 0; i < result.size; i++) {
+								result.realbuf [i] = 1;
 							}
 						}
 						return result;
@@ -3140,16 +3264,11 @@ function autotest () {
 							var dtype = 'float64';
 						};
 						var result = zeros (tuple ([n, n]), dtype);
-						var r = result.data;
-						if (result.ns_complex) {
-							for (var i = 0; i < n; i++) {
-								r [2 * (i * result.shape [1] + i)] = 1;
-							}
-						}
-						else {
-							for (var i = 0; i < n; i++) {
-								r [i * result.shape [1] + i] = 1;
-							}
+						var i = 0;
+						var shift = n + 1;
+						for (var j = 0; j < n; j++) {
+							result.realbuf [i] = 1;
+							i += shift;
 						}
 						return result;
 					};
@@ -3164,290 +3283,16 @@ function autotest () {
 						__all__.hstack = hstack;
 						__all__.identity = identity;
 						__all__.ndarray = ndarray;
+						__all__.ns_buftype = ns_buftype;
+						__all__.ns_complex = ns_complex;
+						__all__.ns_createbuf = ns_createbuf;
 						__all__.ns_ctors = ns_ctors;
-						__all__.ns_iscomplex = ns_iscomplex;
-						__all__.ns_itemsizes = ns_itemsizes;
-						__all__.ns_realtypes = ns_realtypes;
 						__all__.ns_settings = ns_settings;
-						__all__.ns_size = ns_size;
 						__all__.ones = ones;
 						__all__.round = round;
 						__all__.vsplit = vsplit;
 						__all__.vstack = vstack;
 						__all__.zeros = zeros;
-					__pragma__ ('</all>')
-				}
-			}
-		}
-	);
-	__nest__ (
-		__all__,
-		'numscrypt.fft', {
-			__all__: {
-				__inited__: false,
-				__init__: function (__all__) {
-					var ns =  __init__ (__world__.numscrypt);
-					/* 
-					 * Free FFT and convolution (JavaScript)
-					 * 
-					 * Copyright (c) 2014 Project Nayuki
-					 * http://www.nayuki.io/page/free-small-fft-in-multiple-languages
-					 *
-					 * (MIT License)
-					 * Permission is hereby granted, free of charge, to any person obtaining a copy of
-					 * this software and associated documentation files (the "Software"), to deal in
-					 * the Software without restriction, including without limitation the rights to
-					 * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-					 * the Software, and to permit persons to whom the Software is furnished to do so,
-					 * subject to the following conditions:
-					 * - The above copyright notice and this permission notice shall be included in
-					 *   all copies or substantial portions of the Software.
-					 * - The Software is provided "as is", without warranty of any kind, express or
-					 *   implied, including but not limited to the warranties of merchantability,
-					 *   fitness for a particular purpose and noninfringement. In no event shall the
-					 *   authors or copyright holders be liable for any claim, damages or other
-					 *   liability, whether in an action of contract, tort or otherwise, arising from,
-					 *   out of or in connection with the Software or the use or other dealings in the
-					 *   Software.
-					 *
-					 * Slightly restructured by Chris Cannam, cannam@all-day-breakfast.com
-					 *
-					 * Fix added by Jacques de Hooge, jdeh@geatec.com: 'this' added to inverse.
-					 */
-					
-					
-					
-					/* 
-					 * Construct an object for calculating the discrete Fourier transform (DFT) of size n, where n is a power of 2.
-					 */
-					function FFTNayuki(n) {
-					    
-					    this.n = n;
-					    this.levels = -1;
-					
-					    for (var i = 0; i < 32; i++) {
-					        if (1 << i == n) {
-					            this.levels = i;  // Equal to log2(n)
-						}
-					    }
-					    if (this.levels == -1) {
-					        throw "Length is not a power of 2";
-					    }
-					
-					    this.cosTable = new Array(n / 2);
-					    this.sinTable = new Array(n / 2);
-					    for (var i = 0; i < n / 2; i++) {
-					        this.cosTable[i] = Math.cos(2 * Math.PI * i / n);
-					        this.sinTable[i] = Math.sin(2 * Math.PI * i / n);
-					    }
-					
-					    /* 
-					     * Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
-					     * The vector's length must be equal to the size n that was passed to the object constructor, and this must be a power of 2. Uses the Cooley-Tukey decimation-in-time radix-2 algorithm.
-					     */
-					    this.forward = function(real, imag) {
-					
-						var n = this.n;
-						
-						// Bit-reversed addressing permutation
-						for (var i = 0; i < n; i++) {
-					            var j = reverseBits(i, this.levels);
-					            if (j > i) {
-							var temp = real[i];
-							real[i] = real[j];
-							real[j] = temp;
-							temp = imag[i];
-							imag[i] = imag[j];
-							imag[j] = temp;
-					            }
-						}
-					    
-						// Cooley-Tukey decimation-in-time radix-2 FFT
-						for (var size = 2; size <= n; size *= 2) {
-					            var halfsize = size / 2;
-					            var tablestep = n / size;
-					            for (var i = 0; i < n; i += size) {
-							for (var j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
-					                    var tpre =  real[j+halfsize] * this.cosTable[k] +
-								        imag[j+halfsize] * this.sinTable[k];
-					                    var tpim = -real[j+halfsize] * this.sinTable[k] +
-								        imag[j+halfsize] * this.cosTable[k];
-					                    real[j + halfsize] = real[j] - tpre;
-					                    imag[j + halfsize] = imag[j] - tpim;
-					                    real[j] += tpre;
-					                    imag[j] += tpim;
-							}
-					            }
-						}
-					    
-						// Returns the integer whose value is the reverse of the lowest 'bits' bits of the integer 'x'.
-						function reverseBits(x, bits) {
-					            var y = 0;
-					            for (var i = 0; i < bits; i++) {
-							y = (y << 1) | (x & 1);
-							x >>>= 1;
-					            }
-					            return y;
-						}
-					    }
-					
-					    /* 
-					     * Computes the inverse discrete Fourier transform (IDFT) of the given complex vector, storing the result back into the vector.
-					     * The vector's length must be equal to the size n that was passed to the object constructor, and this must be a power of 2. This is a wrapper function. This transform does not perform scaling, so the inverse is not a true inverse.
-					     */
-					    this.inverse = function(real, imag) {
-						this.forward(imag, real);	// Fix by JdeH: 'this' added
-					    }
-					}
-					
-					
-					var fft = function (a) {
-						var fftn = new FFTNayuki (a.size);
-						var dre = a.real ().data;
-						var dim = a.imag ().data;
-						fftn.forward (dre, dim);
-						var result = ns.empty (a.shape, a.dtype);
-						for (var i = 0; i < a.size; i++) {
-							var ibase = 2 * i;
-							result.data [ibase] = dre [i];
-							result.data [ibase + 1] = dim [i];
-						}
-						return result;
-					};
-					var ifft = function (a) {
-						var fftn = new FFTNayuki (a.size);
-						var dre = a.real ().data;
-						var dim = a.imag ().data;
-						fftn.inverse (dre, dim);
-						var result = ns.empty (a.shape, a.dtype);
-						var s = a.size;
-						for (var i = 0; i < s; i++) {
-							var ibase = 2 * i;
-							result.data [ibase] = dre [i] / s;
-							result.data [ibase + 1] = dim [i] / s;
-						}
-						return result;
-					};
-					__pragma__ ('<use>' +
-						'numscrypt' +
-					'</use>')
-					__pragma__ ('<all>')
-						__all__.fft = fft;
-						__all__.ifft = ifft;
-					__pragma__ ('</all>')
-				}
-			}
-		}
-	);
-	__nest__ (
-		__all__,
-		'numscrypt.linalg', {
-			__all__: {
-				__inited__: false,
-				__init__: function (__all__) {
-					var ns =  __init__ (__world__.numscrypt);
-					var inv = function (a) {
-						if (a.ns_complex) {
-							return cinv (a);
-						}
-						else {
-							return rinv (a);
-						}
-					};
-					var rinv = function (a) {
-						var b = ns.hstack (tuple ([a, ns.identity (a.shape [0], a.dtype)]));
-						var d = b.data;
-						var __left0__ = b.shape;
-						var nrows = __left0__ [0];
-						var ncols = __left0__ [1];
-						for (var ipiv = 0; ipiv < nrows; ipiv++) {
-							if (!(d [ipiv * ncols + ipiv])) {
-								for (var irow = ipiv + 1; irow < nrows; irow++) {
-									if (d [irow * ncols + ipiv]) {
-										for (var icol = 0; icol < ncols; icol++) {
-											var t = d [irow * ncols + icol];
-											d [irow * ncols + icol] = b [ipiv * ncols + icol];
-											d [ipiv * ncols + icol] = t;
-										}
-										break;
-									}
-								}
-							}
-							var piv = d [ipiv * ncols + ipiv];
-							for (var icol = ipiv; icol < ncols; icol++) {
-								d [ipiv * ncols + icol] /= piv;
-							}
-							for (var irow = 0; irow < nrows; irow++) {
-								if (irow != ipiv) {
-									var factor = d [irow * ncols + ipiv];
-									for (var icol = 0; icol < ncols; icol++) {
-										d [irow * ncols + icol] -= factor * d [ipiv * ncols + icol];
-									}
-								}
-							}
-						}
-						return ns.hsplit (b, 2) [1];
-					};
-					var cinv = function (a) {
-						var b = ns.hstack (tuple ([a, ns.identity (a.shape [0], a.dtype)]));
-						var d = b.data;
-						var __left0__ = b.shape;
-						var nrows = __left0__ [0];
-						var ncols = __left0__ [1];
-						for (var ipiv = 0; ipiv < nrows; ipiv++) {
-							var ibase = 2 * (ipiv * ncols + ipiv);
-							if (!(d [ibase]) && !(d [ibase + 1])) {
-								for (var irow = ipiv + 1; irow < nrows; irow++) {
-									var ibase = 2 * (irow * ncols + ipiv);
-									if (d [ibase] || d [ibase + 1]) {
-										for (var icol = 0; icol < ncols; icol++) {
-											var ibase0 = 2 * (irow * ncols + icol);
-											var ibase1 = 2 * (ipiv * ncols + icol);
-											var tre = d [ibase0];
-											var tim = d [ibase0 + 1];
-											d [ibase0] = b [ibase1];
-											d [ibase0 + 1] = b [ibase1 + 1];
-											d [ibase1] = tre;
-											d [ibase1 + 1] = tim;
-										}
-										break;
-									}
-								}
-							}
-							var ibase = 2 * (ipiv * ncols + ipiv);
-							var pivre = d [ibase];
-							var pivim = d [ibase + 1];
-							for (var icol = ipiv; icol < ncols; icol++) {
-								var ibase = 2 * (ipiv * ncols + icol);
-								var denom = pivre * pivre + pivim * pivim;
-								var oldre = d [ibase];
-								var oldim = d [ibase + 1];
-								d [ibase] = (oldre * pivre + oldim * pivim) / denom;
-								d [ibase + 1] = (oldim * pivre - oldre * pivim) / denom;
-							}
-							for (var irow = 0; irow < nrows; irow++) {
-								if (irow != ipiv) {
-									var ibase = 2 * (irow * ncols + ipiv);
-									var facre = d [ibase];
-									var facim = d [ibase + 1];
-									for (var icol = 0; icol < ncols; icol++) {
-										var ibase0 = 2 * (irow * ncols + icol);
-										var ibase1 = 2 * (ipiv * ncols + icol);
-										d [ibase0] -= facre * d [ibase1] - facim * d [ibase1 + 1];
-										d [ibase0 + 1] -= facre * d [ibase1 + 1] + facim * d [ibase1];
-									}
-								}
-							}
-						}
-						return ns.hsplit (b, 2) [1];
-					};
-					__pragma__ ('<use>' +
-						'numscrypt' +
-					'</use>')
-					__pragma__ ('<all>')
-						__all__.cinv = cinv;
-						__all__.inv = inv;
-						__all__.rinv = rinv;
 					__pragma__ ('</all>')
 				}
 			}
@@ -3499,21 +3344,21 @@ function autotest () {
 							if (type (any) == dict) {
 								return ('{' + ', '.join (function () {
 									var __accu0__ = [];
-									var __iterable0__ = enumerate (sorted (function () {
+									var __iterator0__ = py_iter (enumerate (sorted (function () {
 										var __accu1__ = [];
-										var __iterable1__ = any.keys ();
-										for (var __index0__ = 0; __index0__ < __iterable1__.length; __index0__++) {
-											var key = __iterable1__ [__index0__];
+										var __iterator1__ = py_iter (any.keys ());
+										while (true) {
+											try {var key = py_next (__iterator1__);} catch (exception) {break;}
 											__accu1__.append (tryGetNumKey (key));
 										}
 										return __accu1__;
 									} (), __kwargdict__ ({key: (function __lambda__ (aKey) {
 										return str (aKey);
-									})})));
-									for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-										var __left0__ = __iterable0__ [__index0__];
-										var index = __left0__ [0];
-										var key = __left0__ [1];
+									})}))));
+									while (true) {
+										try {var __left0__ = py_next (__iterator0__);
+											var index = __left0__ [0];
+											var key = __left0__ [1];} catch (exception) {break;}
 										__accu0__.append ('{}: {}'.format (repr (key), repr (any [key])));
 									}
 									return __accu0__;
@@ -3524,9 +3369,9 @@ function autotest () {
 									if (len (any)) {
 										return ('{' + ', '.join (sorted (function () {
 											var __accu0__ = [];
-											var __iterable0__ = list (any);
-											for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-												var item = __iterable0__ [__index0__];
+											var __iterator0__ = py_iter (list (any));
+											while (true) {
+												try {var item = py_next (__iterator0__);} catch (exception) {break;}
 												__accu0__.append (str (item));
 											}
 											return __accu0__;
@@ -3550,9 +3395,9 @@ function autotest () {
 							var args = tuple ([].slice.apply (arguments).slice (1));
 							var item = ' '.join (function () {
 								var __accu0__ = [];
-								var __iterable0__ = args;
-								for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-									var arg = __iterable0__ [__index0__];
+								var __iterator0__ = py_iter (args);
+								while (true) {
+									try {var arg = py_next (__iterator0__);} catch (exception) {break;}
 									__accu0__.append (self.sortedRepr (arg));
 								}
 								return __accu0__;
@@ -3565,9 +3410,9 @@ function autotest () {
 							}
 						});},
 						get dump () {return __get__ (this, function (self, filePrename) {
-							var __iterable0__ = tuple ([false, true]);
-							for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-								var minified = __iterable0__ [__index0__];
+							var __iterator0__ = py_iter (tuple ([false, true]));
+							while (true) {
+								try {var minified = py_next (__iterator0__);} catch (exception) {break;}
 								var miniInfix = (minified ? '.min' : '');
 								aFile = open ('{}{}.html'.format (filePrename, miniInfix), 'w');
 								aFile.write ('<b>Status:</b>\n');
@@ -3583,20 +3428,20 @@ function autotest () {
 						get compare () {return __get__ (this, function (self) {
 							self.referenceBuffer = document.getElementById (self.referenceDivId).innerHTML.py_split (' | ');
 							var __break0__ = false;
-							var __iterable0__ = enumerate (zip (self.testBuffer, self.referenceBuffer));
-							for (var __index0__ = 0; __index0__ < __iterable0__.length; __index0__++) {
-								var __left0__ = __iterable0__ [__index0__];
-								var index = __left0__ [0];
-								var testItem = __left0__ [1][0];
-								var referenceItem = __left0__ [1][1];
+							var __iterator0__ = py_iter (enumerate (zip (self.testBuffer, self.referenceBuffer)));
+							while (true) {
+								try {var __left0__ = py_next (__iterator0__);
+									var index = __left0__ [0];
+									var testItem = __left0__ [1][0];
+									var referenceItem = __left0__ [1][1];} catch (exception) {break;}
 								if (testItem != referenceItem) {
 									document.getElementById (self.messageDivId).innerHTML = '<div style="color: {}"><b>Test failed</b></div>'.format (errorColor);
-									var __iterable1__ = tuple ([tuple ([self.referenceBuffer, self.referenceDivId, okColor]), tuple ([self.testBuffer, self.testDivId, errorColor])]);
-									for (var __index1__ = 0; __index1__ < __iterable1__.length; __index1__++) {
-										var __left0__ = __iterable1__ [__index1__];
-										var buffer = __left0__ [0];
-										var divId = __left0__ [1];
-										var accentColor = __left0__ [2];
+									var __iterator1__ = py_iter (tuple ([tuple ([self.referenceBuffer, self.referenceDivId, okColor]), tuple ([self.testBuffer, self.testDivId, errorColor])]));
+									while (true) {
+										try {var __left0__ = py_next (__iterator1__);
+											var buffer = __left0__ [0];
+											var divId = __left0__ [1];
+											var accentColor = __left0__ [2];} catch (exception) {break;}
 										var buffer = itertools.chain (buffer.__getslice__ (0, index, 1), list (['<div style="display: inline; color: {}; background-color: {}">!!!<b><i>{}</i></b></div>'.format (accentColor, highlightColor, buffer [index])]), buffer.__getslice__ (index + 1, null, 1));
 										document.getElementById (divId).innerHTML = ' | '.join (buffer);
 									}
@@ -3638,24 +3483,16 @@ function autotest () {
 		}
 	);
 	(function () {
-		var __symbols__ = ['__complex__', '__esv5__'];
+		var __symbols__ = ['__complex__', '__esv6__'];
 		var basics = {};
-		var module_fft = {};
-		var module_linalg = {};
 		var org = {};
 		__nest__ (org, 'transcrypt.autotester', __init__ (__world__.org.transcrypt.autotester));
 		__nest__ (basics, '', __init__ (__world__.basics));
-		__nest__ (module_linalg, '', __init__ (__world__.module_linalg));
-		__nest__ (module_fft, '', __init__ (__world__.module_fft));
 		var autoTester = org.transcrypt.autotester.AutoTester ();
 		autoTester.run (basics, 'basics');
-		autoTester.run (module_linalg, 'module_linalg');
-		autoTester.run (module_fft, 'module_fft');
 		autoTester.done ();
 		__pragma__ ('<use>' +
 			'basics' +
-			'module_fft' +
-			'module_linalg' +
 			'org.transcrypt.autotester' +
 		'</use>')
 		__pragma__ ('<all>')

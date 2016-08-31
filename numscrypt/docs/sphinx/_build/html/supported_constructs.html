@@ -431,6 +431,83 @@ def run (autoTester):
 </div>
 </div>
 </div>
+<div class="section" id="fourier-transform-fft-and-ifft-for-2-n-samples-using-complex-arrays">
+<h2>3.3. Fourier transform: FFT and IFFT for 2^n samples, using complex arrays<a class="headerlink" href="#fourier-transform-fft-and-ifft-for-2-n-samples-using-complex-arrays" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper container" id="testlet-module-fft">
+<div class="code-block-caption"><span class="caption-text">Testlet: module_fft</span><a class="headerlink" href="#testlet-module-fft" title="Permalink to this code">¶</a></div>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="kn">import</span> <span class="n">__main__</span><span class="p">,</span> <span class="n">__envir__</span><span class="p">,</span> <span class="n">__pragma__</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">pi</span>
+
+<span class="n">transpiled</span> <span class="o">=</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">executor_name</span> <span class="o">==</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">transpiler_name</span>
+
+
+<span class="c"># Imports for Transcrypt, resolved run time</span>
+<span class="k">if</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">executor_name</span> <span class="o">==</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">transpiler_name</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">numscrypt</span> <span class="kn">as</span> <span class="nn">num</span>
+    <span class="kn">import</span> <span class="nn">numscrypt.fft</span> <span class="kn">as</span> <span class="nn">fft</span>
+
+<span class="c"># Imports for CPython, resolved compile time</span>
+<span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;skip&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">num</span>
+<span class="kn">import</span> <span class="nn">numpy.fft</span> <span class="kn">as</span> <span class="nn">fft</span>
+<span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;noskip&#39;</span><span class="p">)</span>
+
+<span class="n">fSample</span> <span class="o">=</span> <span class="mi">4096</span>
+<span class="n">tTotal</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">fSin</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">fCos</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="k">def</span> <span class="nf">getNow</span> <span class="p">():</span>  <span class="c"># Avoid operator overloading, which would result in the dysfunctional: __new__ __call__ (Date)</span>
+    <span class="k">return</span> <span class="n">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">tCurrent</span> <span class="p">(</span><span class="n">iCurrent</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">iCurrent</span> <span class="o">/</span> <span class="n">fSample</span>
+
+<span class="k">def</span> <span class="nf">run</span> <span class="p">(</span><span class="n">autoTester</span><span class="p">):</span>
+    <span class="n">cut</span> <span class="o">=</span> <span class="mi">102</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Samples computed: {}&lt;br&gt;&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">tTotal</span>  <span class="o">*</span> <span class="n">fSample</span><span class="p">))</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Samples shown: {}&lt;br&gt;&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">cut</span><span class="p">))</span>
+
+    <span class="n">orig</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+        <span class="nb">complex</span> <span class="p">(</span><span class="mf">0.3</span> <span class="o">+</span> <span class="n">sin</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">fSin</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">cos</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">fCos</span> <span class="o">*</span> <span class="n">t</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="n">iSample</span> <span class="o">/</span> <span class="n">fSample</span>
+            <span class="k">for</span> <span class="n">iSample</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">tTotal</span> <span class="o">*</span> <span class="n">fSample</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">],</span> <span class="s">&#39;complex128&#39;</span><span class="p">)</span>
+    
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;opov&#39;</span><span class="p">)</span>
+
+    <span class="n">delta</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="o">+</span> <span class="mf">0.001j</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Original samples&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">orig</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">()[</span> <span class="p">:</span> <span class="n">cut</span><span class="p">],</span> <span class="s">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
+        <span class="n">timeStartFft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fft</span> <span class="p">(</span><span class="n">orig</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
+        <span class="n">timeStopFft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span> 
+        
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Frequencies&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">()[</span> <span class="p">:</span> <span class="n">cut</span><span class="p">],</span> <span class="s">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
+        <span class="n">timeStartIfft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span>   
+    <span class="n">reconstr</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifft</span> <span class="p">(</span><span class="n">freqs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
+        <span class="n">timeStopIfft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span>    
+    
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Reconstructed samples&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">reconstr</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">()[</span> <span class="p">:</span> <span class="n">cut</span><span class="p">],</span> <span class="s">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;noopov&#39;</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
+        <span class="k">print</span> <span class="p">(</span><span class="s">&#39;FFT for {} samples took {} ms&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">tTotal</span> <span class="o">*</span> <span class="n">fSample</span><span class="p">,</span> <span class="n">timeStopFft</span> <span class="o">-</span> <span class="n">timeStartFft</span><span class="p">))</span>
+        <span class="k">print</span> <span class="p">(</span><span class="s">&#39;IFFT for {} samples took {} ms&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">tTotal</span> <span class="o">*</span> <span class="n">fSample</span><span class="p">,</span> <span class="n">timeStopIfft</span> <span class="o">-</span> <span class="n">timeStartIfft</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 <div class="section" id="some-more-examples-interactive-tests">
 <h1>4. Some more examples: interactive tests<a class="headerlink" href="#some-more-examples-interactive-tests" title="Permalink to this headline">¶</a></h1>
@@ -564,6 +641,7 @@ document.getElementById (&#39;result&#39;) .innerHTML = result
 <li><a class="reference internal" href="#systematic-code-examples-a-guided-tour-of-numscrypt">3. Systematic code examples: a guided tour of Numscrypt</a><ul>
 <li><a class="reference internal" href="#basics-creating-and-using-arrays">3.1. Basics: creating and using arrays</a></li>
 <li><a class="reference internal" href="#linalg-matrix-inversion">3.2. Linalg: matrix inversion</a></li>
+<li><a class="reference internal" href="#fourier-transform-fft-and-ifft-for-2-n-samples-using-complex-arrays">3.3. Fourier transform: FFT and IFFT for 2^n samples, using complex arrays</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#some-more-examples-interactive-tests">4. Some more examples: interactive tests</a><ul>

@@ -11,10 +11,10 @@ import numpy as num
 __pragma__ ('noskip')
 
 def run (autoTester):
-	z = num.zeros ((4, 3, 2), 'int32')
+	z = num.zeros ((4, 3), 'int32')
 	autoTester.check ('Zeros', z.tolist (), '<br>')
 	
-	o = num.ones ((1, 2, 3))
+	o = num.ones ((4, 5))
 	autoTester.check ('Ones', o.astype ('int32') .tolist ())
 	
 	i = num.identity (3, 'int32')
@@ -23,33 +23,22 @@ def run (autoTester):
 	# shape: 2 blocks x 3 rows x 4 columns
 	
 	a = num.array ([
-		[
-			[1, 1, 2, 3],
-			[4, 5, 6, 7],
-			[8, 9, 10, 12]
-		], [
-			[100, 101, 102, 103],
-			[104, 105, 106, 107],
-			[108, 109, 110, 112]
-		]
+		[1, 1, 2, 3],
+		[4, 5, 6, 7],
+		[8, 9, 10, 12]
 	])
 	
 	autoTester.check ('Matrix a', a.tolist (), '<br>')
+	
 	autoTester.check ('Transpose of a', a.transpose () .tolist (), '<br>')
 	
 	b = num.array ([
-		[
-			[2, 2, 4, 6],
-			[8, 10, 12, 14],
-			[16, 18, 20, 24]
-		], [
-			[200, 202, 204, 206],
-			[208, 210, 212, 214],
-			[216, 218, 220, 224]
-		]
+		[2, 2, 4, 6],
+		[8, 10, 12, 14],
+		[16, 18, 20, 24]
 	])
 	
-	bp =  b.transpose ((2, 1, 0))
+	bp =  b.transpose ()
 	
 	autoTester.check ('Matrix b', b.tolist (), '<br>')
 	autoTester.check ('Permutation of b', bp.tolist (), '<br>')
@@ -60,11 +49,11 @@ def run (autoTester):
 		[9, 10, 11, 12],
 	], 'int32')
 	
-	autoTester.check ('Shape strides c', tuple (c.shape), tuple (c.strides), '<br>')
+	autoTester.check ('Shape c', tuple (c.shape), '<br>')
 	autoTester.check ('Matrix c', c.tolist (), '<br>')
 	
 	ct = c.transpose ()
-	autoTester.check ('Shape strids ct', tuple (ct.shape), tuple (ct.strides), '<br>')
+	autoTester.check ('Shape ct', tuple (ct.shape), '<br>')
 	autoTester.check ('Transpose of c', ct .tolist (), '<br>')
 
 	cs0, cs1 = num.hsplit (c, 2)
@@ -111,29 +100,29 @@ def run (autoTester):
 	
 	v0 = num.array (range (10))	
 	v1 = num.array ((1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
-	
+
 	__pragma__ ('opov')
 	
-	a [1, 0, 2] = 177
-	el = b [1, 2, 3]
-
-	bsl0 = b [1, 1 : 3, : ]
-	bsl1 = b [1 : 2, 1 : 3, :]
-	bsl2 = b [1, 1, :]
-	bsl3 = b [1, 1 : 3, 1]
-	bsl4 = b [ : , 1, 1]
-	bsl5 = b [1, 1 : 3, :]
-	bsl6 = b [1, 1 : 3, 1 : 4]
-	bsl7 = b [1, 2 : 3, 2 : 4]
+	a [1, 0] = 177
+	el = b [1, 2]
 	
-	bpsl0 = bp [1, 1 : 3, : ]
-	bpsl1 = bp [1 : 2, 1 : 3, :]
-	bpsl2 = bp [1, 1, :]
-	bpsl3 = bp [1, 1 : 3, 1]
-	bpsl4 = bp [ : , 1, 1]
-	bpsl5 = bp [3, 1 : 3, :]
-	bpsl6 = bp [2 : 4, 1 : 3, 0 : 1]
-	bpsl7 = bp [2 : 4, 2 : 3, 1 : 2]
+	bsl0 = b [1, 1 : 3]
+	bsl1 = b [1 : 2, 1 : 3]
+	bsl2 = b [1 : 2, 1]
+	bsl3 = b [1, 1 : 3]
+	bsl4 = b [ : , 1]
+	bsl5 = b [1, 1 : 3]
+	bsl6 = b [1, 1 : 3]
+	bsl7 = b [1, 2 : 3]
+
+	bpsl0 = bp [1, 1 : 3]
+	bpsl1 = bp [1 : 2, 1 : 3]
+	bpsl2 = bp [1, 0 : ]
+	bpsl3 = bp [1, 1 : 3]
+	bpsl4 = bp [ : , 1]
+	bpsl5 = bp [3, 1 : 3]
+	bpsl6 = bp [2 : 4, 1 : 3]
+	bpsl7 = bp [2 : 4, 2 : 3]
 	
 	sum = a + b
 	dif = a - b
@@ -155,7 +144,7 @@ def run (autoTester):
 	neg_a = -a
 	
 	__pragma__ ('noopov')
-	
+		
 	autoTester.check ('El a [1, 2, 3] alt', a.tolist (), '<br>')
 	autoTester.check ('El b [1, 2, 3]', el, '<br>')
 	
@@ -206,7 +195,7 @@ def run (autoTester):
 	comp_b = num.array ([
 		[6, 8 - 1j],
 		[9 + 3j, 10],
-		[11, 12 -6j]
+		[11, 12 - 6j]
 	], 'complex128')
 	comp_c = comp_a @ comp_b
 	__pragma__ ('noopov')
@@ -233,3 +222,21 @@ def run (autoTester):
 	autoTester.check ('comp_d_square', num.round (comp_d_square, 2).tolist (), '<br>')
 	autoTester.check ('comp_e_square', comp_e_square.tolist (), '<br>')
 	autoTester.check ('comp_f_square', comp_f_square.tolist (), '<br>')
+	
+	__pragma__ ('opov')
+	sliceable_a = num.array ([
+		[1, 2, 3, 4],
+		[5, 6, 7, 8],
+		[9, 10, 11, 12],
+		[13, 14, 15, 16]
+	])
+	autoTester.check ('sliceable_a', sliceable_a.tolist ())
+
+	slice_a = sliceable_a [1 : , 1 : ]
+	autoTester.check ('slice_a')
+	
+	sliceable_at = sliceable_a.transpose ()
+	slice_at = sliceable_at [1 : ]
+	
+	__pragma__ ('noopov')
+	

@@ -1,0 +1,3386 @@
+file: Module 
+	body: list 
+		element: ImportFrom 
+			module: str = org.transcrypt.stubs.browser
+			names: list 
+				element: alias 
+					name: str = *
+					asname: NoneType = None
+			level: int = 0
+		element: ImportFrom 
+			module: str = org.transcrypt.stubs.browser
+			names: list 
+				element: alias 
+					name: str = __main__
+					asname: NoneType = None
+				element: alias 
+					name: str = __envir__
+					asname: NoneType = None
+				element: alias 
+					name: str = __pragma__
+					asname: NoneType = None
+			level: int = 0
+		element: If 
+			test: Compare 
+				left: Attribute 
+					value: Name 
+						id: str = __envir__
+						ctx: Load 
+					attr: str = executor_name
+					ctx: Load 
+				ops: list 
+					element: Eq 
+				comparators: list 
+					element: Attribute 
+						value: Name 
+							id: str = __envir__
+							ctx: Load 
+						attr: str = transpiler_name
+						ctx: Load 
+			body: list 
+				element: Import 
+					names: list 
+						element: alias 
+							name: str = numscrypt
+							asname: str = num
+			orelse: list 
+		element: Expr 
+			value: Call 
+				func: Name 
+					id: str = __pragma__
+					ctx: Load 
+				args: list 
+					element: Str 
+						s: str = skip
+				keywords: list 
+		element: Import 
+			names: list 
+				element: alias 
+					name: str = numpy
+					asname: str = num
+		element: Expr 
+			value: Call 
+				func: Name 
+					id: str = __pragma__
+					ctx: Load 
+				args: list 
+					element: Str 
+						s: str = noskip
+				keywords: list 
+		element: FunctionDef 
+			name: str = run
+			args: arguments 
+				args: list 
+					element: arg 
+						arg: str = autoTester
+						annotation: NoneType = None
+				vararg: NoneType = None
+				kwonlyargs: list 
+				kw_defaults: list 
+				kwarg: NoneType = None
+				defaults: list 
+			body: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = z
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = zeros
+							ctx: Load 
+						args: list 
+							element: Tuple 
+								elts: list 
+									element: Num 
+										n: int = 4
+									element: Num 
+										n: int = 3
+								ctx: Load 
+							element: Str 
+								s: str = int32
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Zeros
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = z
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = o
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = ones
+							ctx: Load 
+						args: list 
+							element: Tuple 
+								elts: list 
+									element: Num 
+										n: int = 4
+									element: Num 
+										n: int = 5
+								ctx: Load 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Ones
+							element: Call 
+								func: Attribute 
+									value: Call 
+										func: Attribute 
+											value: Name 
+												id: str = o
+												ctx: Load 
+											attr: str = astype
+											ctx: Load 
+										args: list 
+											element: Str 
+												s: str = int32
+										keywords: list 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = i
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = identity
+							ctx: Load 
+						args: list 
+							element: Num 
+								n: int = 3
+							element: Str 
+								s: str = int32
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Identity
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = i
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = a
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = array
+							ctx: Load 
+						args: list 
+							element: List 
+								elts: list 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 1
+											element: Num 
+												n: int = 1
+											element: Num 
+												n: int = 2
+											element: Num 
+												n: int = 3
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 4
+											element: Num 
+												n: int = 5
+											element: Num 
+												n: int = 6
+											element: Num 
+												n: int = 7
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 8
+											element: Num 
+												n: int = 9
+											element: Num 
+												n: int = 10
+											element: Num 
+												n: int = 12
+										ctx: Load 
+								ctx: Load 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix a
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Transpose of a
+							element: Call 
+								func: Attribute 
+									value: Call 
+										func: Attribute 
+											value: Name 
+												id: str = a
+												ctx: Load 
+											attr: str = transpose
+											ctx: Load 
+										args: list 
+										keywords: list 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = b
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = array
+							ctx: Load 
+						args: list 
+							element: List 
+								elts: list 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 2
+											element: Num 
+												n: int = 2
+											element: Num 
+												n: int = 4
+											element: Num 
+												n: int = 6
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 8
+											element: Num 
+												n: int = 10
+											element: Num 
+												n: int = 12
+											element: Num 
+												n: int = 14
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 16
+											element: Num 
+												n: int = 18
+											element: Num 
+												n: int = 20
+											element: Num 
+												n: int = 24
+										ctx: Load 
+								ctx: Load 
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bp
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = b
+								ctx: Load 
+							attr: str = transpose
+							ctx: Load 
+						args: list 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix b
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = b
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Permutation of b
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bp
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = c
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = array
+							ctx: Load 
+						args: list 
+							element: List 
+								elts: list 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 1
+											element: Num 
+												n: int = 2
+											element: Num 
+												n: int = 3
+											element: Num 
+												n: int = 4
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 5
+											element: Num 
+												n: int = 6
+											element: Num 
+												n: int = 7
+											element: Num 
+												n: int = 8
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 9
+											element: Num 
+												n: int = 10
+											element: Num 
+												n: int = 11
+											element: Num 
+												n: int = 12
+										ctx: Load 
+								ctx: Load 
+							element: Str 
+								s: str = int32
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Shape c
+							element: Call 
+								func: Name 
+									id: str = tuple
+									ctx: Load 
+								args: list 
+									element: Attribute 
+										value: Name 
+											id: str = c
+											ctx: Load 
+										attr: str = shape
+										ctx: Load 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix c
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = c
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = ct
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = c
+								ctx: Load 
+							attr: str = transpose
+							ctx: Load 
+						args: list 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Shape ct
+							element: Call 
+								func: Name 
+									id: str = tuple
+									ctx: Load 
+								args: list 
+									element: Attribute 
+										value: Name 
+											id: str = ct
+											ctx: Load 
+										attr: str = shape
+										ctx: Load 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Transpose of c
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = ct
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Tuple 
+							elts: list 
+								element: Name 
+									id: str = cs0
+									ctx: Store 
+								element: Name 
+									id: str = cs1
+									ctx: Store 
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = hsplit
+							ctx: Load 
+						args: list 
+							element: Name 
+								id: str = c
+								ctx: Load 
+							element: Num 
+								n: int = 2
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix cs0
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = cs0
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix cs1
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = cs1
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = ci
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = hstack
+							ctx: Load 
+						args: list 
+							element: Tuple 
+								elts: list 
+									element: Name 
+										id: str = cs1
+										ctx: Load 
+									element: Name 
+										id: str = cs0
+										ctx: Load 
+								ctx: Load 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix ci
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = ci
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Tuple 
+							elts: list 
+								element: Name 
+									id: str = cts0
+									ctx: Store 
+								element: Name 
+									id: str = cts1
+									ctx: Store 
+								element: Name 
+									id: str = cts2
+									ctx: Store 
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = hsplit
+							ctx: Load 
+						args: list 
+							element: Name 
+								id: str = ct
+								ctx: Load 
+							element: Num 
+								n: int = 3
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix cts0
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = cts0
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix cts1
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = cts1
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix cts2
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = cts2
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = cti
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = hstack
+							ctx: Load 
+						args: list 
+							element: Tuple 
+								elts: list 
+									element: Name 
+										id: str = cts2
+										ctx: Load 
+									element: Name 
+										id: str = cts1
+										ctx: Load 
+									element: Name 
+										id: str = cts0
+										ctx: Load 
+								ctx: Load 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix ci
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = cti
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = d
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = array
+							ctx: Load 
+						args: list 
+							element: List 
+								elts: list 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 13
+											element: Num 
+												n: int = 14
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 15
+											element: Num 
+												n: int = 16
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 17
+											element: Num 
+												n: int = 18
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 19
+											element: Num 
+												n: int = 20
+										ctx: Load 
+								ctx: Load 
+							element: Str 
+								s: str = int32
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix d
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = d
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = dt
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = d
+								ctx: Load 
+							attr: str = transpose
+							ctx: Load 
+						args: list 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Permutation of d
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = dt
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Tuple 
+							elts: list 
+								element: Name 
+									id: str = ds0
+									ctx: Store 
+								element: Name 
+									id: str = ds1
+									ctx: Store 
+								element: Name 
+									id: str = ds2
+									ctx: Store 
+								element: Name 
+									id: str = ds3
+									ctx: Store 
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = vsplit
+							ctx: Load 
+						args: list 
+							element: Name 
+								id: str = d
+								ctx: Load 
+							element: Num 
+								n: int = 4
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix ds0
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = ds0
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix ds1
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = ds1
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix ds2
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = ds2
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix ds3
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = ds3
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = di
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = vstack
+							ctx: Load 
+						args: list 
+							element: Tuple 
+								elts: list 
+									element: Name 
+										id: str = ds3
+										ctx: Load 
+									element: Name 
+										id: str = ds2
+										ctx: Load 
+									element: Name 
+										id: str = ds1
+										ctx: Load 
+									element: Name 
+										id: str = ds0
+										ctx: Load 
+								ctx: Load 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix di
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = di
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Tuple 
+							elts: list 
+								element: Name 
+									id: str = dts0
+									ctx: Store 
+								element: Name 
+									id: str = dts1
+									ctx: Store 
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = vsplit
+							ctx: Load 
+						args: list 
+							element: Name 
+								id: str = dt
+								ctx: Load 
+							element: Num 
+								n: int = 2
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix dts0
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = dts0
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix dts1
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = dts1
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = dti
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = vstack
+							ctx: Load 
+						args: list 
+							element: Tuple 
+								elts: list 
+									element: Name 
+										id: str = dts1
+										ctx: Load 
+									element: Name 
+										id: str = dts0
+										ctx: Load 
+								ctx: Load 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix dti
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = dti
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = v0
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = array
+							ctx: Load 
+						args: list 
+							element: Call 
+								func: Name 
+									id: str = range
+									ctx: Load 
+								args: list 
+									element: Num 
+										n: int = 10
+								keywords: list 
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = v1
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = array
+							ctx: Load 
+						args: list 
+							element: Tuple 
+								elts: list 
+									element: Num 
+										n: int = 1
+									element: Num 
+										n: int = 2
+									element: Num 
+										n: int = 3
+									element: Num 
+										n: int = 1
+									element: Num 
+										n: int = 2
+									element: Num 
+										n: int = 3
+									element: Num 
+										n: int = 1
+									element: Num 
+										n: int = 2
+									element: Num 
+										n: int = 3
+									element: Num 
+										n: int = 1
+								ctx: Load 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Name 
+							id: str = __pragma__
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = opov
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Subscript 
+							value: Name 
+								id: str = a
+								ctx: Load 
+							slice: Index 
+								value: Tuple 
+									elts: list 
+										element: Num 
+											n: int = 1
+										element: Num 
+											n: int = 0
+									ctx: Load 
+							ctx: Store 
+					value: Num 
+						n: int = 177
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = el
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: Index 
+							value: Tuple 
+								elts: list 
+									element: Num 
+										n: int = 1
+									element: Num 
+										n: int = 2
+								ctx: Load 
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl0
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl1
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 2
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl2
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 2
+									step: NoneType = None
+								element: Index 
+									value: Num 
+										n: int = 1
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl3
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl4
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+								element: Index 
+									value: Num 
+										n: int = 1
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl5
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl6
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bsl7
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 2
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl0
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl1
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 2
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl2
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 0
+									upper: NoneType = None
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl3
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 1
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl4
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+								element: Index 
+									value: Num 
+										n: int = 1
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl5
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Index 
+									value: Num 
+										n: int = 3
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl6
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: Num 
+										n: int = 2
+									upper: Num 
+										n: int = 4
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = bpsl7
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = bp
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: Num 
+										n: int = 2
+									upper: Num 
+										n: int = 4
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 2
+									upper: Num 
+										n: int = 3
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = sum
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Add 
+						right: Name 
+							id: str = b
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = dif
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Sub 
+						right: Name 
+							id: str = b
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = prod
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Mult 
+						right: Name 
+							id: str = b
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = quot
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Div 
+						right: Name 
+							id: str = b
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = dot
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = c
+							ctx: Load 
+						op: MatMult 
+						right: Name 
+							id: str = d
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = vsum
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = v0
+							ctx: Load 
+						op: Add 
+						right: Name 
+							id: str = v1
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = vel
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = vsum
+							ctx: Load 
+						slice: Index 
+							value: Num 
+								n: int = 6
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Subscript 
+							value: Name 
+								id: str = vsum
+								ctx: Load 
+							slice: Index 
+								value: Num 
+									n: int = 6
+							ctx: Store 
+					value: Num 
+						n: int = 70
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = mul_a3
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Mult 
+						right: Num 
+							n: int = 3
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = mul_3a
+							ctx: Store 
+					value: BinOp 
+						left: Num 
+							n: int = 3
+						op: Mult 
+						right: Name 
+							id: str = a
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = div_a3
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Div 
+						right: Num 
+							n: float = 3.1234567
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = div_3a
+							ctx: Store 
+					value: BinOp 
+						left: Num 
+							n: float = 3.1234567
+						op: Div 
+						right: Name 
+							id: str = a
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = add_a3
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Add 
+						right: Num 
+							n: int = 3
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = add_3a
+							ctx: Store 
+					value: BinOp 
+						left: Num 
+							n: int = 3
+						op: Add 
+						right: Name 
+							id: str = a
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = sub_a3
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = a
+							ctx: Load 
+						op: Sub 
+						right: Num 
+							n: int = 3
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = sub_3a
+							ctx: Store 
+					value: BinOp 
+						left: Num 
+							n: int = 3
+						op: Sub 
+						right: Name 
+							id: str = a
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = neg_a
+							ctx: Store 
+					value: UnaryOp 
+						op: USub 
+						operand: Name 
+							id: str = a
+							ctx: Load 
+				element: Expr 
+					value: Call 
+						func: Name 
+							id: str = __pragma__
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = noopov
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = El a [1, 2, 3] alt
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = El b [1, 2, 3]
+							element: Name 
+								id: str = el
+								ctx: Load 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b0
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl0
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b1
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl1
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b2
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl2
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b3
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl3
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b4
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl4
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b5
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl5
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b6
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl6
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl b7
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bsl7
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp0
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl0
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp1
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl1
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp2
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl2
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp3
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl3
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp4
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl4
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp5
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl5
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp6
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl6
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Sl bp7
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = bpsl7
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix sum
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = sum
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix difference
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = dif
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix product
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = prod
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix quotient
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = quot
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Matrix dotproduct
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = dot
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Vector
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = v0
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Vector
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = v1
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = El sum old
+							element: Name 
+								id: str = vel
+								ctx: Load 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = Vector sum new
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = vsum
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = mul_a3
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = mul_a3
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = mul_3a
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = mul_3a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = div_a3
+							element: Call 
+								func: Attribute 
+									value: Call 
+										func: Attribute 
+											value: Name 
+												id: str = num
+												ctx: Load 
+											attr: str = round
+											ctx: Load 
+										args: list 
+											element: Name 
+												id: str = div_a3
+												ctx: Load 
+											element: Num 
+												n: int = 2
+										keywords: list 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = div_3a
+							element: Call 
+								func: Attribute 
+									value: Call 
+										func: Attribute 
+											value: Name 
+												id: str = num
+												ctx: Load 
+											attr: str = round
+											ctx: Load 
+										args: list 
+											element: Name 
+												id: str = div_3a
+												ctx: Load 
+											element: Num 
+												n: int = 2
+										keywords: list 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = add_a3
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = add_a3
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = add_3a
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = add_3a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = sub_a3
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = sub_a3
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = sub_3a
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = sub_3a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = neg_a
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = neg_a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Name 
+							id: str = __pragma__
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = opov
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = comp_a
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = array
+							ctx: Load 
+						args: list 
+							element: List 
+								elts: list 
+									element: List 
+										elts: list 
+											element: BinOp 
+												left: Num 
+													n: int = 1
+												op: Add 
+												right: Num 
+													n: complex = 2j
+											element: BinOp 
+												left: Num 
+													n: int = 2
+												op: Sub 
+												right: Num 
+													n: complex = 1j
+											element: Num 
+												n: int = 3
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 4
+											element: BinOp 
+												left: Num 
+													n: int = 5
+												op: Add 
+												right: Num 
+													n: complex = 3j
+											element: Num 
+												n: int = 7
+										ctx: Load 
+								ctx: Load 
+							element: Str 
+								s: str = complex128
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = comp_b
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = array
+							ctx: Load 
+						args: list 
+							element: List 
+								elts: list 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 6
+											element: BinOp 
+												left: Num 
+													n: int = 8
+												op: Sub 
+												right: Num 
+													n: complex = 1j
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: BinOp 
+												left: Num 
+													n: int = 9
+												op: Add 
+												right: Num 
+													n: complex = 3j
+											element: Num 
+												n: int = 10
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 11
+											element: BinOp 
+												left: Num 
+													n: int = 12
+												op: Sub 
+												right: Num 
+													n: complex = 6j
+										ctx: Load 
+								ctx: Load 
+							element: Str 
+								s: str = complex128
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = comp_c
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = comp_a
+							ctx: Load 
+						op: MatMult 
+						right: Name 
+							id: str = comp_b
+							ctx: Load 
+				element: Expr 
+					value: Call 
+						func: Name 
+							id: str = __pragma__
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = noopov
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = comp_a
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = comp_a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = comp_b
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = comp_b
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = comp_c
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = comp_c
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Name 
+							id: str = __pragma__
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = opov
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = comp_a_square
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = comp_a
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+								element: Slice 
+									lower: NoneType = None
+									upper: Num 
+										n: int = 2
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = comp_b_square
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = comp_b
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: NoneType = None
+									step: NoneType = None
+								element: Slice 
+									lower: NoneType = None
+									upper: NoneType = None
+									step: NoneType = None
+						ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = comp_c_square
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = comp_a_square
+							ctx: Load 
+						op: Mult 
+						right: Name 
+							id: str = comp_b_square
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = comp_d_square
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = comp_a_square
+							ctx: Load 
+						op: Div 
+						right: Name 
+							id: str = comp_b_square
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = comp_e_square
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = comp_a_square
+							ctx: Load 
+						op: Add 
+						right: Name 
+							id: str = comp_b_square
+							ctx: Load 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = comp_f_square
+							ctx: Store 
+					value: BinOp 
+						left: Name 
+							id: str = comp_a_square
+							ctx: Load 
+						op: Sub 
+						right: Name 
+							id: str = comp_b_square
+							ctx: Load 
+				element: Expr 
+					value: Call 
+						func: Name 
+							id: str = __pragma__
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = noopov
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = comp_a_square
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = comp_a_square
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = comp_b_square
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = comp_b_square
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = comp_c_square
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = comp_c_square
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = comp_d_square
+							element: Call 
+								func: Attribute 
+									value: Call 
+										func: Attribute 
+											value: Name 
+												id: str = num
+												ctx: Load 
+											attr: str = round
+											ctx: Load 
+										args: list 
+											element: Name 
+												id: str = comp_d_square
+												ctx: Load 
+											element: Num 
+												n: int = 2
+										keywords: list 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = comp_e_square
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = comp_e_square
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = comp_f_square
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = comp_f_square
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+							element: Str 
+								s: str = <br>
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Name 
+							id: str = __pragma__
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = opov
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = sliceable_a
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = num
+								ctx: Load 
+							attr: str = array
+							ctx: Load 
+						args: list 
+							element: List 
+								elts: list 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 1
+											element: Num 
+												n: int = 2
+											element: Num 
+												n: int = 3
+											element: Num 
+												n: int = 4
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 5
+											element: Num 
+												n: int = 6
+											element: Num 
+												n: int = 7
+											element: Num 
+												n: int = 8
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 9
+											element: Num 
+												n: int = 10
+											element: Num 
+												n: int = 11
+											element: Num 
+												n: int = 12
+										ctx: Load 
+									element: List 
+										elts: list 
+											element: Num 
+												n: int = 13
+											element: Num 
+												n: int = 14
+											element: Num 
+												n: int = 15
+											element: Num 
+												n: int = 16
+										ctx: Load 
+								ctx: Load 
+						keywords: list 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = sliceable_a
+							element: Call 
+								func: Attribute 
+									value: Name 
+										id: str = sliceable_a
+										ctx: Load 
+									attr: str = tolist
+									ctx: Load 
+								args: list 
+								keywords: list 
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = slice_a
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = sliceable_a
+							ctx: Load 
+						slice: ExtSlice 
+							dims: list 
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: NoneType = None
+									step: NoneType = None
+								element: Slice 
+									lower: Num 
+										n: int = 1
+									upper: NoneType = None
+									step: NoneType = None
+						ctx: Load 
+				element: Expr 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = autoTester
+								ctx: Load 
+							attr: str = check
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = slice_a
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = sliceable_at
+							ctx: Store 
+					value: Call 
+						func: Attribute 
+							value: Name 
+								id: str = sliceable_a
+								ctx: Load 
+							attr: str = transpose
+							ctx: Load 
+						args: list 
+						keywords: list 
+				element: Assign 
+					targets: list 
+						element: Name 
+							id: str = slice_at
+							ctx: Store 
+					value: Subscript 
+						value: Name 
+							id: str = sliceable_at
+							ctx: Load 
+						slice: Slice 
+							lower: Num 
+								n: int = 1
+							upper: NoneType = None
+							step: NoneType = None
+						ctx: Load 
+				element: Expr 
+					value: Call 
+						func: Name 
+							id: str = __pragma__
+							ctx: Load 
+						args: list 
+							element: Str 
+								s: str = noopov
+						keywords: list 
+			decorator_list: list 
+			returns: NoneType = None

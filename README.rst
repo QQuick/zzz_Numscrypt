@@ -1,5 +1,4 @@
-Numscrypt is a port of a small part of NumPy to Transcrypt using JavaScript typed arrays.
-While Numscrypt is no match for Numpy, some attention has been payed to speed.
+Numscrypt is a port of a small part of NumPy to Transcrypt using JavaScript typed arrays. While Numscrypt is no match for Numpy, some attention has been payed to speed.
 
 Whereas NumPy often has multiple way to do things, Numscrypt focuses on one obvious way. The clearest example is the NumPy type *matrix* type, that is a specialization of *ndarray* with confusingly deviating use of some operators. In Transcrypt *matrix* is deliberately left out, to keep it lean.
 
