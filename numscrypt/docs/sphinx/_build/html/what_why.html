@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. Numscrypt: what and why &mdash; Transcrypt 0.0.33 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.33',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Transcrypt 0.0.33 documentation" href="index.html" />
+    <link rel="next" title="2. Getting started" href="installation_use.html" />
+    <link rel="prev" title="Welcome to Numscrypt’s documentation!" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installation_use.html" title="2. Getting started"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Numscrypt’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.33 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="numscrypt-what-and-why">
+<h1>1. Numscrypt: what and why<a class="headerlink" href="#numscrypt-what-and-why" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-numscrypt">
+<h2>1.1. What is Numscrypt<a class="headerlink" href="#what-is-numscrypt" title="Permalink to this headline">¶</a></h2>
+<p>Numscrypt is a port of a small but relevant part of NumPy to Transcrypt using JavaScript typed arrays. As with Transcrypt, the eventual goal is not to completely copy a desktop programming environment. Rather a lean and mean subset is sought that can still be very useful, e.g. for science demo&#8217;s in the browser or for small to medium scale computations. Whereas NumPy often has multiple way to do things, Numscrypt focuses on one obvious way. The clearest example is the NumPy type <em>matrix</em> type, that is a specialization of <em>ndarray</em> with confusingly deviating use of some operators. In Transcrypt <em>matrix</em> is deliberately left out, to keep the code lean.</p>
+<p>While the first minor versions of Numscrypt fully supported views, strides, offsets and arrays of arbitrary dimension, this proved to be too slow when compiled to JavaScript. In pursuit a good balance between familiarity and efficiency, requirements with respect to Numpy compatibility have been relaxed.  Arrays can only have one or two dimensions and are always stored in natural storage order per row. This means that views are not supported and slices are always copies, since that enables them to have natural storage order as well, enabling fast access. Despite the fact that they are used in some branches of physics, arrays with more than two dimensions are relatively rare. If they are needed, in most cases a one- or multi-dimensional list of 2D arrays will do just as well.</p>
+<p>The speed benefits gained from these simplifications are enormous when forced to compile to something like JavaScript rather than C++. With broad applicability in mind, not only is there a direct gain of execution speed by simplifying matters, but also the source code of Numscrypt is much simpler. This code simplicity increases the chance of future optimization using asm.js, simd.js or GPGPU. The newly introduced type annotations of Python may well facilitate introduction of such technologies in a robust manner.</p>
+<p>In Numscrypt, speed is generally favored over memory conservation. In computations like inversion, non-elementwise matrix multiplication, convolution and FFT, the ability to store very large arrays is pointless if computations are slow. So the choice for speed over memory conservation illustrates the fact that Numscrypt is meant for non-trivial computations on small to medium scale, rather than for data reshuffling on medium to large scale.</p>
+</div>
+<div class="section" id="computing-in-a-browser">
+<h2>1.2. Computing in a browser?<a class="headerlink" href="#computing-in-a-browser" title="Permalink to this headline">¶</a></h2>
+<p>At first Numscrypt was purely meant as a tool for education and demonstration. The fact that some serious numerical math libraries for JavaScript do exist, sometimes using weird tricks to mimic operator overloading, led to reconsideration. Although computing in JavaScript in a browser certainly restricts performance and scalabilty compared to computing in C++ on dedicated manycore hardware, this doesn&#8217;t mean that there aren&#8217;t many useful, serious applications. If, given the existence of several JavaScript math libraries, there appears to be a need for computing in the browser, why not enable doing so in a language that is familiar to scientists and technicians, and has decent solutions for e.g. operator overloading and slicing notation. The partial parity between Numscrypt and Numpy is another attractive aspect of this approach.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/numscrypt_logo_sphinx.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Subjects</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. Numscrypt: what and why</a><ul>
+<li><a class="reference internal" href="#what-is-numscrypt">1.1. What is Numscrypt</a></li>
+<li><a class="reference internal" href="#computing-in-a-browser">1.2. Computing in a browser?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to Numscrypt&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation_use.html"
+                        title="next chapter">2. Getting started</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/what_why.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="installation_use.html" title="2. Getting started"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Numscrypt’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.33 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Jacques de Hooge.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

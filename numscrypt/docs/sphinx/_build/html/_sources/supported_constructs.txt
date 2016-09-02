@@ -6,24 +6,30 @@ Numscrypt currently supports:
 - ns_settings.optim_space setting added, default is False. Setting it to True is DISADVISED, since it will result in slow code.
 
 - ndarray with
-	- dtype int32, float32 and float64, views using offset and strides 
-	- multi-dimensional indexing
-	- multi-dimensional slicing
-	- reshape
+	- one or two dimensions
+	- dtype int32, float32, float64, complex32 and complex64
+	- indexing
+	- simple and extended slicing
 	- astype
 	- tolist
+	- real
+	- imag
 	- __repr__ and __str__
 	- transpose
 	- overloaded operators: * / + - @, mixing of ndarray and scalar expressions
 	
 - empty, array, copy
 - hsplit, vsplit
-- hstack.vstack
+- hstack, vstack
 - zeros, ones, identity
 
 - linalg with
 	- matrix inversion
 
+- FFT with
+	- FFT for 2^n complex samples
+	- IFFT for 2^n complex samples
+	
 Systematic code examples: a guided tour of Numscrypt
 =====================================================
 
