@@ -23,6 +23,8 @@
 						return iCurrent / fSample;
 					};
 					var run = function (autoTester) {
+						var delta = __add__ (0.001, complex (0, 0.001));
+						autoTester.check ('<br>------ 1D ------<br>');
 						var cut = 102;
 						autoTester.check ('Samples computed: {}<br>'.format (tTotal * fSample));
 						autoTester.check ('Samples shown: {}<br>'.format (cut));
@@ -41,7 +43,6 @@
 							}
 							return __accu0__;
 						} (), 'complex128');
-						var delta = __add__ (0.001, complex (0, 0.001));
 						__call__ (autoTester.check, 'Original samples', __getslice__ (__call__ (__call__ (num.round, __add__ (orig, delta), 3).tolist), 0, cut, 1), '<br>');
 						if (transpiled) {
 							var timeStartFft = __call__ (getNow);
@@ -63,6 +64,30 @@
 							print ('FFT for {} samples took {} ms'.format (tTotal * fSample, timeStopFft - timeStartFft));
 							print ('IFFT for {} samples took {} ms'.format (tTotal * fSample, timeStopIfft - timeStartIfft));
 						}
+						autoTester.check ('<br>------ 2D ------<br>');
+						var orig2 = __call__ (num.zeros, tuple ([128, 128]), 'complex128');
+						orig2.__setitem__ ([tuple ([32, 96, 1]), tuple ([32, 96, 1])], __call__ (num.ones, tuple ([64, 64]), 'complex128'));
+						__call__ (autoTester.check, 'Original samples', __call__ (__call__ (num.round, __add__ (orig2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])]).tolist), '<br>');
+						if (transpiled) {
+							var timeStartFft = __call__ (getNow);
+						}
+						var freqs2 = __call__ (fft.fft2, orig2);
+						if (transpiled) {
+							var timeStopFft = __call__ (getNow);
+						}
+						__call__ (autoTester.check, 'Frequencies', __call__ (__call__ (num.round, __add__ (freqs2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])]).tolist), '<br>');
+						if (transpiled) {
+							var timeStartIfft = __call__ (getNow);
+						}
+						var reconstr2 = __call__ (fft.ifft2, freqs2);
+						if (transpiled) {
+							var timeStopIfft = __call__ (getNow);
+						}
+						if (transpiled) {
+							__call__ (print, __call__ ('FFT2 for {} samples took {} ms'.format, orig2.size, __sub__ (timeStopFft, timeStartFft)));
+							__call__ (print, __call__ ('IFFT2 for {} samples took {} ms'.format, orig2.size, __sub__ (timeStopIfft, timeStartIfft)));
+						}
+						__call__ (autoTester.check, 'Reconstructed samples', __call__ (__call__ (num.round, __add__ (reconstr2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])]).tolist), '<br>');
 					};
 					__pragma__ ('<use>' +
 						'math' +

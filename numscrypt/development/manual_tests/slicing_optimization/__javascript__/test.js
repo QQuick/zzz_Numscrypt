@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2016-09-02 19:49:22
+// Transcrypt'ed from Python, 2016-09-03 17:12:56
 function test () {
 	var __all__ = {};
 	var __world__ = __all__;
@@ -2204,7 +2204,7 @@ function test () {
 				__init__: function (__all__) {
 					var itertools = {};
 					__nest__ (itertools, '', __init__ (__world__.itertools));
-					var ns_ctors = dict ({'int32': Int32Array, 'float32': Float32Array, 'float64': Float64Array, 'complex64': Float32Array, 'complex128': Float64Array});
+					var ns_ctors = dict ({'int32': Int32Array, 'float32': Float32Array, 'float64': Float64Array});
 					var ns_complex = function (dtype) {
 						return __in__ (dtype, tuple (['complex64', 'complex128']));
 					};
@@ -2366,7 +2366,7 @@ function test () {
 										while (true) {
 											try {var isource = py_next (__iterator0__);} catch (exception) {break;}
 											result.realbuf [itarget] = self.realbuf [isource];
-											result.imagbuf [itarget++] = self.realbuf [isource];
+											result.imagbuf [itarget++] = self.imagbuf [isource];
 										}
 									}
 									else {
@@ -2513,7 +2513,7 @@ function test () {
 										while (true) {
 											try {var itarget = py_next (__iterator0__);} catch (exception) {break;}
 											self.realbuf [itarget] = value.realbuf [isource];
-											self.imagbuf [itarget] = value.realbuf [isource++];
+											self.imagbuf [itarget] = value.imagbuf [isource++];
 										}
 									}
 									else {
@@ -2540,6 +2540,26 @@ function test () {
 								var colkey = key [1];
 								var rowistup = type (rowkey) == tuple;
 								var colistup = type (colkey) == tuple;
+								if (rowistup) {
+									if (rowkey [1] == null) {
+										rowkey [1] = self.ns_nrows;
+									}
+									else {
+										if (rowkey [1] < 0) {
+											rowkey [1] += self.ns_nrows;
+										}
+									}
+								}
+								if (colistup) {
+									if (colkey [1] == null) {
+										colkey [1] = self.ns_ncols;
+									}
+									else {
+										if (colkey [1] < 0) {
+											colkey [1] += self.ns_ncols;
+										}
+									}
+								}
 								if (rowistup || colistup) {
 									if (!(rowistup)) {
 										var isource = 0;
@@ -2562,13 +2582,12 @@ function test () {
 									}
 									else {
 										if (!(colistup)) {
-											var result = empty (list ([(rowkey [1] - rowkey [0]) / rowkey [2]]), self.dtype);
 											var isource = 0;
 											if (self.ns_complex) {
 												var __iterator0__ = py_iter (range (...rowkey));
 												while (true) {
 													try {var itargetrow = py_next (__iterator0__);} catch (exception) {break;}
-													var itarget = self.ns_ncols * isourcerow + colkey;
+													var itarget = self.ns_ncols * itargetrow + colkey;
 													self.realbuf [itarget] = value.realbuf [isource];
 													self.imagbuf [itarget] = value.imagbuf [isource++];
 												}

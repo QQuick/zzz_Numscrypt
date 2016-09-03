@@ -15,8 +15,6 @@ ns_ctors = {
 	'int32': Int32Array,
 	'float32': Float32Array,
 	'float64': Float64Array,
-	'complex64': Float32Array,
-	'complex128': Float64Array
 }
 
 def ns_complex (dtype):
@@ -155,7 +153,7 @@ class ndarray:
 				if self.ns_complex:
 					for isource in range (*self.shape):
 						result.realbuf [itarget] = self.realbuf [isource]
-						result.imagbuf [__postinc__ (itarget)] = self.realbuf [isource]
+						result.imagbuf [__postinc__ (itarget)] = self.imagbuf [isource]
 				else:
 					for isource in range (*self.shape):
 						result.realbuf [__postinc__ (itarget)] = self.realbuf [isource]
@@ -257,7 +255,7 @@ class ndarray:
 				if self.ns_complex:
 					for itarget in range (*self.shape):
 						self.realbuf [itarget] = value.realbuf [isource]
-						self.imagbuf [itarget] = value.realbuf [__postinc__ (isource)]
+						self.imagbuf [itarget] = value.imagbuf [__postinc__ (isource)]
 				else:
 					for itarget in range (*self.shape):
 						self.realbuf [itarget] = value.realbuf [__postinc__ (isource)]
@@ -274,9 +272,22 @@ class ndarray:
 		else:
 			rowkey = key [0]
 			colkey = key [1]
+			
 			rowistup = type (rowkey) == tuple
 			colistup = type (colkey) == tuple
 			
+			if rowistup:
+				if rowkey [1] == None:
+					rowkey [1] = self.ns_nrows
+				elif rowkey [1] < 0:
+					rowkey [1] += self.ns_nrows
+					
+			if colistup:
+				if colkey [1] == None:
+					colkey [1] = self.ns_ncols
+				elif colkey [1] < 0:
+					colkey [1] += self.ns_ncols
+					
 			if rowistup or colistup:
 				# Slice of multi dim array
 				
@@ -291,12 +302,10 @@ class ndarray:
 						for itargetcol in range (*colkey):
 							result.realbuf [self.ns_ncols * rowkey + itargetcol] = self.realbuf [__postinc__ (isource)]
 				elif not colistup:
-					result = empty ([(rowkey [1] - rowkey [0]) / rowkey [2]], self.dtype)
-					
 					isource = 0
 					if self.ns_complex:
 						for itargetrow in range (*rowkey):
-							itarget = self.ns_ncols * isourcerow + colkey
+							itarget = self.ns_ncols * itargetrow + colkey
 							self.realbuf [itarget] = value.realbuf [isource]
 							self.imagbuf [itarget] = value.imagbuf [__postinc__ (isource)]
 					else:

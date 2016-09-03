@@ -34,6 +34,7 @@ What's new
 
 N.B. Always use the newest version of Transcrypt to be able to use the newest features of Numscrypt.
 
+- FFT2 and IFFT2 (2D Fast Fourier Transform for complex arrays)
 - Complete redesign, currently only tested on Windows (but should run on Linux as well)
 
 Other packages you might like

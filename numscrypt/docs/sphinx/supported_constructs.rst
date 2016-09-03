@@ -29,6 +29,8 @@ Numscrypt currently supports:
 - FFT with
 	- FFT for 2^n complex samples
 	- IFFT for 2^n complex samples
+	- FFT2 for 2^n x 2^n complex samples
+	- IFFT2 for 2^n x 2^n complex samples
 	
 Systematic code examples: a guided tour of Numscrypt
 =====================================================
@@ -54,8 +56,8 @@ Linalg: matrix inversion
 	:tab-width: 4
 	:caption: Testlet: module_linalg
 	
-Fourier transform: FFT and IFFT for 2^n samples, using complex arrays
----------------------------------------------------------------------
+Fourier transform: FFT(2) and IFFT(2) for 2^n (x 2^n) samples, using complex arrays
+-----------------------------------------------------------------------------------
 
 .. literalinclude:: ../../development/automated_tests/ndarray/module_fft/__init__.py
 	:tab-width: 4

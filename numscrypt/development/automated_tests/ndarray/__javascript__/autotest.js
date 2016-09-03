@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2016-09-02 19:49:13
+// Transcrypt'ed from Python, 2016-09-03 17:12:47
 function autotest () {
 	var __all__ = {};
 	var __world__ = __all__;
@@ -2484,6 +2484,8 @@ function autotest () {
 						return iCurrent / fSample;
 					};
 					var run = function (autoTester) {
+						var delta = __add__ (0.001, complex (0, 0.001));
+						autoTester.check ('<br>------ 1D ------<br>');
 						var cut = 102;
 						autoTester.check ('Samples computed: {}<br>'.format (tTotal * fSample));
 						autoTester.check ('Samples shown: {}<br>'.format (cut));
@@ -2502,7 +2504,6 @@ function autotest () {
 							}
 							return __accu0__;
 						} (), 'complex128');
-						var delta = __add__ (0.001, complex (0, 0.001));
 						__call__ (autoTester.check, 'Original samples', __getslice__ (__call__ (__call__ (num.round, __add__ (orig, delta), 3).tolist), 0, cut, 1), '<br>');
 						if (transpiled) {
 							var timeStartFft = __call__ (getNow);
@@ -2524,6 +2525,30 @@ function autotest () {
 							print ('FFT for {} samples took {} ms'.format (tTotal * fSample, timeStopFft - timeStartFft));
 							print ('IFFT for {} samples took {} ms'.format (tTotal * fSample, timeStopIfft - timeStartIfft));
 						}
+						autoTester.check ('<br>------ 2D ------<br>');
+						var orig2 = __call__ (num.zeros, tuple ([128, 128]), 'complex128');
+						orig2.__setitem__ ([tuple ([32, 96, 1]), tuple ([32, 96, 1])], __call__ (num.ones, tuple ([64, 64]), 'complex128'));
+						__call__ (autoTester.check, 'Original samples', __call__ (__call__ (num.round, __add__ (orig2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])]).tolist), '<br>');
+						if (transpiled) {
+							var timeStartFft = __call__ (getNow);
+						}
+						var freqs2 = __call__ (fft.fft2, orig2);
+						if (transpiled) {
+							var timeStopFft = __call__ (getNow);
+						}
+						__call__ (autoTester.check, 'Frequencies', __call__ (__call__ (num.round, __add__ (freqs2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])]).tolist), '<br>');
+						if (transpiled) {
+							var timeStartIfft = __call__ (getNow);
+						}
+						var reconstr2 = __call__ (fft.ifft2, freqs2);
+						if (transpiled) {
+							var timeStopIfft = __call__ (getNow);
+						}
+						if (transpiled) {
+							__call__ (print, __call__ ('FFT2 for {} samples took {} ms'.format, orig2.size, __sub__ (timeStopFft, timeStartFft)));
+							__call__ (print, __call__ ('IFFT2 for {} samples took {} ms'.format, orig2.size, __sub__ (timeStopIfft, timeStartIfft)));
+						}
+						__call__ (autoTester.check, 'Reconstructed samples', __call__ (__call__ (num.round, __add__ (reconstr2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])]).tolist), '<br>');
 					};
 					__pragma__ ('<use>' +
 						'math' +
@@ -2615,7 +2640,7 @@ function autotest () {
 				__init__: function (__all__) {
 					var itertools = {};
 					__nest__ (itertools, '', __init__ (__world__.itertools));
-					var ns_ctors = dict ({'int32': Int32Array, 'float32': Float32Array, 'float64': Float64Array, 'complex64': Float32Array, 'complex128': Float64Array});
+					var ns_ctors = dict ({'int32': Int32Array, 'float32': Float32Array, 'float64': Float64Array});
 					var ns_complex = function (dtype) {
 						return __in__ (dtype, tuple (['complex64', 'complex128']));
 					};
@@ -2777,7 +2802,7 @@ function autotest () {
 										while (true) {
 											try {var isource = py_next (__iterator0__);} catch (exception) {break;}
 											result.realbuf [itarget] = self.realbuf [isource];
-											result.imagbuf [itarget++] = self.realbuf [isource];
+											result.imagbuf [itarget++] = self.imagbuf [isource];
 										}
 									}
 									else {
@@ -2924,7 +2949,7 @@ function autotest () {
 										while (true) {
 											try {var itarget = py_next (__iterator0__);} catch (exception) {break;}
 											self.realbuf [itarget] = value.realbuf [isource];
-											self.imagbuf [itarget] = value.realbuf [isource++];
+											self.imagbuf [itarget] = value.imagbuf [isource++];
 										}
 									}
 									else {
@@ -2951,6 +2976,26 @@ function autotest () {
 								var colkey = key [1];
 								var rowistup = type (rowkey) == tuple;
 								var colistup = type (colkey) == tuple;
+								if (rowistup) {
+									if (rowkey [1] == null) {
+										rowkey [1] = self.ns_nrows;
+									}
+									else {
+										if (rowkey [1] < 0) {
+											rowkey [1] += self.ns_nrows;
+										}
+									}
+								}
+								if (colistup) {
+									if (colkey [1] == null) {
+										colkey [1] = self.ns_ncols;
+									}
+									else {
+										if (colkey [1] < 0) {
+											colkey [1] += self.ns_ncols;
+										}
+									}
+								}
 								if (rowistup || colistup) {
 									if (!(rowistup)) {
 										var isource = 0;
@@ -2973,13 +3018,12 @@ function autotest () {
 									}
 									else {
 										if (!(colistup)) {
-											var result = empty (list ([(rowkey [1] - rowkey [0]) / rowkey [2]]), self.dtype);
 											var isource = 0;
 											if (self.ns_complex) {
 												var __iterator0__ = py_iter (range (...rowkey));
 												while (true) {
 													try {var itargetrow = py_next (__iterator0__);} catch (exception) {break;}
-													var itarget = self.ns_ncols * isourcerow + colkey;
+													var itarget = self.ns_ncols * itargetrow + colkey;
 													self.realbuf [itarget] = value.realbuf [isource];
 													self.imagbuf [itarget] = value.imagbuf [isource++];
 												}
@@ -3583,7 +3627,7 @@ function autotest () {
 						
 						this.n = n;
 						this.levels = -1;
-					
+						
 						for (var i = 0; i < 32; i++) {
 							if (1 << i == n) {
 								this.levels = i;  // Equal to log2(n)
@@ -3660,25 +3704,71 @@ function autotest () {
 					}
 					
 					
-					var fft = function (a) {
-						var fftn = new FFTNayuki (a.size);
+					var fft = function (a, ns_fftn) {
+						if (typeof ns_fftn == 'undefined' || (ns_fftn != null && ns_fftn .__class__ == __kwargdict__)) {;
+							var ns_fftn = null;
+						};
+						var fftn = (ns_fftn ? ns_fftn : new FFTNayuki (a.size));
 						var result = ns.copy (a);
 						fftn.forward (result.real ().realbuf, result.imag ().realbuf);
 						return result;
 					};
-					var ifft = function (a) {
-						var fftn = new FFTNayuki (a.size);
+					var ifft = function (a, ns_fftn) {
+						if (typeof ns_fftn == 'undefined' || (ns_fftn != null && ns_fftn .__class__ == __kwargdict__)) {;
+							var ns_fftn = null;
+						};
+						var fftn = (ns_fftn ? ns_fftn : new FFTNayuki (a.size));
 						var real = a.real ().__div__ (a.size);
 						var imag = a.imag ().__div__ (a.size);
 						fftn.inverse (real.realbuf, imag.realbuf);
 						return ns.ndarray (real.shape, a.dtype, real.realbuf, imag.realbuf);
+					};
+					var fft2 = function (a, ns_fftn) {
+						if (typeof ns_fftn == 'undefined' || (ns_fftn != null && ns_fftn .__class__ == __kwargdict__)) {;
+							var ns_fftn = null;
+						};
+						if (a.ns_nrows != a.ns_ncols) {
+							var __except0__ = "Matrix isn't square";
+							__except0__.__cause__ = null;
+							throw __except0__;
+						}
+						var fftn = (ns_fftn ? ns_fftn : new FFTNayuki (a.ns_nrows));
+						var result = ns.empty (a.shape, a.dtype);
+						for (var irow = 0; irow < a.ns_nrows; irow++) {
+							result.__setitem__ ([irow, tuple ([0, null, 1])], __call__ (fft, a.__getitem__ ([irow, tuple ([0, null, 1])]), fftn));
+						}
+						for (var icol = 0; icol < a.ns_ncols; icol++) {
+							result.__setitem__ ([tuple ([0, null, 1]), icol], __call__ (fft, result.__getitem__ ([tuple ([0, null, 1]), icol]), fftn));
+						}
+						return result;
+					};
+					var ifft2 = function (a, ns_fftn) {
+						if (typeof ns_fftn == 'undefined' || (ns_fftn != null && ns_fftn .__class__ == __kwargdict__)) {;
+							var ns_fftn = null;
+						};
+						if (a.ns_nrows != a.ns_ncols) {
+							var __except0__ = "Matrix isn't square";
+							__except0__.__cause__ = null;
+							throw __except0__;
+						}
+						var fftn = (ns_fftn ? ns_fftn : new FFTNayuki (a.ns_nrows));
+						var result = ns.empty (a.shape, a.dtype);
+						for (var irow = 0; irow < a.ns_nrows; irow++) {
+							result.__setitem__ ([irow, tuple ([0, null, 1])], __call__ (ifft, a.__getitem__ ([irow, tuple ([0, null, 1])]), fftn));
+						}
+						for (var icol = 0; icol < a.ns_ncols; icol++) {
+							result.__setitem__ ([tuple ([0, null, 1]), icol], __call__ (ifft, result.__getitem__ ([tuple ([0, null, 1]), icol]), fftn));
+						}
+						return result;
 					};
 					__pragma__ ('<use>' +
 						'numscrypt' +
 					'</use>')
 					__pragma__ ('<all>')
 						__all__.fft = fft;
+						__all__.fft2 = fft2;
 						__all__.ifft = ifft;
+						__all__.ifft2 = ifft2;
 					__pragma__ ('</all>')
 				}
 			}
