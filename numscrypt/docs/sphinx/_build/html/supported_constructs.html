@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. Currently available features &mdash; Transcrypt 0.0.34 documentation</title>
+    <title>3. Currently available features &mdash; Transcrypt 0.0.35 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.34',
+        VERSION:     '0.0.35',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Transcrypt 0.0.34 documentation" href="index.html" />
+    <link rel="top" title="Transcrypt 0.0.35 documentation" href="index.html" />
     <link rel="prev" title="2. Getting started" href="installation_use.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="installation_use.html" title="2. Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.34 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.35 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -49,8 +49,6 @@
 <h1>3. Currently available features<a class="headerlink" href="#currently-available-features" title="Permalink to this headline">¶</a></h1>
 <p>Numscrypt currently supports:</p>
 <ul>
-<li><p class="first">ns_settings.optim_space setting added, default is False. Setting it to True is DISADVISED, since it will result in slow code.</p>
-</li>
 <li><dl class="first docutils">
 <dt>ndarray with</dt>
 <dd><ul class="first last simple">
@@ -102,8 +100,8 @@
 <h1>4. Systematic code examples: a guided tour of Numscrypt<a class="headerlink" href="#systematic-code-examples-a-guided-tour-of-numscrypt" title="Permalink to this headline">¶</a></h1>
 <p>One ready-to-run code example is worth more than ten lengthy descriptions. The <em>autotest and demo suite</em>, that is part of the distribution, is a collection of sourcecode fragments called <em>testlets</em>. These testlets are used for automated regression testing of Numscrypt against NumPy.
 Since they systematically cover all the library constructs, they are also very effective as a learning tool. The testlets are arranged alphabetically by subject.</p>
-<div class="literal-block-wrapper container" id="autotest-numcrypt-autotest-demo-suite">
-<div class="code-block-caption"><span class="caption-text">Autotest: Numcrypt autotest demo suite</span><a class="headerlink" href="#autotest-numcrypt-autotest-demo-suite" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper container" id="autotest-numscrypt-autotest-demo-suite">
+<div class="code-block-caption"><span class="caption-text">Autotest: Numscrypt autotest demo suite</span><a class="headerlink" href="#autotest-numscrypt-autotest-demo-suite" title="Permalink to this code">¶</a></div>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.transcrypt.autotester</span>
 
 <span class="kn">import</span> <span class="nn">basics</span>
@@ -145,8 +143,6 @@ def run (autoTester):
     
     i = num.identity (3, &#39;int32&#39;)
     autoTester.check (&#39;Identity&#39;, i.tolist (), &#39;&lt;br&gt;&#39;)
-    
-    # shape: 2 blocks x 3 rows x 4 columns
     
     a = num.array ([
         [1, 1, 2, 3],
@@ -569,12 +565,9 @@ def run (autoTester):
 </div>
 <div class="section" id="some-more-examples-interactive-tests">
 <h1>5. Some more examples: interactive tests<a class="headerlink" href="#some-more-examples-interactive-tests" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="ns-settings-optimize-space">
-<h2>5.1. ns_settings.optimize_space<a class="headerlink" href="#ns-settings-optimize-space" title="Permalink to this headline">¶</a></h2>
-<p>For time critical operations like <em>&#64;</em> and <em>inv</em>, slicing operations are avoided.
-For <em>&#64;</em> this happens by copying arrays to &#8216;natural stride order&#8217;.
-Setting ns_settings.optimize_space to True will avoid this copying to save memory space.
-In general this is DISADVISED, since it will considerably slow down execution of the <em>&#64;</em> operator, which is O (n^3).</p>
+<div class="section" id="benchmark">
+<h2>5.1. Benchmark<a class="headerlink" href="#benchmark" title="Permalink to this headline">¶</a></h2>
+<p>Performance of operations like <em>&#64;</em> and <em>inv</em></p>
 <div class="literal-block-wrapper container" id="benchmark-slicing-optimization">
 <div class="code-block-caption"><span class="caption-text">Benchmark: slicing_optimization</span><a class="headerlink" href="#benchmark-slicing-optimization" title="Permalink to this code">¶</a></div>
 <div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
@@ -695,7 +688,7 @@ document.getElementById (&#39;result&#39;) .innerHTML = result
 </ul>
 </li>
 <li><a class="reference internal" href="#some-more-examples-interactive-tests">5. Some more examples: interactive tests</a><ul>
-<li><a class="reference internal" href="#ns-settings-optimize-space">5.1. ns_settings.optimize_space</a></li>
+<li><a class="reference internal" href="#benchmark">5.1. Benchmark</a></li>
 </ul>
 </li>
 </ul>
@@ -736,7 +729,7 @@ document.getElementById (&#39;result&#39;) .innerHTML = result
         <li class="right" >
           <a href="installation_use.html" title="2. Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.34 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.35 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -3,8 +3,6 @@ Currently available features
 
 Numscrypt currently supports:
 
-- ns_settings.optim_space setting added, default is False. Setting it to True is DISADVISED, since it will result in slow code.
-
 - ndarray with
 	- one or two dimensions
 	- dtype int32, float32, float64, complex32 and complex64
@@ -40,7 +38,7 @@ Since they systematically cover all the library constructs, they are also very e
 
 .. literalinclude:: ../../development/automated_tests/ndarray/autotest.py
 	:tab-width: 4
-	:caption: Autotest: Numcrypt autotest demo suite
+	:caption: Autotest: Numscrypt autotest demo suite
 
 Basics: creating and using arrays
 ---------------------------------
@@ -66,13 +64,10 @@ Fourier transform: FFT(2) and IFFT(2) for 2^n (x 2^n) samples, using complex arr
 Some more examples: interactive tests
 =====================================
 
-ns_settings.optimize_space
---------------------------
+Benchmark
+---------
 
-For time critical operations like *@* and *inv*, slicing operations are avoided.
-For *@* this happens by copying arrays to 'natural stride order'.
-Setting ns_settings.optimize_space to True will avoid this copying to save memory space.
-In general this is DISADVISED, since it will considerably slow down execution of the *@* operator, which is O (n^3).
+Performance of operations like *@* and *inv*
 
 .. literalinclude:: ../../development/manual_tests/slicing_optimization/test.py
 	:tab-width: 4
