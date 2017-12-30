@@ -28,14 +28,14 @@ To experiment with Numscrypt yourself:
 Troubleshooting checklist
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Problem installing NumPy. To be able to test back to back with CPython, NumPy has to be installed into Python 3.5. On Linux and OSX the simplest way to achieve this, is to use `miniconda <http://conda.pydata.org/miniconda.html>`_.
-2. Problem installing Numscrypt into the right version of Python. Numscrypt and Transcrypt require Python 3.5. To be certain that the right version of Python is picked for installation, on Windows install with:
+1. Problem installing NumPy. To be able to test back to back with CPython, NumPy has to be installed into Python 3.6. On Linux and OSX the simplest way to achieve this, is to use `miniconda <http://conda.pydata.org/miniconda.html>`_.
+2. Problem installing Numscrypt into the right version of Python. Numscrypt and Transcrypt require Python 3.6. To be certain that the right version of Python is picked for installation, on Windows install with:
 
-   *python35 -m pip install Transcrypt*
+   *python36 -m pip install Transcrypt*
 
    On Linux install with:
 
-   *python3.5 -m pip install Transcrypt*
+   *python3.6 -m pip install Transcrypt*
 
-   Preferably use the miniconda installation of Python 3.5 as described earlier in this checklist.
+   Preferably use the miniconda installation of Python 3.6 as described earlier in this checklist.
    Use the --upgrade switch to upgrade rather than first-time install, as described in `pip's documentation <https://pip.pypa.io/en/stable/>`_.
