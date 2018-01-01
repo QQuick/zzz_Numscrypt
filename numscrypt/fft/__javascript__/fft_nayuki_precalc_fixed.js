@@ -23,7 +23,7 @@
  *
  * Slightly restructured by Chris Cannam, cannam@all-day-breakfast.com
  *
- * Fix added by Jacques de Hooge, jdeh@geatec.com: 'this' added to inverse, indentation repaired
+ * Fix added by Jacques de Hooge, jdeh@transcrypt.org: 'this' added to inverse, indentation repaired
  */
 
 // "use strict";
