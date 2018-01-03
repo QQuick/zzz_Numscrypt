@@ -1,4 +1,5 @@
 import numscrypt as ns
+import numscrypt.linalg.eigen_mpmath as eigen
 
 def inv (a):
 	# Work directly with flat data atoms in natural order speeds up by factor 70 (!)
@@ -104,4 +105,8 @@ def cinv (a):	# for speed, don't use 'complex' or operator overloading
 					
 	# Chop of left matrix, return right matrix
 	return ns.hsplit (b, 2)[1]
-	
+    
+def eig (a):
+    E, ER = eigen.eig (a)
+    return ns.array (E, 'complex64'), ER
+    

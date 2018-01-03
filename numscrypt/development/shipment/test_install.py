@@ -26,6 +26,7 @@ def copyCode (relPath):
 copyCode ('__init__.py')
 copyCode ('__base__.py')
 copyCode ('random.py')
-copyCode ('linalg.py')
+copyCode ('linalg/__init__.py')
+copyCode ('linalg/eigen_mpmath.py')
 copyCode ('fft/__init__.py')
 copyCode ('fft/__javascript__/fft_nayuki_precalc_fixed.js')

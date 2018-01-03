@@ -40,10 +40,13 @@
 #
 ##################################################################################################
 
+# __pragma__ ('opov')
+
 # BEGIN compatibility stuff
 
 from math import *
 import cmath
+from numscrypt import *
 
 def isinf (x):  # !!! Todo
     return False
@@ -53,12 +56,9 @@ def hypot (x, y):
     
 ctx_eps = 1e-15
 ctx_dps = 15
-
-def abs (c):
-    return hypot (c.real, c.imag)
     
 ctx_one = 1
-ctx_prec = 15
+ctx_prec = 53
 
 def ctx_ldexp (x, n):
     return x * 2**n
@@ -119,7 +119,7 @@ def hessenberg_reduce_0(A, T):
     # the upper right part of A (including diagonal and subdiagonal) becomes H.
 
 
-    n = A.rows
+    n = A.shape[0]
     if n <= 2: return
 
     for i in range(n-1, 1, -1):
@@ -151,7 +151,7 @@ def hessenberg_reduce_0(A, T):
 
         F = A[i,i-1]
         f = abs(F)
-        G = sqrt(H)
+        G = cmath.sqrt(H)
         A[i,i-1] = - G * scale
 
         if f == 0:
@@ -162,11 +162,14 @@ def hessenberg_reduce_0(A, T):
             A[i,i-1] *= ff
 
         H += G * f
-        H = 1 / sqrt(H)
+        H = 1 / cmath.sqrt(H)
 
         T[i] *= H
         for k in range(i - 1):
             A[i,k] *= H
+                    
+        print (666)
+        print (A)
 
         for j in range(i):
             # apply housholder transformation (from right)
@@ -190,8 +193,6 @@ def hessenberg_reduce_0(A, T):
             for k in range(i-1):
                 A[k,j] -= G * A[i,k].conjugate()
 
-
-
 def hessenberg_reduce_1(A, T):
     """
     This routine forms the unitary matrix Q described in hessenberg_reduce_0.
@@ -203,17 +204,20 @@ def hessenberg_reduce_1(A, T):
       T    (input) On input, T is the same array as delivered by hessenberg_reduce_0.
     """
 
-    n = A.rows
+    n = A.shape[0]
 
     if n == 1:
-        A[0,0] = 1
+        A[0,0] = complex (1)
         return
 
-    A[0,0] = A[1,1] = 1
-    A[0,1] = A[1,0] = 0
+    A[0,0] = A[1,1] = complex (1)
+    A[0,1] = A[1,0] = complex (0)
+
+    print (77777774)
+    print (A)
 
     for i in range(2, n):
-        if T[i] != 0:
+        if T[i] != complex (0):     # !!! Conversion shouldn't be needed
 
             for j in range(i):
                 G = T[i] * A[i-1,j]
@@ -228,6 +232,7 @@ def hessenberg_reduce_1(A, T):
         for j in range(i):
             A[j,i] = A[i,j] = 0
 
+            
 def hessenberg(A, overwrite_a = False):
     """
     This routine computes the Hessenberg decomposition of a square matrix A.
@@ -263,18 +268,18 @@ def hessenberg(A, overwrite_a = False):
     return value:   (Q, H)
     """
 
-    n = A.rows
+    n = A.shape[0]
 
     if n == 1:
         return (array([[1]], A.dtype), A)
 
     if not overwrite_a:
-        A = A.copy()
+        A = copy (A)
 
     T = empty((n, 1), A.dtype)
 
     hessenberg_reduce_0(A, T)
-    Q = A.copy()
+    Q = copy (A.copy)
     hessenberg_reduce_1(Q, T)
 
     for x in range(n):
@@ -330,7 +335,7 @@ def qr_step(n0, n1, A, Q, shift):
     #
     # the matrix on the left is our Givens rotation.
 
-    n = A.shape [0]
+    n = A.shape[0]
 
     # first step
 
@@ -342,8 +347,8 @@ def qr_step(n0, n1, A, Q, shift):
 
     if v == 0:
         v = 1
-        c = 1
-        s = 0
+        c = complex (1)
+        s = complex (0)
     else:
         c /= v
         s /= v
@@ -352,6 +357,7 @@ def qr_step(n0, n1, A, Q, shift):
         # apply givens rotation from the left
         x = A[n0  ,k]
         y = A[n0+1,k]
+
         A[n0  ,k] = c.conjugate() * x + s.conjugate() * y
         A[n0+1,k] =           -s  * x +            c  * y
 
@@ -406,15 +412,13 @@ def qr_step(n0, n1, A, Q, shift):
             A[k,j+1] =             c  * x +            s  * y
             A[k,j+2] = -s.conjugate() * x + c.conjugate() * y
 
-        if not isinstance(Q, bool): # ??? Not sure Transcrypt will curently handle this correctly
+        if not isinstance(Q, bool):
             for k in range(n):
                 # eigenvectors
                 x = Q[k,j+1]
                 y = Q[k,j+2]
                 Q[k,j+1] =             c  * x +            s  * y
                 Q[k,j+2] = -s.conjugate() * x + c.conjugate() * y
-
-
 
 def hessenberg_qr(A, Q):
     """
@@ -435,14 +439,14 @@ def hessenberg_qr(A, Q):
                 false, in which case the unitary matrix Q is not computated.
     """
 
-    n = A.rows
+    n = A.shape[0]
 
     norm = 0
     for x in range(n):
         for y in range(min(x+2, n)):
-            norm += A[y,x].real ** 2 + A[y,x].imag ** 2
-    norm = ctx.sqrt(norm) / n
-
+            norm += A[y,x].real * A[y,x].real + A[y,x].imag * A[y,x].imag
+    norm = sqrt(norm) / n
+    
     if norm == 0:
         return
 
@@ -450,24 +454,33 @@ def hessenberg_qr(A, Q):
     n1 = n
 
     eps = ctx_eps / (100 * n)
+    
     maxits = ctx_dps * 4
 
-    its = totalits = 0
+    its = totalits = 0                           
 
-    while 1:
+    while True:
         # kressner p.32 algo 3
         # the active submatrix is A[n0:n1,n0:n1]
 
         k = n0
 
+        console.log (111, 'k n1', k, n1)
+        
         while k + 1 < n1:
-            s = abs(A[k,k].real) + abs(A[k,k].imag) + abs(A[k+1,k+1].real) + A[k+1,k+1].imag)
+            s = abs(A[k,k].real) + abs(A[k,k].imag) + abs(A[k+1,k+1].real) + abs (A[k+1,k+1].imag)
+
             if s < eps * norm:
                 s = norm
+                
+            console.log ('ctx_eps s eps norm abs', ctx_eps, s, eps, norm, abs (A[k+1,k]))                
+                
             if abs(A[k+1,k]) < eps * s:
                 break
             k += 1
-
+     
+        console.log ('k, n0 n1', k, n0, n1)
+     
         if k + 1 < n1:
             # deflation found at position (k+1, k)
 
@@ -520,10 +533,12 @@ def hessenberg_qr(A, Q):
 
             qr_step(n0, n1, A, Q, shift)
 
+            console.log ('its maxits', its, maxits)
+            
             if its > maxits:
                 raise RuntimeError("qr: failed to converge after %d steps" % its)
 
-def schur(ctx, A, overwrite_a = False):
+def schur(A, overwrite_a = False):
     """
     This routine computes the Schur decomposition of a square matrix A.
     Given A, an unitary matrix Q is determined such that
@@ -560,18 +575,18 @@ def schur(ctx, A, overwrite_a = False):
     warning: The Schur decomposition is not unique.
     """
 
-    n = A.shape [0]
+    n = A.shape[0]
 
     if n == 1:
         return (array([[1]], A.dtype), A)
 
     if not overwrite_a:
-        A = A.copy()
+        A = copy (A)
 
     T = empty((n, 1), A.dtype)
 
     hessenberg_reduce_0(A, T)
-    Q = A.copy()
+    Q = copy (A)
     hessenberg_reduce_1(Q, T)
 
     for x in range(n):
@@ -583,7 +598,7 @@ def schur(ctx, A, overwrite_a = False):
     return Q, A
 
 
-def eig_tr_r(ctx, A):
+def eig_tr_r(A):
     """
     This routine calculates the right eigenvectors of an upper right triangular matrix.
 
@@ -598,13 +613,13 @@ def eig_tr_r(ctx, A):
 
     # this subroutine is inspired by the lapack routines ctrevc.f,clatrs.f
 
-    n = A.rows
-
-    ER = identity(n, dtype = A.dtype)
+    n = A.shape[0] 
+    
+    ER = identity(n, A.dtype)
 
     eps = ctx_eps
 
-    unfl = ctx.ldexp(ctx_one, -ctx_prec * 30)
+    unfl = ctx_ldexp(ctx_one, -ctx_prec * 30)
     # since mpmath effectively has no limits on the exponent, we simply scale doubles up
     # original double has prec*20
 
@@ -616,7 +631,7 @@ def eig_tr_r(ctx, A):
     for i in range(1, n):
         s = A[i,i]
 
-        smin = max(eps * abs(s), smlnum)    # ??? Does max works for complex? Should it?
+        smin = max(eps * abs(s), smlnum)
 
         for j in range(i - 1, -1, -1):
 
@@ -625,11 +640,12 @@ def eig_tr_r(ctx, A):
                 r += A[j,k] * ER[k,i]
 
             t = A[j,j] - s
-            if abs(t) < smin:               # ??? Does abs works for complex? Should it?
+            if abs(t) < smin:
                 t = smin
 
             r = -r / t
-            ER[j,i] = r
+            
+            ER[j,i] = complex (r)
 
             rmax = max(rmax, abs(r))
             if rmax > simin:
@@ -656,18 +672,18 @@ def eig_tr_l(A):
     return value:  EL
     """
 
-    n = A.rows
+    n = A.shape[0]
 
-    EL = identity(n, dtype = A.dtype)
+    EL = identity(n, A.dtype)
 
     eps = ctx_eps
 
-    unfl = ctx_ldexp(ctx_one, -ctx_prec * 30)   # ??? Underflow?
+    unfl = ctx_ldexp(ctx_one, -ctx_prec * 30)
     # since mpmath effectively has no limits on the exponent, we simply scale doubles up
     # original double has prec*20
 
     smlnum = unfl * (n / eps)
-    simin = 1 / sqrt(eps)
+    simin = 1 / cmath.sqrt(eps)
 
     rmax = 1
 
@@ -701,7 +717,7 @@ def eig_tr_l(A):
 
     return EL
 
-def eig(ctx, A, left = False, right = True, overwrite_a = False):
+def eig(A, left = False, right = True, overwrite_a = False):
     """
     This routine computes the eigenvalues and optionally the left and right
     eigenvectors of a square matrix A. Given A, a vector E and matrices ER
@@ -764,7 +780,7 @@ def eig(ctx, A, left = False, right = True, overwrite_a = False):
       - eig_sort for sorting of eigenvalues and eigenvectors
     """
 
-    n = A.rows
+    n = A.shape[0]
 
     if n == 1:
         if left and (not right):
@@ -776,25 +792,25 @@ def eig(ctx, A, left = False, right = True, overwrite_a = False):
         return ([A[0]], array([[1]], A.dtype), array([[1]], A.dtype))
 
     if not overwrite_a:
-        A = A.copy()
+        A = copy (A)
 
-    T = zeros(n, 1)
+    T = zeros((n, 1), 'complex64')
 
     hessenberg_reduce_0(A, T)
 
     if left or right:
-        Q = A.copy()
+        Q = copy (A)
         hessenberg_reduce_1(Q, T)
     else:
         Q = False
-
+        
     for x in range(n):
         for y in range(x + 2, n):
-            A[y,x] = 0
+            A[y,x] = complex (0)
 
     hessenberg_qr(A, Q)
-
-    E = [0 for i in range(n)]
+    
+    E = [complex (0) for i in range(n)]
     for i in range(n):
         E[i] = A[i,i]
 
@@ -803,10 +819,10 @@ def eig(ctx, A, left = False, right = True, overwrite_a = False):
 
     if left:
         EL = eig_tr_l(A)
-        EL = EL @ Q.conj().transpose()
+        EL = EL @ Q.conjugate().transpose()
 
     if right:
-        ER = eig_tr_r(ctx, A)
+        ER = eig_tr_r(A)
         ER = Q @ ER
 
     if left and (not right):
@@ -817,6 +833,7 @@ def eig(ctx, A, left = False, right = True, overwrite_a = False):
 
     return (E, EL, ER)
 
+'''
 def eig_sort(ctx, E, EL = False, ER = False, f = "real"):
     """
     This routine sorts the eigenvalues and eigenvectors delivered by ``eig``.
@@ -827,7 +844,7 @@ def eig_sort(ctx, E, EL = False, ER = False, f = "real"):
       ER : the right eigenvectors as delivered by eig, or false
       f  : either a string ("real" sort by increasing real part, "imag" sort by
            increasing imag part, "abs" sort by absolute value) or a function
-           mapping complexs to the reals, i.e. ``f = lambda x: -mp.re(x) ``
+           mapping complexes to the reals, i.e. ``f = lambda x: -mp.re(x) ``
            would sort the eigenvalues by decreasing real part.
 
     return values:
@@ -907,3 +924,5 @@ def eig_sort(ctx, E, EL = False, ER = False, f = "real"):
         return (E, EL)
 
     return (E, EL, ER)
+'''
+
