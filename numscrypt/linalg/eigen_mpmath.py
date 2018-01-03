@@ -117,13 +117,12 @@ def hessenberg_reduce_0(A, T):
     # in the lower left part of A (excluding the diagonal and subdiagonal).
     # the last entry of v is stored in T.
     # the upper right part of A (including diagonal and subdiagonal) becomes H.
-
-
+    
     n = A.shape[0]
     if n <= 2: return
 
     for i in range(n-1, 1, -1):
-
+        
         # scale the vector
 
         scale = 0
@@ -136,8 +135,8 @@ def hessenberg_reduce_0(A, T):
             
         if scale == 0 or isinf(scale_inv):
             # sadly there are floating point numbers not equal to zero whose reciprocal is infinity
-            T[i] = 0
-            A[i,i-1] = 0
+            T[i] = complex (0)
+            A[i,i-1] = complex (0)
             continue
 
         # calculate parameters for housholder transformation
@@ -153,7 +152,7 @@ def hessenberg_reduce_0(A, T):
         f = abs(F)
         G = cmath.sqrt(H)
         A[i,i-1] = - G * scale
-
+        
         if f == 0:
             T[i] = G
         else:
@@ -163,25 +162,26 @@ def hessenberg_reduce_0(A, T):
 
         H += G * f
         H = 1 / cmath.sqrt(H)
-
+        
         T[i] *= H
         for k in range(i - 1):
             A[i,k] *= H
-                    
-        print (666)
-        print (A)
-
+        
         for j in range(i):
             # apply housholder transformation (from right)
 
             G = T[i].conjugate() * A[j,i-1]
+
+            
             for k in range(i-1):
                 G += A[i,k].conjugate() * A[j,k]
 
+                
             A[j,i-1] -= G * T[i]
             for k in range(i-1):
                 A[j,k] -= G * A[i,k]
 
+        
         for j in range(n):
             # apply housholder transformation (from left)
 
@@ -213,9 +213,6 @@ def hessenberg_reduce_1(A, T):
     A[0,0] = A[1,1] = complex (1)
     A[0,1] = A[1,0] = complex (0)
 
-    print (77777774)
-    print (A)
-
     for i in range(2, n):
         if T[i] != complex (0):     # !!! Conversion shouldn't be needed
 
@@ -228,9 +225,9 @@ def hessenberg_reduce_1(A, T):
                 for k in range(i-1):
                     A[k,j] -= G * A[i,k].conjugate()
 
-        A[i,i] = 1
+        A[i,i] = complex (1)
         for j in range(i):
-            A[j,i] = A[i,j] = 0
+            A[j,i] = A[i,j] = complex (0)
 
             
 def hessenberg(A, overwrite_a = False):
@@ -276,7 +273,7 @@ def hessenberg(A, overwrite_a = False):
     if not overwrite_a:
         A = copy (A)
 
-    T = empty((n, 1), A.dtype)
+    T = empty((n,), A.dtype) # !!! n, 1 -> n
 
     hessenberg_reduce_0(A, T)
     Q = copy (A.copy)
@@ -334,7 +331,7 @@ def qr_step(n0, n1, A, Q, shift):
     #         [-s   c ]  [s]   [0]
     #
     # the matrix on the left is our Givens rotation.
-
+    
     n = A.shape[0]
 
     # first step
@@ -360,7 +357,7 @@ def qr_step(n0, n1, A, Q, shift):
 
         A[n0  ,k] = c.conjugate() * x + s.conjugate() * y
         A[n0+1,k] =           -s  * x +            c  * y
-
+    
     for k in range(min(n1, n0+3)):
         # apply givens rotation from the right
         x = A[k,n0  ]
@@ -377,41 +374,41 @@ def qr_step(n0, n1, A, Q, shift):
             Q[k,n0+1] = -s.conjugate() * x + c.conjugate() * y
 
     # chase the bulge
-
+    
     for j in range(n0, n1 - 2):
         # calculate givens rotation
 
         c = A[j+1,j]
         s = A[j+2,j]
 
-        v = hypot(hypot(c.real, c.imag), hypot(s.real, s.imag))
+        v = complex (hypot(hypot(c.real, c.imag), hypot(s.real, s.imag)))
 
         if v == 0:
             A[j+1,j] = 0
-            v = 1
-            c = 1
-            s = 0
+            v = complex (1)
+            c = complex (1)
+            s = complex (0)
         else:
             A[j+1,j] = v
             c /= v
             s /= v
 
-        A[j+2,j] = 0
-
+        A[j+2,j] = complex (0)
+    
         for k in range(j+1, n):
             # apply givens rotation from the left
             x = A[j+1,k]
             y = A[j+2,k]
             A[j+1,k] = c.conjugate() * x + s.conjugate() * y
             A[j+2,k] =           -s  * x +            c  * y
-
+    
         for k in range(min(n1, j+4)):
             # apply givens rotation from the right
             x = A[k,j+1]
             y = A[k,j+2]
             A[k,j+1] =             c  * x +            s  * y
             A[k,j+2] = -s.conjugate() * x + c.conjugate() * y
-
+    
         if not isinstance(Q, bool):
             for k in range(n):
                 # eigenvectors
@@ -419,6 +416,8 @@ def qr_step(n0, n1, A, Q, shift):
                 y = Q[k,j+2]
                 Q[k,j+1] =             c  * x +            s  * y
                 Q[k,j+2] = -s.conjugate() * x + c.conjugate() * y
+
+
 
 def hessenberg_qr(A, Q):
     """
@@ -464,27 +463,24 @@ def hessenberg_qr(A, Q):
         # the active submatrix is A[n0:n1,n0:n1]
 
         k = n0
-
-        console.log (111, 'k n1', k, n1)
         
         while k + 1 < n1:
             s = abs(A[k,k].real) + abs(A[k,k].imag) + abs(A[k+1,k+1].real) + abs (A[k+1,k+1].imag)
 
             if s < eps * norm:
                 s = norm
+
                 
-            console.log ('ctx_eps s eps norm abs', ctx_eps, s, eps, norm, abs (A[k+1,k]))                
+            print ('ctx_eps s eps norm ak ak+1', ctx_eps, s, eps, norm, A[k,k], A[k+1,k+1])                
                 
             if abs(A[k+1,k]) < eps * s:
                 break
             k += 1
      
-        console.log ('k, n0 n1', k, n0, n1)
-     
         if k + 1 < n1:
             # deflation found at position (k+1, k)
 
-            A[k+1,k] = 0
+            A[k+1,k] = complex (0)  # !!! Make this unneeded, the complex, that is
             n0 = k + 1
 
             its = 0
@@ -507,6 +503,7 @@ def hessenberg_qr(A, Q):
                 # exceptional shift
                 shift = norm
             else:
+                
                 #    A = [ a b ]       det(x-A)=x*x-x*tr(A)+det(A)
                 #        [ c d ]
                 #
@@ -532,8 +529,8 @@ def hessenberg_qr(A, Q):
             totalits += 1
 
             qr_step(n0, n1, A, Q, shift)
-
-            console.log ('its maxits', its, maxits)
+            
+            print ('its maxits', its, maxits)
             
             if its > maxits:
                 raise RuntimeError("qr: failed to converge after %d steps" % its)
@@ -583,7 +580,7 @@ def schur(A, overwrite_a = False):
     if not overwrite_a:
         A = copy (A)
 
-    T = empty((n, 1), A.dtype)
+    T = empty((n,), A.dtype) # !!! n, 1 -> n
 
     hessenberg_reduce_0(A, T)
     Q = copy (A)
@@ -794,16 +791,17 @@ def eig(A, left = False, right = True, overwrite_a = False):
     if not overwrite_a:
         A = copy (A)
 
-    T = zeros((n, 1), 'complex64')
+    T = zeros((n,), 'complex64')
 
     hessenberg_reduce_0(A, T)
 
     if left or right:
         Q = copy (A)
-        hessenberg_reduce_1(Q, T)
+        hessenberg_reduce_1(Q, T) 
     else:
         Q = False
         
+            
     for x in range(n):
         for y in range(x + 2, n):
             A[y,x] = complex (0)
