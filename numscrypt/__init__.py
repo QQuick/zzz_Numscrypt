@@ -334,7 +334,7 @@ class ndarray:
                     self.imagbuf [itarget] = value.imag
                 else:
                     self.realbuf [self.ns_ncols * key [0] + key [1]] = value
-                    
+              
     def real (self):    # Returns a view, so you can assign to self via it
         return ndarray (self.shape, ns_buffertype (self.dtype), self.realbuf)
     

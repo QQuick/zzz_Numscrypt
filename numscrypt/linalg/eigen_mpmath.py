@@ -468,10 +468,7 @@ def hessenberg_qr(A, Q):
             s = abs(A[k,k].real) + abs(A[k,k].imag) + abs(A[k+1,k+1].real) + abs (A[k+1,k+1].imag)
 
             if s < eps * norm:
-                s = norm
-
-                
-            print ('ctx_eps s eps norm ak ak+1', ctx_eps, s, eps, norm, A[k,k], A[k+1,k+1])                
+                s = norm              
                 
             if abs(A[k+1,k]) < eps * s:
                 break
@@ -529,8 +526,6 @@ def hessenberg_qr(A, Q):
             totalits += 1
 
             qr_step(n0, n1, A, Q, shift)
-            
-            print ('its maxits', its, maxits)
             
             if its > maxits:
                 raise RuntimeError("qr: failed to converge after %d steps" % its)

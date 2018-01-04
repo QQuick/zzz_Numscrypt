@@ -22,9 +22,9 @@ def rinv (a):
 			for irow in range (ipiv + 1, nrows):
 				if real [irow * ncols + ipiv]:
 					for icol in range (ncols):
-						t = real [irow * ncols + icol]
+						temp = real [irow * ncols + icol]
 						real [irow * ncols + icol] = b [ipiv * ncols + icol]
-						real [ipiv * ncols + icol] = t
+						real [ipiv * ncols + icol] = temp
 					break
 								
 		# Make pivot element 1
@@ -63,13 +63,13 @@ def cinv (a):	# for speed, don't use 'complex' or operator overloading
 						isource = irow * ncols + icol
 						itarget = ipiv * ncols + icol
 						
-						t = real [isource]
+						temp = real [isource]
 						real [isource] = real [itarget]
-						real [itarget] = t
+						real [itarget] = temp
 						
-						t = imag [isource_flat]
+						temp = imag [isource_flat]
 						imag [isource] = imag [itarget]
-						imag [itarget] = t
+						imag [itarget] = temp
 					break
 		
 		# Make pivot element 1
@@ -105,8 +105,39 @@ def cinv (a):	# for speed, don't use 'complex' or operator overloading
 					
 	# Chop of left matrix, return right matrix
 	return ns.hsplit (b, 2)[1]
+                    
+def norm (a):
+    result = 0
     
-def eig (a):
-    E, ER = eigen.eig (a)
-    return ns.array (E, 'complex64'), ER
+    if a.ns_complex:
+        for i in range (a.size):
+            result += a.realbuf [i] * a.realbuf [i] + a.imagbuf [i] * a.imagbuf [i]
+    else:
+        for i in range (a.size):
+            result += a.realbuf [i] * a.realbuf [i]
+            
+    return Math.sqrt (result)
+    
+def eig (a):    # Everything presumed complex for now
+    evals, evecs = eigen.eig (a)
+    
+    nrows, ncols = evecs.shape
+    real = evecs.realbuf
+    imag = evecs.imagbuf
+    
+    for icol in range (ncols):
+        sum = 0
+        
+        for irow in range (nrows):
+            iterm = irow * ncols + icol
+            sum += (real [iterm] * real [iterm] + imag [iterm] * imag [iterm])
+            
+        norm = Math.sqrt (sum)
+            
+        for irow in range (nrows):
+            iterm = irow * ncols + icol
+            real [iterm] /= norm
+            imag [iterm] /= norm
+            
+    return ns.array (evals, 'complex64'), evecs
     
