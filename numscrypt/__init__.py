@@ -267,8 +267,12 @@ class ndarray:
                 # Element of single dim array
                 
                 if self.ns_complex:
-                    self.realbuf [key] = value.real
-                    self.imagbuf [key] = value.imag
+                    if isinstance (value, complex):
+                        self.realbuf [key] = value.real
+                        self.imagbuf [key] = value.imag
+                    else:                   
+                        self.realbuf [key] = value
+                        self.imagbuf [key] = 0
                 else:
                     self.realbuf [key] = value
         else:
@@ -330,8 +334,14 @@ class ndarray:
                 
                 if self.ns_complex:
                     itarget = self.ns_ncols * key [0] + key [1]
-                    self.realbuf [itarget] = value.real
-                    self.imagbuf [itarget] = value.imag
+                    
+                    if isinstance (value, complex):
+                        self.realbuf [itarget] = value.real
+                        self.imagbuf [itarget] = value.imag
+                    else:
+                        self.realbuf [itarget] = value
+                        self.imagbuf [itarget] = 0
+                    
                 else:
                     self.realbuf [self.ns_ncols * key [0] + key [1]] = value
               

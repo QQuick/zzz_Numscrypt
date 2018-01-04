@@ -31,13 +31,15 @@
 						autoTester.check ('Samples shown: {}<br>'.format (cut));
 						var orig = num.array ((function () {
 							var __accu0__ = [];
-							for (var t of (function () {
+							var __iterable0__ = (function () {
 								var __accu1__ = [];
 								for (var iSample = 0; iSample < tTotal * fSample; iSample++) {
 									__accu1__.append (iSample / fSample);
 								}
 								return __accu1__;
-							}) ()) {
+							}) ();
+							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
+								var t = __iterable0__ [__index0__];
 								__accu0__.append (complex ((0.3 + sin (((2 * pi) * fSin) * t)) + 0.5 * cos (((2 * pi) * fCos) * t), 0));
 							}
 							return __accu0__;

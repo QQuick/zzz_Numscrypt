@@ -135,8 +135,8 @@ def hessenberg_reduce_0(A, T):
             
         if scale == 0 or isinf(scale_inv):
             # sadly there are floating point numbers not equal to zero whose reciprocal is infinity
-            T[i] = complex (0)
-            A[i,i-1] = complex (0)
+            T[i] = 0
+            A[i,i-1] = 0
             continue
 
         # calculate parameters for housholder transformation
@@ -207,11 +207,11 @@ def hessenberg_reduce_1(A, T):
     n = A.shape[0]
 
     if n == 1:
-        A[0,0] = complex (1)
+        A[0,0] = 1
         return
 
-    A[0,0] = A[1,1] = complex (1)
-    A[0,1] = A[1,0] = complex (0)
+    A[0,0] = A[1,1] = 1
+    A[0,1] = A[1,0] = 0
 
     for i in range(2, n):
         if T[i] != complex (0):     # !!! Conversion shouldn't be needed
@@ -225,9 +225,9 @@ def hessenberg_reduce_1(A, T):
                 for k in range(i-1):
                     A[k,j] -= G * A[i,k].conjugate()
 
-        A[i,i] = complex (1)
+        A[i,i] = 1
         for j in range(i):
-            A[j,i] = A[i,j] = complex (0)
+            A[j,i] = A[i,j] = 0
 
             
 def hessenberg(A, overwrite_a = False):
@@ -344,8 +344,8 @@ def qr_step(n0, n1, A, Q, shift):
 
     if v == 0:
         v = 1
-        c = complex (1)
-        s = complex (0)
+        c = 1
+        s = 0
     else:
         c /= v
         s /= v
@@ -381,19 +381,19 @@ def qr_step(n0, n1, A, Q, shift):
         c = A[j+1,j]
         s = A[j+2,j]
 
-        v = complex (hypot(hypot(c.real, c.imag), hypot(s.real, s.imag)))
+        v = hypot(hypot(c.real, c.imag), hypot(s.real, s.imag))
 
         if v == 0:
             A[j+1,j] = 0
-            v = complex (1)
-            c = complex (1)
-            s = complex (0)
+            v = 1
+            c = 1
+            s = 0
         else:
             A[j+1,j] = v
             c /= v
             s /= v
 
-        A[j+2,j] = complex (0)
+        A[j+2,j] = 0
     
         for k in range(j+1, n):
             # apply givens rotation from the left
@@ -477,7 +477,7 @@ def hessenberg_qr(A, Q):
         if k + 1 < n1:
             # deflation found at position (k+1, k)
 
-            A[k+1,k] = complex (0)  # !!! Make this unneeded, the complex, that is
+            A[k+1,k] = 0  # !!! Make this unneeded, the complex, that is
             n0 = k + 1
 
             its = 0
@@ -637,7 +637,7 @@ def eig_tr_r(A):
 
             r = -r / t
             
-            ER[j,i] = complex (r)
+            ER[j,i] = r
 
             rmax = max(rmax, abs(r))
             if rmax > simin:
@@ -799,7 +799,7 @@ def eig(A, left = False, right = True, overwrite_a = False):
             
     for x in range(n):
         for y in range(x + 2, n):
-            A[y,x] = complex (0)
+            A[y,x] = 0
 
     hessenberg_qr(A, Q)
     

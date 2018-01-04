@@ -1,6 +1,6 @@
 "use strict";
-// Transcrypt'ed from Python, 2018-01-04 16:54:41
-function autotest () {
+// Transcrypt'ed from Python, 2018-01-04 18:28:29
+function test () {
     var __symbols__ = ['__complex__', '__py3.6__', '__esv5__'];
     var __all__ = {};
     var __world__ = __all__;
@@ -2257,183 +2257,6 @@ function autotest () {
     };
     __all__.__setslice__ = __setslice__;	__nest__ (
 		__all__,
-		'basics', {
-			__all__: {
-				__inited__: false,
-				__init__: function (__all__) {
-					var __name__ = 'basics';
-					if (__envir__.executor_name == __envir__.transpiler_name) {
-						var num =  __init__ (__world__.numscrypt);
-					}
-					var run = function (autoTester) {
-						var z = num.zeros (tuple ([4, 3]), 'int32');
-						autoTester.check ('Zeros', z.tolist (), '<br>');
-						var o = num.ones (tuple ([4, 5]));
-						autoTester.check ('Ones', o.astype ('int32').tolist ());
-						var i = num.identity (3, 'int32');
-						autoTester.check ('Identity', i.tolist (), '<br>');
-						var a = num.array (list ([list ([1, 1, 2, 3]), list ([4, 5, 6, 7]), list ([8, 9, 10, 12])]));
-						autoTester.check ('Matrix a', a.tolist (), '<br>');
-						autoTester.check ('Transpose of a', a.transpose ().tolist (), '<br>');
-						var b = num.array (list ([list ([2, 2, 4, 6]), list ([8, 10, 12, 14]), list ([16, 18, 20, 24])]));
-						var bp = b.transpose ();
-						autoTester.check ('Matrix b', b.tolist (), '<br>');
-						autoTester.check ('Permutation of b', bp.tolist (), '<br>');
-						var c = num.array (list ([list ([1, 2, 3, 4]), list ([5, 6, 7, 8]), list ([9, 10, 11, 12])]), 'int32');
-						autoTester.check ('Shape c', tuple (c.shape), '<br>');
-						autoTester.check ('Matrix c', c.tolist (), '<br>');
-						var ct = c.transpose ();
-						autoTester.check ('Shape ct', tuple (ct.shape), '<br>');
-						autoTester.check ('Transpose of c', ct.tolist (), '<br>');
-						var __left0__ = num.hsplit (c, 2);
-						var cs0 = __left0__ [0];
-						var cs1 = __left0__ [1];
-						autoTester.check ('Matrix cs0', cs0.tolist (), '<br>');
-						autoTester.check ('Matrix cs1', cs1.tolist (), '<br>');
-						var ci = num.hstack (tuple ([cs1, cs0]));
-						autoTester.check ('Matrix ci', ci.tolist (), '<br>');
-						var __left0__ = num.hsplit (ct, 3);
-						var cts0 = __left0__ [0];
-						var cts1 = __left0__ [1];
-						var cts2 = __left0__ [2];
-						autoTester.check ('Matrix cts0', cts0.tolist (), '<br>');
-						autoTester.check ('Matrix cts1', cts1.tolist (), '<br>');
-						autoTester.check ('Matrix cts2', cts2.tolist (), '<br>');
-						var cti = num.hstack (tuple ([cts2, cts1, cts0]));
-						autoTester.check ('Matrix ci', cti.tolist (), '<br>');
-						var d = num.array (list ([list ([13, 14]), list ([15, 16]), list ([17, 18]), list ([19, 20])]), 'int32');
-						autoTester.check ('Matrix d', d.tolist (), '<br>');
-						var dt = d.transpose ();
-						autoTester.check ('Permutation of d', dt.tolist (), '<br>');
-						var __left0__ = num.vsplit (d, 4);
-						var ds0 = __left0__ [0];
-						var ds1 = __left0__ [1];
-						var ds2 = __left0__ [2];
-						var ds3 = __left0__ [3];
-						autoTester.check ('Matrix ds0', ds0.tolist (), '<br>');
-						autoTester.check ('Matrix ds1', ds1.tolist (), '<br>');
-						autoTester.check ('Matrix ds2', ds2.tolist (), '<br>');
-						autoTester.check ('Matrix ds3', ds3.tolist (), '<br>');
-						var di = num.vstack (tuple ([ds3, ds2, ds1, ds0]));
-						autoTester.check ('Matrix di', di.tolist (), '<br>');
-						var __left0__ = num.vsplit (dt, 2);
-						var dts0 = __left0__ [0];
-						var dts1 = __left0__ [1];
-						autoTester.check ('Matrix dts0', dts0.tolist (), '<br>');
-						autoTester.check ('Matrix dts1', dts1.tolist (), '<br>');
-						var dti = num.vstack (tuple ([dts1, dts0]));
-						autoTester.check ('Matrix dti', dti.tolist (), '<br>');
-						var v0 = num.array (range (10));
-						var v1 = num.array (tuple ([1, 2, 3, 1, 2, 3, 1, 2, 3, 1]));
-						a.__setitem__ ([1, 0], 177);
-						var el = b.__getitem__ ([1, 2]);
-						var bsl0 = b.__getitem__ ([1, tuple ([1, 3, 1])]);
-						var bsl1 = b.__getitem__ ([tuple ([1, 2, 1]), tuple ([1, 3, 1])]);
-						var bsl2 = b.__getitem__ ([tuple ([1, 2, 1]), 1]);
-						var bsl3 = b.__getitem__ ([1, tuple ([1, 3, 1])]);
-						var bsl4 = b.__getitem__ ([tuple ([0, null, 1]), 1]);
-						var bsl5 = b.__getitem__ ([1, tuple ([1, 3, 1])]);
-						var bsl6 = b.__getitem__ ([1, tuple ([1, 3, 1])]);
-						var bsl7 = b.__getitem__ ([1, tuple ([2, 3, 1])]);
-						var bpsl0 = bp.__getitem__ ([1, tuple ([1, 3, 1])]);
-						var bpsl1 = bp.__getitem__ ([tuple ([1, 2, 1]), tuple ([1, 3, 1])]);
-						var bpsl2 = bp.__getitem__ ([1, tuple ([0, null, 1])]);
-						var bpsl3 = bp.__getitem__ ([1, tuple ([1, 3, 1])]);
-						var bpsl4 = bp.__getitem__ ([tuple ([0, null, 1]), 1]);
-						var bpsl5 = bp.__getitem__ ([3, tuple ([1, 3, 1])]);
-						var bpsl6 = bp.__getitem__ ([tuple ([2, 4, 1]), tuple ([1, 3, 1])]);
-						var bpsl7 = bp.__getitem__ ([tuple ([2, 4, 1]), tuple ([2, 3, 1])]);
-						var sum = __add__ (a, b);
-						var dif = __sub__ (a, b);
-						var prod = __mul__ (a, b);
-						var quot = __truediv__ (a, b);
-						var dot = __matmul__ (c, d);
-						var vsum = __add__ (v0, v1);
-						var vel = __getitem__ (vsum, 6);
-						__setitem__ (vsum, 6, 70);
-						var mul_a3 = __mul__ (a, 3);
-						var mul_3a = __mul__ (3, a);
-						var div_a3 = __truediv__ (a, 3.1234567);
-						var div_3a = __truediv__ (3.1234567, a);
-						var add_a3 = __add__ (a, 3);
-						var add_3a = __add__ (3, a);
-						var sub_a3 = __sub__ (a, 3);
-						var sub_3a = __sub__ (3, a);
-						var neg_a = __neg__ (a);
-						autoTester.check ('El a [1, 2, 3] alt', a.tolist (), '<br>');
-						autoTester.check ('El b [1, 2, 3]', el, '<br>');
-						autoTester.check ('Sl b0', bsl0.tolist (), '<br>');
-						autoTester.check ('Sl b1', bsl1.tolist (), '<br>');
-						autoTester.check ('Sl b2', bsl2.tolist (), '<br>');
-						autoTester.check ('Sl b3', bsl3.tolist (), '<br>');
-						autoTester.check ('Sl b4', bsl4.tolist (), '<br>');
-						autoTester.check ('Sl b5', bsl5.tolist (), '<br>');
-						autoTester.check ('Sl b6', bsl6.tolist (), '<br>');
-						autoTester.check ('Sl b7', bsl7.tolist (), '<br>');
-						autoTester.check ('Sl bp0', bpsl0.tolist (), '<br>');
-						autoTester.check ('Sl bp1', bpsl1.tolist (), '<br>');
-						autoTester.check ('Sl bp2', bpsl2.tolist (), '<br>');
-						autoTester.check ('Sl bp3', bpsl3.tolist (), '<br>');
-						autoTester.check ('Sl bp4', bpsl4.tolist (), '<br>');
-						autoTester.check ('Sl bp5', bpsl5.tolist (), '<br>');
-						autoTester.check ('Sl bp6', bpsl6.tolist (), '<br>');
-						autoTester.check ('Sl bp7', bpsl7.tolist (), '<br>');
-						autoTester.check ('Matrix sum', sum.tolist (), '<br>');
-						autoTester.check ('Matrix difference', dif.tolist (), '<br>');
-						autoTester.check ('Matrix product', prod.tolist (), '<br>');
-						autoTester.check ('Matrix quotient', quot.tolist (), '<br>');
-						autoTester.check ('Matrix dotproduct', dot.tolist (), '<br>');
-						autoTester.check ('Vector', v0.tolist (), '<br>');
-						autoTester.check ('Vector', v1.tolist (), '<br>');
-						autoTester.check ('El sum old', vel, '<br>');
-						autoTester.check ('Vector sum new', vsum.tolist (), '<br>');
-						autoTester.check ('mul_a3', mul_a3.tolist (), '<br>');
-						autoTester.check ('mul_3a', mul_3a.tolist (), '<br>');
-						autoTester.check ('div_a3', num.round (div_a3, 2).tolist (), '<br>');
-						autoTester.check ('div_3a', num.round (div_3a, 2).tolist (), '<br>');
-						autoTester.check ('add_a3', add_a3.tolist (), '<br>');
-						autoTester.check ('add_3a', add_3a.tolist (), '<br>');
-						autoTester.check ('sub_a3', sub_a3.tolist (), '<br>');
-						autoTester.check ('sub_3a', sub_3a.tolist (), '<br>');
-						autoTester.check ('neg_a', neg_a.tolist (), '<br>');
-						var comp_a = __call__ (num.array, num, list ([list ([__add__ (1, complex (0, 2.0)), __sub__ (2, complex (0, 1.0)), 3]), list ([4, __add__ (5, complex (0, 3.0)), 7])]), 'complex128');
-						var comp_b = __call__ (num.array, num, list ([list ([6, __sub__ (8, complex (0, 1.0))]), list ([__add__ (9, complex (0, 3.0)), 10]), list ([11, __sub__ (12, complex (0, 6.0))])]), 'complex128');
-						var comp_c = __matmul__ (comp_a, comp_b);
-						autoTester.check ('comp_a', comp_a.tolist (), '<br>');
-						autoTester.check ('comp_b', comp_b.tolist (), '<br>');
-						autoTester.check ('comp_c', comp_c.tolist (), '<br>');
-						var comp_a_square = comp_a.__getitem__ ([tuple ([0, null, 1]), tuple ([0, 2, 1])]);
-						var comp_b_square = comp_b.__getitem__ ([tuple ([1, null, 1]), tuple ([0, null, 1])]);
-						var comp_c_square = __mul__ (comp_a_square, comp_b_square);
-						var comp_d_square = __truediv__ (comp_a_square, comp_b_square);
-						var comp_e_square = __add__ (comp_a_square, comp_b_square);
-						var comp_f_square = __sub__ (comp_a_square, comp_b_square);
-						autoTester.check ('comp_a_square', comp_a_square.tolist (), '<br>');
-						autoTester.check ('comp_b_square', comp_b_square.tolist (), '<br>');
-						autoTester.check ('comp_c_square', comp_c_square.tolist (), '<br>');
-						autoTester.check ('comp_d_square', num.round (comp_d_square, 2).tolist (), '<br>');
-						autoTester.check ('comp_e_square', comp_e_square.tolist (), '<br>');
-						autoTester.check ('comp_f_square', comp_f_square.tolist (), '<br>');
-						var sliceable_a = __call__ (num.array, num, list ([list ([1, 2, 3, 4]), list ([5, 6, 7, 8]), list ([9, 10, 11, 12]), list ([13, 14, 15, 16])]));
-						__call__ (autoTester.check, autoTester, 'sliceable_a', __call__ (sliceable_a.tolist, sliceable_a));
-						var slice_a = sliceable_a.__getitem__ ([tuple ([1, null, 1]), tuple ([1, null, 1])]);
-						__call__ (autoTester.check, autoTester, 'slice_a');
-						var sliceable_at = __call__ (sliceable_a.transpose, sliceable_a);
-						var slice_at = __getslice__ (sliceable_at, 1, null, 1);
-					};
-					__pragma__ ('<use>' +
-						'numscrypt' +
-					'</use>')
-					__pragma__ ('<all>')
-						__all__.__name__ = __name__;
-						__all__.run = run;
-					__pragma__ ('</all>')
-				}
-			}
-		}
-	);
-	__nest__ (
-		__all__,
 		'cmath', {
 			__all__: {
 				__inited__: false,
@@ -2646,263 +2469,6 @@ function autotest () {
 						__all__.tan = tan;
 						__all__.tanh = tanh;
 						__all__.trunc = trunc;
-					__pragma__ ('</all>')
-				}
-			}
-		}
-	);
-	__nest__ (
-		__all__,
-		'module_fft', {
-			__all__: {
-				__inited__: false,
-				__init__: function (__all__) {
-					var __name__ = 'module_fft';
-					var sin = __init__ (__world__.math).sin;
-					var cos = __init__ (__world__.math).cos;
-					var pi = __init__ (__world__.math).pi;
-					var transpiled = __envir__.executor_name == __envir__.transpiler_name;
-					if (__envir__.executor_name == __envir__.transpiler_name) {
-						var num =  __init__ (__world__.numscrypt);
-						var fft =  __init__ (__world__.numscrypt.fft);
-					}
-					var fSample = 4096;
-					var tTotal = 2;
-					var fSin = 30;
-					var fCos = 50;
-					var getNow = function () {
-						return new Date ();
-					};
-					var tCurrent = function (iCurrent) {
-						return iCurrent / fSample;
-					};
-					var run = function (autoTester) {
-						var delta = __add__ (0.001, complex (0, 0.001));
-						autoTester.check ('<br>------ 1D ------<br>');
-						var cut = 102;
-						autoTester.check ('Samples computed: {}<br>'.format (tTotal * fSample));
-						autoTester.check ('Samples shown: {}<br>'.format (cut));
-						var orig = num.array ((function () {
-							var __accu0__ = [];
-							var __iterable0__ = (function () {
-								var __accu1__ = [];
-								for (var iSample = 0; iSample < tTotal * fSample; iSample++) {
-									__accu1__.append (iSample / fSample);
-								}
-								return __accu1__;
-							}) ();
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var t = __iterable0__ [__index0__];
-								__accu0__.append (complex ((0.3 + sin (((2 * pi) * fSin) * t)) + 0.5 * cos (((2 * pi) * fCos) * t), 0));
-							}
-							return __accu0__;
-						}) (), 'complex128');
-						__call__ (autoTester.check, autoTester, 'Original samples', __getslice__ (__call__ (__call__ (num.round, num, __add__ (orig, delta), 3).tolist, __call__ (num.round, num, __add__ (orig, delta), 3)), 0, cut, 1), '<br>');
-						if (transpiled) {
-							var timeStartFft = __call__ (getNow, null);
-						}
-						var freqs = __call__ (fft.fft, fft, orig);
-						if (transpiled) {
-							var timeStopFft = __call__ (getNow, null);
-						}
-						__call__ (autoTester.check, autoTester, 'Frequencies', __getslice__ (__call__ (__call__ (num.round, num, __add__ (freqs, delta), 3).tolist, __call__ (num.round, num, __add__ (freqs, delta), 3)), 0, cut, 1), '<br>');
-						if (transpiled) {
-							var timeStartIfft = __call__ (getNow, null);
-						}
-						var reconstr = __call__ (fft.ifft, fft, freqs);
-						if (transpiled) {
-							var timeStopIfft = __call__ (getNow, null);
-						}
-						__call__ (autoTester.check, autoTester, 'Reconstructed samples', __getslice__ (__call__ (__call__ (num.round, num, __add__ (reconstr, delta), 3).tolist, __call__ (num.round, num, __add__ (reconstr, delta), 3)), 0, cut, 1), '<br>');
-						if (transpiled) {
-							print ('FFT for {} samples took {} ms'.format (tTotal * fSample, timeStopFft - timeStartFft));
-							print ('IFFT for {} samples took {} ms'.format (tTotal * fSample, timeStopIfft - timeStartIfft));
-						}
-						autoTester.check ('<br>------ 2D ------<br>');
-						var orig2 = __call__ (num.zeros, num, tuple ([128, 128]), 'complex128');
-						orig2.__setitem__ ([tuple ([32, 96, 1]), tuple ([32, 96, 1])], __call__ (num.ones, num, tuple ([64, 64]), 'complex128'));
-						__call__ (autoTester.check, autoTester, 'Original samples', __call__ (__call__ (num.round, num, __add__ (orig2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])]).tolist, __call__ (num.round, num, __add__ (orig2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])])), '<br>');
-						if (transpiled) {
-							var timeStartFft = __call__ (getNow, null);
-						}
-						var freqs2 = __call__ (fft.fft2, fft, orig2);
-						if (transpiled) {
-							var timeStopFft = __call__ (getNow, null);
-						}
-						__call__ (autoTester.check, autoTester, 'Frequencies', __call__ (__call__ (num.round, num, __add__ (freqs2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])]).tolist, __call__ (num.round, num, __add__ (freqs2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])])), '<br>');
-						if (transpiled) {
-							var timeStartIfft = __call__ (getNow, null);
-						}
-						var reconstr2 = __call__ (fft.ifft2, fft, freqs2);
-						if (transpiled) {
-							var timeStopIfft = __call__ (getNow, null);
-						}
-						if (transpiled) {
-							__call__ (print, null, __call__ ('FFT2 for {} samples took {} ms'.format, 'FFT2 for {} samples took {} ms', orig2.size, __sub__ (timeStopFft, timeStartFft)));
-							__call__ (print, null, __call__ ('IFFT2 for {} samples took {} ms'.format, 'IFFT2 for {} samples took {} ms', orig2.size, __sub__ (timeStopIfft, timeStartIfft)));
-						}
-						__call__ (autoTester.check, autoTester, 'Reconstructed samples', __call__ (__call__ (num.round, num, __add__ (reconstr2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])]).tolist, __call__ (num.round, num, __add__ (reconstr2, delta), 3).__getitem__ ([tuple ([64, 68, 1]), tuple ([16, 112, 1])])), '<br>');
-					};
-					__pragma__ ('<use>' +
-						'math' +
-						'numscrypt' +
-						'numscrypt.fft' +
-					'</use>')
-					__pragma__ ('<all>')
-						__all__.__name__ = __name__;
-						__all__.cos = cos;
-						__all__.fCos = fCos;
-						__all__.fSample = fSample;
-						__all__.fSin = fSin;
-						__all__.getNow = getNow;
-						__all__.pi = pi;
-						__all__.run = run;
-						__all__.sin = sin;
-						__all__.tCurrent = tCurrent;
-						__all__.tTotal = tTotal;
-						__all__.transpiled = transpiled;
-					__pragma__ ('</all>')
-				}
-			}
-		}
-	);
-	__nest__ (
-		__all__,
-		'module_linalg', {
-			__all__: {
-				__inited__: false,
-				__init__: function (__all__) {
-					var __name__ = 'module_linalg';
-					if (__envir__.executor_name == __envir__.transpiler_name) {
-						var num =  __init__ (__world__.numscrypt);
-						var linalg =  __init__ (__world__.numscrypt.linalg);
-					}
-					var run = function (autoTester) {
-						autoTester.check ('====== inverse ======');
-						var r = num.array (list ([list ([2.12, -(2.11), -(1.23)]), list ([2.31, 1.14, 3.15]), list ([1.13, 1.98, 2.81])]));
-						autoTester.check ('Matrix r', num.round (r, 2).tolist (), '<br>');
-						var ri = linalg.inv (r);
-						autoTester.check ('Matrix ri', num.round (ri, 2).tolist (), '<br>');
-						var rid = __matmul__ (r, ri);
-						autoTester.check ('r @ ri', (function () {
-							var __accu0__ = [];
-							var __iterable0__ = rid.tolist ();
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var row = __iterable0__ [__index0__];
-								__accu0__.append ((function () {
-									var __accu1__ = [];
-									var __iterable1__ = row;
-									for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-										var elem = __iterable1__ [__index1__];
-										__accu1__.append (int (round (elem)));
-									}
-									return __accu1__;
-								}) ());
-							}
-							return __accu0__;
-						}) (), '<br>');
-						var delta = 0.001;
-						__call__ (autoTester.check, autoTester, 'r * r', __call__ (__call__ (num.round, num, __add__ (__mul__ (r, r), delta), 3).tolist, __call__ (num.round, num, __add__ (__mul__ (r, r), delta), 3)), '<br>');
-						__call__ (autoTester.check, autoTester, 'r / r', __call__ (__call__ (num.round, num, __add__ (__truediv__ (r, r), delta), 3).tolist, __call__ (num.round, num, __add__ (__truediv__ (r, r), delta), 3)), '<br>');
-						__call__ (autoTester.check, autoTester, 'r + r', __call__ (__call__ (num.round, num, __add__ (__add__ (r, r), delta), 3).tolist, __call__ (num.round, num, __add__ (__add__ (r, r), delta), 3)), '<br>');
-						__call__ (autoTester.check, autoTester, 'r - r', __call__ (__call__ (num.round, num, __add__ (__sub__ (r, r), delta), 3).tolist, __call__ (num.round, num, __add__ (__sub__ (r, r), delta), 3)), '<br>');
-						var c = __call__ (num.array, num, list ([list ([__sub__ (2.12, complex (0, 3.15)), __neg__ (2.11), __neg__ (1.23)]), list ([2.31, 1.14, __add__ (3.15, complex (0, 2.75))]), list ([1.13, __sub__ (1.98, complex (0, 4.33)), 2.81])]), 'complex128');
-						autoTester.check ('Matrix c', num.round (c, 2).tolist (), '<br>');
-						var ci = linalg.inv (c);
-						autoTester.check ('Matrix ci', num.round (ci, 2).tolist (), '<br>');
-						var cid = __matmul__ (c, ci);
-						var delta = __add__ (0.001, complex (0, 0.001));
-						__call__ (autoTester.check, autoTester, 'c * c', __call__ (__call__ (num.round, num, __add__ (__mul__ (c, c), delta), 3).tolist, __call__ (num.round, num, __add__ (__mul__ (c, c), delta), 3)), '<br>');
-						__call__ (autoTester.check, autoTester, 'c / c', __call__ (__call__ (num.round, num, __add__ (__truediv__ (c, c), delta), 3).tolist, __call__ (num.round, num, __add__ (__truediv__ (c, c), delta), 3)), '<br>');
-						__call__ (autoTester.check, autoTester, 'c + c', __call__ (__call__ (num.round, num, __add__ (__add__ (c, c), delta), 3).tolist, __call__ (num.round, num, __add__ (__add__ (c, c), delta), 3)), '<br>');
-						__call__ (autoTester.check, autoTester, 'c - c', __call__ (__call__ (num.round, num, __add__ (__sub__ (c, c), delta), 3).tolist, __call__ (num.round, num, __add__ (__sub__ (c, c), delta), 3)), '<br>');
-						autoTester.check ('====== eigen ======');
-						var __iterable0__ = tuple ([__call__ (num.array, num, list ([list ([0, complex (0, 1.0)]), list ([__neg__ (complex (0, 1.0)), 1])]), 'complex128'), __call__ (num.array, num, list ([list ([1, __neg__ (2), 3, 1]), list ([5, 8, __neg__ (1), __neg__ (5)]), list ([2, 1, 1, 100]), list ([2, 1, __neg__ (1), 0])]), 'complex128')]);
-						for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-							var a = __getitem__ (__iterable0__, __index0__);
-							var __left0__ = __call__ (linalg.eig, linalg, a);
-							var eVals = __left0__ [0];
-							var eVecs = __left0__ [1];
-							var enumSorted = __call__ (sorted, null, __call__ (enumerate, null, __call__ (eVals.tolist, eVals)), __kwargtrans__ ({key: (function __lambda__ (elem) {
-								return __neg__ (__add__ (__getitem__ (elem, 1).real, __truediv__ (__getitem__ (elem, 1).imag, 1000)));
-							})}));
-							var indicesSorted = (function () {
-								var __accu0__ = [];
-								var __iterable1__ = enumSorted;
-								for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-									var elem = __getitem__ (__iterable1__, __index1__);
-									__call__ (__accu0__.append, __accu0__, __getitem__ (elem, 0));
-								}
-								return __accu0__;
-							}) ();
-							var eValsSorted = (function () {
-								var __accu0__ = [];
-								var __iterable1__ = enumSorted;
-								for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-									var elem = __getitem__ (__iterable1__, __index1__);
-									__call__ (__accu0__.append, __accu0__, __getitem__ (elem, 1));
-								}
-								return __accu0__;
-							}) ();
-							var eValsMat = __call__ (num.empty, num, a.shape, a.dtype);
-							for (var iRow = 0; iRow < __getitem__ (a.shape, 0); iRow++) {
-								for (var iCol = 0; iCol < __getitem__ (a.shape, 1); iCol++) {
-									eValsMat.__setitem__ ([iRow, iCol], __getitem__ (eVals, iCol));
-								}
-							}
-							var eVecsNorms = __call__ (num.empty, num, tuple ([__getitem__ (eVecs.shape, 1)]), a.dtype);
-							for (var iNorm = 0; iNorm < __getitem__ (eVecsNorms.shape, 0); iNorm++) {
-								__setitem__ (eVecsNorms, iNorm, __call__ (complex, null, __call__ (linalg.norm, linalg, eVecs.__getitem__ ([tuple ([0, null, 1]), iNorm]))));
-							}
-							var eVecsCanon = __call__ (num.empty, num, a.shape, a.dtype);
-							for (var iRow = 0; iRow < __getitem__ (a.shape, 0); iRow++) {
-								for (var iCol = 0; iCol < __getitem__ (a.shape, 1); iCol++) {
-									eVecsCanon.__setitem__ ([iRow, iCol], __truediv__ (eVecs.__getitem__ ([iRow, iCol]), eVecs.__getitem__ ([0, iCol])));
-								}
-							}
-							var eVecsSorted = __call__ (num.empty, num, a.shape, a.dtype);
-							for (var iRow = 0; iRow < __getitem__ (a.shape, 0); iRow++) {
-								for (var iCol = 0; iCol < __getitem__ (a.shape, 1); iCol++) {
-									eVecsSorted.__setitem__ ([iRow, iCol], eVecsCanon.__getitem__ ([iRow, __getitem__ (indicesSorted, iCol)]));
-								}
-							}
-							__call__ (autoTester.check, autoTester, '\n---------------- eigVecsSorted ----------');
-							__call__ (autoTester.check, autoTester, (function () {
-								var __accu0__ = [];
-								var __iterable1__ = __call__ (eVecsSorted.tolist, eVecsSorted);
-								for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-									var row = __getitem__ (__iterable1__, __index1__);
-									__call__ (__accu0__.append, __accu0__, (function () {
-										var __accu1__ = [];
-										var __iterable2__ = row;
-										for (var __index2__ = 0; __index2__ < len (__iterable2__); __index2__++) {
-											var value = __getitem__ (__iterable2__, __index2__);
-											__call__ (__accu1__.append, __accu1__, tuple ([__call__ (round, null, __add__ (value.real, 0.001), 3), __call__ (round, null, __add__ (value.imag, 0.001), 3)]));
-										}
-										return __accu1__;
-									}) ());
-								}
-								return __accu0__;
-							}) ());
-							__call__ (autoTester.check, autoTester, '\n---------------- eigValsSorted ----------');
-							__call__ (autoTester.check, autoTester, (function () {
-								var __accu0__ = [];
-								var __iterable1__ = eValsSorted;
-								for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-									var value = __getitem__ (__iterable1__, __index1__);
-									__call__ (__accu0__.append, __accu0__, tuple ([__call__ (round, null, __add__ (value.real, 0.001), 3), __call__ (round, null, __add__ (value.imag, 0.001), 3)]));
-								}
-								return __accu0__;
-							}) (), '\n');
-						}
-					};
-					__pragma__ ('<use>' +
-						'numscrypt' +
-						'numscrypt.linalg' +
-					'</use>')
-					__pragma__ ('<all>')
-						__all__.__name__ = __name__;
-						__all__.run = run;
 					__pragma__ ('</all>')
 				}
 			}
@@ -3226,8 +2792,14 @@ function autotest () {
 									return result;
 								}
 								else if (self.ns_complex) {
-									self.realbuf [key] = value.real;
-									self.imagbuf [key] = value.imag;
+									if (isinstance (value, complex)) {
+										self.realbuf [key] = value.real;
+										self.imagbuf [key] = value.imag;
+									}
+									else {
+										self.realbuf [key] = value;
+										self.imagbuf [key] = 0;
+									}
 								}
 								else {
 									self.realbuf [key] = value;
@@ -3323,8 +2895,14 @@ function autotest () {
 								}
 								else if (self.ns_complex) {
 									var itarget = self.ns_ncols * key [0] + key [1];
-									self.realbuf [itarget] = value.real;
-									self.imagbuf [itarget] = value.imag;
+									if (isinstance (value, complex)) {
+										self.realbuf [itarget] = value.real;
+										self.imagbuf [itarget] = value.imag;
+									}
+									else {
+										self.realbuf [itarget] = value;
+										self.imagbuf [itarget] = 0;
+									}
 								}
 								else {
 									self.realbuf [self.ns_ncols * key [0] + key [1]] = value;
@@ -3846,199 +3424,6 @@ function autotest () {
 	);
 	__nest__ (
 		__all__,
-		'numscrypt.fft', {
-			__all__: {
-				__inited__: false,
-				__init__: function (__all__) {
-					var __name__ = 'numscrypt.fft';
-					var ns =  __init__ (__world__.numscrypt);
-					/* 
-					 * Free FFT and convolution (JavaScript)
-					 * 
-					 * Copyright (c) 2014 Project Nayuki
-					 * http://www.nayuki.io/page/free-small-fft-in-multiple-languages
-					 *
-					 * (MIT License)
-					 * Permission is hereby granted, free of charge, to any person obtaining a copy of
-					 * this software and associated documentation files (the "Software"), to deal in
-					 * the Software without restriction, including without limitation the rights to
-					 * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-					 * the Software, and to permit persons to whom the Software is furnished to do so,
-					 * subject to the following conditions:
-					 * - The above copyright notice and this permission notice shall be included in
-					 *	 all copies or substantial portions of the Software.
-					 * - The Software is provided "as is", without warranty of any kind, express or
-					 *	 implied, including but not limited to the warranties of merchantability,
-					 *	 fitness for a particular purpose and noninfringement. In no event shall the
-					 *	 authors or copyright holders be liable for any claim, damages or other
-					 *	 liability, whether in an action of contract, tort or otherwise, arising from,
-					 *	 out of or in connection with the Software or the use or other dealings in the
-					 *	 Software.
-					 *
-					 * Slightly restructured by Chris Cannam, cannam@all-day-breakfast.com
-					 *
-					 * Fix added by Jacques de Hooge, jdeh@transcrypt.org: 'this' added to inverse, indentation repaired
-					 */
-					
-					
-					
-					/* 
-					 * Construct an object for calculating the discrete Fourier transform (DFT) of size n, where n is a power of 2.
-					 */
-					function FFTNayuki(n) {
-						
-						this.n = n;
-						this.levels = -1;
-						
-						for (var i = 0; i < 32; i++) {
-							if (1 << i == n) {
-								this.levels = i;  // Equal to log2(n)
-							}
-						}
-						if (this.levels == -1) {
-							throw "Length is not a power of 2";
-						}
-					
-						this.cosTable = new Array(n / 2);
-						this.sinTable = new Array(n / 2);
-						for (var i = 0; i < n / 2; i++) {
-							this.cosTable[i] = Math.cos(2 * Math.PI * i / n);
-							this.sinTable[i] = Math.sin(2 * Math.PI * i / n);
-						}
-					
-						/* 
-						 * Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
-						 * The vector's length must be equal to the size n that was passed to the object constructor, and this must be a power of 2. Uses the Cooley-Tukey decimation-in-time radix-2 algorithm.
-						 */
-						this.forward = function(real, imag) {
-						
-							var n = this.n;
-							
-							// Bit-reversed addressing permutation
-							for (var i = 0; i < n; i++) {
-									var j = reverseBits(i, this.levels);
-									if (j > i) {
-								var temp = real[i];
-								real[i] = real[j];
-								real[j] = temp;
-								temp = imag[i];
-								imag[i] = imag[j];
-								imag[j] = temp;
-									}
-							}
-							
-							// Cooley-Tukey decimation-in-time radix-2 FFT
-							for (var size = 2; size <= n; size *= 2) {
-								var halfsize = size / 2;
-									var tablestep = n / size;
-									for (var i = 0; i < n; i += size) {
-										for (var j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
-											var tpre =	real[j+halfsize] * this.cosTable[k] +
-											imag[j+halfsize] * this.sinTable[k];
-											var tpim = -real[j+halfsize] * this.sinTable[k] +
-											imag[j+halfsize] * this.cosTable[k];
-											real[j + halfsize] = real[j] - tpre;
-											imag[j + halfsize] = imag[j] - tpim;
-											real[j] += tpre;
-											imag[j] += tpim;
-								}
-									}
-							}
-							
-							// Returns the integer whose value is the reverse of the lowest 'bits' bits of the integer 'x'.
-							function reverseBits(x, bits) {
-								var y = 0;
-								for (var i = 0; i < bits; i++) {
-								   y = (y << 1) | (x & 1);
-								   x >>>= 1;
-								}
-								return y;
-							}
-						}
-					
-						/* 
-						 * Computes the inverse discrete Fourier transform (IDFT) of the given complex vector, storing the result back into the vector.
-						 * The vector's length must be equal to the size n that was passed to the object constructor, and this must be a power of 2. This is a wrapper function. This transform does not perform scaling, so the inverse is not a true inverse.
-						 */
-						this.inverse = function(real, imag) {
-							this.forward(imag, real);	// Fix by JdeH: 'this' added
-						}
-					}
-					
-					
-					var fft = function (a, ns_fftn) {
-						if (typeof ns_fftn == 'undefined' || (ns_fftn != null && ns_fftn .hasOwnProperty ("__kwargtrans__"))) {;
-							var ns_fftn = null;
-						};
-						var fftn = (ns_fftn ? ns_fftn : new FFTNayuki (a.size));
-						var result = ns.copy (a);
-						fftn.forward (result.real ().realbuf, result.imag ().realbuf);
-						return result;
-					};
-					var ifft = function (a, ns_fftn) {
-						if (typeof ns_fftn == 'undefined' || (ns_fftn != null && ns_fftn .hasOwnProperty ("__kwargtrans__"))) {;
-							var ns_fftn = null;
-						};
-						var fftn = (ns_fftn ? ns_fftn : new FFTNayuki (a.size));
-						var real = a.real ().__div__ (a.size);
-						var imag = a.imag ().__div__ (a.size);
-						fftn.inverse (real.realbuf, imag.realbuf);
-						return ns.ndarray (real.shape, a.dtype, real.realbuf, imag.realbuf);
-					};
-					var fft2 = function (a, ns_fftn) {
-						if (typeof ns_fftn == 'undefined' || (ns_fftn != null && ns_fftn .hasOwnProperty ("__kwargtrans__"))) {;
-							var ns_fftn = null;
-						};
-						if (a.ns_nrows != a.ns_ncols) {
-							var __except0__ = "Matrix isn't square";
-							__except0__.__cause__ = null;
-							throw __except0__;
-						}
-						var fftn = (ns_fftn ? ns_fftn : new FFTNayuki (a.ns_nrows));
-						var result = ns.empty (a.shape, a.dtype);
-						for (var irow = 0; irow < a.ns_nrows; irow++) {
-							result.__setitem__ ([irow, tuple ([0, null, 1])], __call__ (fft, null, a.__getitem__ ([irow, tuple ([0, null, 1])]), fftn));
-						}
-						for (var icol = 0; icol < a.ns_ncols; icol++) {
-							result.__setitem__ ([tuple ([0, null, 1]), icol], __call__ (fft, null, result.__getitem__ ([tuple ([0, null, 1]), icol]), fftn));
-						}
-						return result;
-					};
-					var ifft2 = function (a, ns_fftn) {
-						if (typeof ns_fftn == 'undefined' || (ns_fftn != null && ns_fftn .hasOwnProperty ("__kwargtrans__"))) {;
-							var ns_fftn = null;
-						};
-						if (a.ns_nrows != a.ns_ncols) {
-							var __except0__ = "Matrix isn't square";
-							__except0__.__cause__ = null;
-							throw __except0__;
-						}
-						var fftn = (ns_fftn ? ns_fftn : new FFTNayuki (a.ns_nrows));
-						var result = ns.empty (a.shape, a.dtype);
-						for (var irow = 0; irow < a.ns_nrows; irow++) {
-							result.__setitem__ ([irow, tuple ([0, null, 1])], __call__ (ifft, null, a.__getitem__ ([irow, tuple ([0, null, 1])]), fftn));
-						}
-						for (var icol = 0; icol < a.ns_ncols; icol++) {
-							result.__setitem__ ([tuple ([0, null, 1]), icol], __call__ (ifft, null, result.__getitem__ ([tuple ([0, null, 1]), icol]), fftn));
-						}
-						return result;
-					};
-					__pragma__ ('<use>' +
-						'numscrypt' +
-					'</use>')
-					__pragma__ ('<all>')
-						__all__.__name__ = __name__;
-						__all__.fft = fft;
-						__all__.fft2 = fft2;
-						__all__.ifft = ifft;
-						__all__.ifft2 = ifft2;
-					__pragma__ ('</all>')
-				}
-			}
-		}
-	);
-	__nest__ (
-		__all__,
 		'numscrypt.linalg', {
 			__all__: {
 				__inited__: false,
@@ -4285,8 +3670,8 @@ function autotest () {
 								var scale_inv = __truediv__ (1, scale);
 							}
 							if (__eq__ (scale, 0) || __call__ (isinf, null, scale_inv)) {
-								__setitem__ (T, i, __call__ (complex, null, 0));
-								A.__setitem__ ([i, __sub__ (i, 1)], __call__ (complex, null, 0));
+								__setitem__ (T, i, 0);
+								A.__setitem__ ([i, __sub__ (i, 1)], 0);
 								continue;
 							}
 							var H = 0;
@@ -4339,13 +3724,13 @@ function autotest () {
 					var hessenberg_reduce_1 = function (A, T) {
 						var n = __getitem__ (A.shape, 0);
 						if (__eq__ (n, 1)) {
-							A.__setitem__ ([0, 0], __call__ (complex, null, 1));
+							A.__setitem__ ([0, 0], 1);
 							return ;
 						}
-						var __left0__ = __call__ (complex, null, 1);
+						var __left0__ = 1;
 						A.__setitem__ ([0, 0], __left0__);
 						A.__setitem__ ([1, 1], __left0__);
-						var __left0__ = __call__ (complex, null, 0);
+						var __left0__ = 0;
 						A.__setitem__ ([0, 1], __left0__);
 						A.__setitem__ ([1, 0], __left0__);
 						for (var i = 2; i < n; i++) {
@@ -4361,9 +3746,9 @@ function autotest () {
 									}
 								}
 							}
-							A.__setitem__ ([i, i], __call__ (complex, null, 1));
+							A.__setitem__ ([i, i], 1);
 							for (var j = 0; j < i; j++) {
-								var __left0__ = __call__ (complex, null, 0);
+								var __left0__ = 0;
 								A.__setitem__ ([j, i], __left0__);
 								A.__setitem__ ([i, j], __left0__);
 							}
@@ -4398,8 +3783,8 @@ function autotest () {
 						var v = __call__ (hypot, null, __call__ (hypot, null, c.real, c.imag), __call__ (hypot, null, s.real, s.imag));
 						if (__eq__ (v, 0)) {
 							var v = 1;
-							var c = __call__ (complex, null, 1);
-							var s = __call__ (complex, null, 0);
+							var c = 1;
+							var s = 0;
 						}
 						else {
 							var c = __call__ (__idiv__, null, c, v);
@@ -4428,19 +3813,19 @@ function autotest () {
 						for (var j = n0; j < __sub__ (n1, 2); j++) {
 							var c = A.__getitem__ ([__add__ (j, 1), j]);
 							var s = A.__getitem__ ([__add__ (j, 2), j]);
-							var v = __call__ (complex, null, __call__ (hypot, null, __call__ (hypot, null, c.real, c.imag), __call__ (hypot, null, s.real, s.imag)));
+							var v = __call__ (hypot, null, __call__ (hypot, null, c.real, c.imag), __call__ (hypot, null, s.real, s.imag));
 							if (__eq__ (v, 0)) {
 								A.__setitem__ ([__add__ (j, 1), j], 0);
-								var v = __call__ (complex, null, 1);
-								var c = __call__ (complex, null, 1);
-								var s = __call__ (complex, null, 0);
+								var v = 1;
+								var c = 1;
+								var s = 0;
 							}
 							else {
 								A.__setitem__ ([__add__ (j, 1), j], v);
 								var c = __call__ (__idiv__, null, c, v);
 								var s = __call__ (__idiv__, null, s, v);
 							}
-							A.__setitem__ ([__add__ (j, 2), j], __call__ (complex, null, 0));
+							A.__setitem__ ([__add__ (j, 2), j], 0);
 							for (var k = __add__ (j, 1); k < n; k++) {
 								var x = A.__getitem__ ([__add__ (j, 1), k]);
 								var y = A.__getitem__ ([__add__ (j, 2), k]);
@@ -4495,7 +3880,7 @@ function autotest () {
 								var k = __call__ (__iadd__, null, k, 1);
 							}
 							if (__lt__ (__add__ (k, 1), n1)) {
-								A.__setitem__ ([__add__ (k, 1), k], __call__ (complex, null, 0));
+								A.__setitem__ ([__add__ (k, 1), k], 0);
 								var n0 = __add__ (k, 1);
 								var its = 0;
 								if (__ge__ (__add__ (n0, 1), n1)) {
@@ -4589,7 +3974,7 @@ function autotest () {
 									var t = smin;
 								}
 								var r = __truediv__ (__neg__ (r), t);
-								ER.__setitem__ ([j, i], __call__ (complex, null, r));
+								ER.__setitem__ ([j, i], r);
 								var rmax = __call__ (max, null, rmax, __call__ (abs, null, r));
 								if (__gt__ (rmax, simin)) {
 									for (var k = j; k < __add__ (i, 1); k++) {
@@ -4678,7 +4063,7 @@ function autotest () {
 						}
 						for (var x = 0; x < n; x++) {
 							for (var y = __add__ (x, 2); y < n; y++) {
-								A.__setitem__ ([y, x], __call__ (complex, null, 0));
+								A.__setitem__ ([y, x], 0);
 							}
 						}
 						__call__ (hessenberg_qr, null, A, Q);
@@ -4787,722 +4172,118 @@ function autotest () {
 			}
 		}
 	);
-	__nest__ (
-		__all__,
-		'org.transcrypt.autotester', {
-			__all__: {
-				__inited__: false,
-				__init__: function (__all__) {
-					var itertools = {};
-					var __name__ = 'org.transcrypt.autotester';
-					var HTMLGenerator = __init__ (__world__.org.transcrypt.autotester.html).HTMLGenerator;
-					var DataConverter = __init__ (__world__.org.transcrypt.autotester.html).DataConverter;
-					var JSTesterUI = __init__ (__world__.org.transcrypt.autotester.html).JSTesterUI;
-					__nest__ (itertools, '', __init__ (__world__.itertools));
-					var getFileLocation = function (ancestor) {
-						if (__envir__.executor_name == __envir__.transpiler_name) {
-							var s = null;
-							
-										var e = new Error();
-										if ( ! e.stack ) {
-										  console.log("MAJOR ISSUE: Browser Error lacks Stack");
-										} else {
-										  s = e.stack;
-										}
-										
-							var frames = null;
-							
-										var linereg = new RegExp("\n\r|\n", "g");
-										frames = s.toString().split(linereg);
-										
-							if (frames === null || len (frames) < 2) {
-								console.log("Failed to Split Stack");
-								return 'UNKNOWN:???';
-							}
-							var gpFrame = frames [ancestor * 2 + 1];
-							var frameReg = '([^(]*)\\(?([^:]*:)\\/{2,3}([^:/]*:?)([^:]*):(\\d+):(\\d+)';
-							var m = null;
-							
-										var r = new RegExp(frameReg);
-										m = r.exec(gpFrame);
-										
-							if (m) {
-								var filepath = m [4];
-								var pathParts = filepath.py_split ('/');
-								var filename = pathParts [len (pathParts) - 1];
-								var lineno = m [5];
-								return '{}:{}'.format (filename, lineno);
-							}
-							else {
-								console.log("Failed to Match Frame");
-								return 'UNKNOWN:???';
-							}
-						}
-					};
-					var AutoTester = __class__ ('AutoTester', [object], {
-						__module__: __name__,
-						get __init__ () {return __get__ (this, function (self, symbols) {
-							if (typeof symbols == 'undefined' || (symbols != null && symbols .hasOwnProperty ("__kwargtrans__"))) {;
-								var symbols = list ([]);
-							};
-							self.symbols = symbols;
-							self._currTestlet = 'UNKNOWN';
-							self.testDict = dict ({});
-							self.refDict = dict ({});
-							if (__envir__.executor_name == __envir__.transpiler_name) {
-								self.ui = JSTesterUI ();
-							}
-							else {
-								self.ui = null;
-							}
-						});},
-						get sortedRepr () {return __get__ (this, function (self, any) {
-							var tryGetNumKey = function (key) {
-								if (py_typeof (key) == str) {
-									try {
-										return int (key);
-									}
-									catch (__except0__) {
-										try {
-											return float (key);
-										}
-										catch (__except1__) {
-											return key;
-										}
-									}
-								}
-								else {
-									return key;
-								}
-							};
-							if (py_typeof (any) == dict) {
-								return ('{' + ', '.join ((function () {
-									var __accu0__ = [];
-									var __iterable0__ = enumerate (sorted ((function () {
-										var __accu1__ = [];
-										var __iterable1__ = any.py_keys ();
-										for (var __index0__ = 0; __index0__ < len (__iterable1__); __index0__++) {
-											var key = __iterable1__ [__index0__];
-											__accu1__.append (tryGetNumKey (key));
-										}
-										return __accu1__;
-									}) (), __kwargtrans__ ({key: (function __lambda__ (aKey) {
-										return str (aKey);
-									})})));
-									for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-										var __left0__ = __iterable0__ [__index0__];
-										var index = __left0__ [0];
-										var key = __left0__ [1];
-										__accu0__.append ('{}: {}'.format (repr (key), repr (any [key])));
-									}
-									return __accu0__;
-								}) ())) + '}';
-							}
-							else if (py_typeof (any) == set) {
-								if (len (any)) {
-									return ('{' + ', '.join (sorted ((function () {
-										var __accu0__ = [];
-										var __iterable0__ = list (any);
-										for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-											var item = __iterable0__ [__index0__];
-											__accu0__.append (str (item));
-										}
-										return __accu0__;
-									}) ()))) + '}';
-								}
-								else {
-									return repr (any);
-								}
-							}
-							else if (py_typeof (any) == range) {
-								return repr (list (any));
-							}
-							else {
-								return repr (any);
-							}
-						});},
-						get check () {return __get__ (this, function (self) {
-							var ancestor = 2;
-							if (arguments.length) {
-								var __ilastarg0__ = arguments.length - 1;
-								if (arguments [__ilastarg0__] && arguments [__ilastarg0__].hasOwnProperty ("__kwargtrans__")) {
-									var __allkwargs0__ = arguments [__ilastarg0__--];
-									for (var __attrib0__ in __allkwargs0__) {
-										switch (__attrib0__) {
-											case 'self': var self = __allkwargs0__ [__attrib0__]; break;
-											case 'ancestor': var ancestor = __allkwargs0__ [__attrib0__]; break;
-										}
-									}
-								}
-								var args = tuple ([].slice.apply (arguments).slice (1, __ilastarg0__ + 1));
-							}
-							else {
-								var args = tuple ();
-							}
-							var position = getFileLocation (ancestor);
-							var item = ' '.join ((function () {
-								var __accu0__ = [];
-								var __iterable0__ = args;
-								for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-									var arg = __iterable0__ [__index0__];
-									__accu0__.append (self.sortedRepr (arg));
-								}
-								return __accu0__;
-							}) ());
-							if (__envir__.executor_name == __envir__.transpiler_name) {
-								self.testDict [self._currTestlet].append (tuple ([position, item]));
-							}
-							else {
-								self.refDict [self._currTestlet].append (tuple ([position, item]));
-							}
-						});},
-						get expectException () {return __get__ (this, function (self, func) {
-							try {
-								func ();
-								return 'no exception';
-							}
-							catch (__except0__) {
-								if (isinstance (__except0__, Exception)) {
-									var exc = __except0__;
-									return 'exception';
-								}
-								else {
-									throw __except0__;
-								}
-							}
-						});},
-						get throwToError () {return __get__ (this, function (self, func) {
-							try {
-								return func ();
-							}
-							catch (__except0__) {
-								if (isinstance (__except0__, Exception)) {
-									var exc = __except0__;
-									return tuple ([null, '!!!{}'.format (str (exc))]);
-								}
-								else {
-									throw __except0__;
-								}
-							}
-						});},
-						get checkEval () {return __get__ (this, function (self, func) {
-							var ret = self.throwToError (func);
-							self.check (ret, __kwargtrans__ ({ancestor: 3}));
-						});},
-						get checkPad () {return __get__ (this, function (self, val, count) {
-							for (var i = 0; i < count; i++) {
-								self.check (val);
-							}
-						});},
-						get _getTotalErrorCnt () {return __get__ (this, function (self, testData, refData) {
-							var errCount = 0;
-							var __iterable0__ = enumerate (refData);
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var __left0__ = __iterable0__ [__index0__];
-								var i = __left0__ [0];
-								var refPos = __left0__ [1][0];
-								var refItem = __left0__ [1][1];
-								try {
-									var __left0__ = testData [i];
-									var testPos = __left0__ [0];
-									var testItem = __left0__ [1];
-									if (testItem != refItem) {
-										errCount++;
-									}
-								}
-								catch (__except0__) {
-									errCount++;
-								}
-							}
-							return errCount;
-						});},
-						get compare () {return __get__ (this, function (self) {
-							var dc = DataConverter ();
-							self.refDict = dc.getPythonResults ();
-							var totalErrors = 0;
-							var sKeys = sorted (self.refDict.py_keys ());
-							var __iterable0__ = sKeys;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var key = __iterable0__ [__index0__];
-								var refData = self.refDict [key];
-								try {
-									var testData = self.testDict [key];
-									if (testData === null) {
-										var __except0__ = KeyError ('No Test Data Module: {}'.format (key));
-										__except0__.__cause__ = null;
-										throw __except0__;
-									}
-								}
-								catch (__except0__) {
-									if (isinstance (__except0__, KeyError)) {
-										self.ui.appendSeqRowName (key, len (refData));
-										var __iterable1__ = enumerate (refData);
-										for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-											var __left0__ = __iterable1__ [__index1__];
-											var i = __left0__ [0];
-											var refPos = __left0__ [1][0];
-											var refItem = __left0__ [1][1];
-											self.ui.appendTableResult (key, null, null, refPos, refItem, false);
-										}
-										continue;
-									}
-									else {
-										throw __except0__;
-									}
-								}
-								var errCount = self._getTotalErrorCnt (testData, refData);
-								var collapse = errCount == 0;
-								self.ui.appendSeqRowName (key, errCount);
-								var __iterable1__ = enumerate (refData);
-								for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-									var __left0__ = __iterable1__ [__index1__];
-									var i = __left0__ [0];
-									var refPos = __left0__ [1][0];
-									var refItem = __left0__ [1][1];
-									try {
-										var __left0__ = testData [i];
-										var testPos = __left0__ [0];
-										var testItem = __left0__ [1];
-									}
-									catch (__except0__) {
-										var testPos = null;
-										var testItem = null;
-									}
-									self.ui.appendTableResult (key, testPos, testItem, refPos, refItem, collapse);
-								}
-								totalErrors += errCount;
-							}
-							self.ui.setOutputStatus (totalErrors == 0);
-						});},
-						get _cleanName () {return __get__ (this, function (self, py_name) {
-							var ret = py_name;
-							var invalidChars = list (['~', '!', '@', '$', '%', '^', '&', '*', '(', ')', '+', '=', ',', '.', '/', "'", ';', ':', '"', '?', '>', '<', '[', ']', '\\', '{', '}', '|', '`', '#', ' ']);
-							var __iterable0__ = invalidChars;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var ch = __iterable0__ [__index0__];
-								var ret = ret.py_replace (ch, '_');
-							}
-							return ret;
-						});},
-						get run () {return __get__ (this, function (self, testlet, testletName) {
-							var testletName = self._cleanName (testletName);
-							self._currTestlet = testletName;
-							if (__envir__.executor_name == __envir__.transpiler_name) {
-								self.testDict [self._currTestlet] = list ([]);
-							}
-							else {
-								self.refDict [self._currTestlet] = list ([]);
-							}
-							try {
-								testlet.run (self);
-							}
-							catch (__except0__) {
-								if (isinstance (__except0__, Exception)) {
-									var exc = __except0__;
-									if (self.ui !== null) {
-										self.ui.setOutputStatus (false);
-										self.ui.showException (testletName, exc);
-									}
-									else {
-										__except0__.__cause__ = null;
-										throw __except0__;
-									}
-								}
-								else {
-									throw __except0__;
-								}
-							}
-						});},
-						get done () {return __get__ (this, function (self) {
-							if (__envir__.executor_name == __envir__.transpiler_name) {
-								self.compare ();
-							}
-							else {
-								var fnameBase = __main__.__file__.__getslice__ (0, -(3), 1).py_replace ('\\', '/').rsplit ('/', 1) [-(1)];
-								var hg = HTMLGenerator (fnameBase);
-								var __iterable0__ = tuple ([false, true]);
-								for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-									var minified = __iterable0__ [__index0__];
-									hg.generate_html (self.refDict, minified);
-								}
-							}
-						});}
-					});
-					__pragma__ ('<use>' +
-						'itertools' +
-						'org.transcrypt.autotester.html' +
-					'</use>')
-					__pragma__ ('<all>')
-						__all__.AutoTester = AutoTester;
-						__all__.DataConverter = DataConverter;
-						__all__.HTMLGenerator = HTMLGenerator;
-						__all__.JSTesterUI = JSTesterUI;
-						__all__.__name__ = __name__;
-						__all__.getFileLocation = getFileLocation;
-					__pragma__ ('</all>')
-				}
-			}
-		}
-	);
-	__nest__ (
-		__all__,
-		'org.transcrypt.autotester.html', {
-			__all__: {
-				__inited__: false,
-				__init__: function (__all__) {
-					var __name__ = 'org.transcrypt.autotester.html';
-					var okColor = 'green';
-					var errorColor = 'red';
-					var highlightColor = 'yellow';
-					var testletNameColor = 'blue';
-					var messageDivId = 'message';
-					var referenceDivId = 'python';
-					var refResultDivId = 'pyresults';
-					var refPosDivId = 'pypos';
-					var testDivId = 'transcrypt';
-					var tableId = 'resulttable';
-					var resultsDivId = 'results';
-					var faultRowClass = 'faultrow';
-					var testletHeaderClass = 'testletheader';
-					var transValClass = 'trans-val';
-					var transPosClass = 'trans-pos';
-					var pyValClass = 'py-val';
-					var pyPosClass = 'py-pos';
-					var excAreaId = 'exc-area';
-					var excHeaderClass = 'exc-header';
-					var forceCollapseId = 'force-collapse';
-					var forceExpandId = 'force-expand';
-					var HTMLGenerator = __class__ ('HTMLGenerator', [object], {
-						__module__: __name__,
-						get __init__ () {return __get__ (this, function (self, filenameBase) {
-							if (typeof filenameBase == 'undefined' || (filenameBase != null && filenameBase .hasOwnProperty ("__kwargtrans__"))) {;
-								var filenameBase = null;
-							};
-							self._fnameBase = filenameBase;
-						});},
-						get generate_html () {return __get__ (this, function (self, refDict, minified) {
-							if (typeof minified == 'undefined' || (minified != null && minified .hasOwnProperty ("__kwargtrans__"))) {;
-								var minified = false;
-							};
-							if (self._fnameBase === null) {
-								var __except0__ = ValueError ('Filename Base must be defined to generate');
-								__except0__.__cause__ = null;
-								throw __except0__;
-							}
-							var minInfix = (minified ? '.min' : '');
-							var fname = minInfix.join (list ([self._fnameBase, '.html']));
-							var jsFileName = minInfix.join (list ([self._fnameBase, '.js']));
-							var jsPath = '{}/{}'.format (__envir__.target_subdir, jsFileName);
-							f = open (fname, 'w');
-							f.write ('<html><head>');
-							self._writeCSS (f);
-							f.write ('</head><body>');
-							self._writeStatusHeaderTemplate (f);
-							var dc = DataConverter ();
-							dc.writeHiddenResults (f, refDict);
-							self._writeTableArea (f);
-							f.write ('<script src="{}"></script>\n\n'.format (jsPath));
-							f.write ('</body></html>');
-							f.close ();
-						});},
-						get _writeCSS () {return __get__ (this, function (self, f) {
-							var cssOut = '\n\t\t<style>\n\t\t  body {\n\t\t    max-width: 100%;\n\t\t  }\n\t\t  .faultrow > td {\n\t\t     background-color: LightCoral;\n\t\t  }\n\t\t  #resulttable {\n\t\t    border-collapse: collapse;\n\t\t    width: 100%;\n\t\t    table-layout: fixed;\n\t\t  }\n\t\t  #resulttable th, #resulttable td {\n\t\t    border: 1px solid grey;\n\t\t  }\n\t\t  .testletheader > td {\n\t\t    background-color: LightSkyBlue;\n\t\t  }\n\t\t  .header-pos {\n\t\t    width: 20%;\n\t\t  }\n\t\t  .header-val {\n\t\t    width: 30%;\n\t\t  }\n\t\t  .py-pos,.trans-pos {\n\t\t    width: 20%;\n\t\t    overflow: hidden;\n\t\t  }\n\t\t  .py-val, .trans-val {\n\t\t    width: 30%;\n\t\t    overflow-x: auto;\n\t\t  }\n\t\t  .exc-header {\n\t      color: red;\n\t\t  }\n\t\t  .collapsed {\n\t\t    display: None;\n\t\t  }\n\t\t</style>\n\t\t';
-							f.write (cssOut);
-						});},
-						get _writeStatusHeaderTemplate () {return __get__ (this, function (self, f) {
-							f.write ('<b>Status:</b>\n');
-							f.write ('<div id="{}"></div><br><br>\n\n'.format (messageDivId));
-						});},
-						get _writeTableArea () {return __get__ (this, function (self, f) {
-							f.write ('<div id="{}"></div>'.format (excAreaId));
-							f.write ('<div id="{}">'.format (resultsDivId));
-							f.write ('<div> <a id="{}" href="#"> Collapse All</a> <a id="{}" href="#">Expand All</a></div>'.format (forceCollapseId, forceExpandId));
-							f.write ('<table id="{}"><thead><tr> <th colspan="2"> CPython </th> <th colspan="2"> Transcrypt </th> </tr>'.format (tableId));
-							f.write ('<tr> <th class="header-pos"> Location </th> <th class="header-val"> Value </th> <th class="header-val"> Value </th> <th class="header-pos"> Location </th> </tr></thead><tbody></tbody>');
-							f.write ('</table>');
-							f.write ('</div>');
-						});}
-					});
-					var DataConverter = __class__ ('DataConverter', [object], {
-						__module__: __name__,
-						get writeHiddenResults () {return __get__ (this, function (self, f, refDict) {
-							f.write ('<div id="{}" style="display: None">'.format (referenceDivId));
-							var __iterable0__ = refDict.py_keys ();
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var key = __iterable0__ [__index0__];
-								var itemData = ' | '.join ((function () {
-									var __accu0__ = [];
-									var __iterable1__ = refDict [key];
-									for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-										var x = __iterable1__ [__index1__];
-										__accu0__.append (x [1]);
-									}
-									return __accu0__;
-								}) ());
-								var posContent = ' | '.join ((function () {
-									var __accu0__ = [];
-									var __iterable1__ = refDict [key];
-									for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-										var x = __iterable1__ [__index1__];
-										__accu0__.append (x [0]);
-									}
-									return __accu0__;
-								}) ());
-								f.write ('<div id="{}">\n'.format (key));
-								f.write ('<div id="{}">{}</div>\n\n'.format (refResultDivId, itemData));
-								f.write ('<div id="{}">{}</div>\n'.format (refPosDivId, posContent));
-								f.write ('</div>\n');
-							}
-							f.write ('</div></div>\n');
-						});},
-						get getPythonResults () {return __get__ (this, function (self) {
-							var refData = document.getElementById (referenceDivId);
-							var refDict = dict ({});
-							var __iterable0__ = refData.children;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var child = __iterable0__ [__index0__];
-								var keyName = child.getAttribute ('id');
-								var __left0__ = self._extractPosResult (child);
-								var posData = __left0__ [0];
-								var resultData = __left0__ [1];
-								refDict [keyName] = zip (posData, resultData);
-							}
-							return refDict;
-						});},
-						get _extractPosResult () {return __get__ (this, function (self, elem) {
-							var resultData = null;
-							var posData = null;
-							var __iterable0__ = elem.children;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var e = __iterable0__ [__index0__];
-								var idStr = e.getAttribute ('id');
-								if (idStr == refResultDivId) {
-									var resultData = e.innerHTML.py_split (' | ');
-								}
-								else if (idStr == refPosDivId) {
-									var posData = e.innerHTML.py_split (' | ');
-								}
-								else {
-									// pass;
-								}
-							}
-							return tuple ([posData, resultData]);
-						});}
-					});
-					var getRowClsName = function (py_name) {
-						return 'mod-' + py_name;
-					};
-					var JSTesterUI = __class__ ('JSTesterUI', [object], {
-						__module__: __name__,
-						get __init__ () {return __get__ (this, function (self) {
-							self.expander = TestModuleExpander ();
-						});},
-						get setOutputStatus () {return __get__ (this, function (self, success) {
-							if (success) {
-								document.getElementById (messageDivId).innerHTML = '<div style="color: {}">Test succeeded</div>'.format (okColor);
-							}
-							else {
-								document.getElementById (messageDivId).innerHTML = '<div style="color: {}"><b>Test failed</b></div>'.format (errorColor);
-							}
-						});},
-						get appendSeqRowName () {return __get__ (this, function (self, py_name, errCount) {
-							var table = document.getElementById (tableId);
-							var row = table.insertRow (-(1));
-							row.id = py_name;
-							row.classList.add (testletHeaderClass);
-							self.expander.setupCollapseableHeader (row, errCount == 0);
-							var headerCell = row.insertCell (0);
-							headerCell.innerHTML = (py_name + ' | Errors = ') + str (errCount);
-							headerCell.colSpan = 4;
-							headerCell.style.textAlign = 'center';
-						});},
-						get appendTableResult () {return __get__ (this, function (self, py_name, testPos, testItem, refPos, refItem, collapse) {
-							if (typeof collapse == 'undefined' || (collapse != null && collapse .hasOwnProperty ("__kwargtrans__"))) {;
-								var collapse = false;
-							};
-							var clsName = getRowClsName (py_name);
-							var table = document.getElementById (tableId);
-							var row = table.insertRow (-(1));
-							row.classList.add (clsName);
-							if (testItem != refItem) {
-								row.classList.add (faultRowClass);
-								var refPos = '!!!' + refPos;
-							}
-							else {
-								self.expander.setCollapsed (row, collapse);
-							}
-							var cpy_pos = row.insertCell (0);
-							cpy_pos.innerHTML = refPos;
-							cpy_pos.classList.add (pyPosClass);
-							var cpy_val = row.insertCell (1);
-							cpy_val.innerHTML = refItem;
-							cpy_val.classList.add (pyValClass);
-							var trans_val = row.insertCell (2);
-							if (testItem !== null) {
-								trans_val.innerHTML = testItem;
-							}
-							trans_val.classList.add (transValClass);
-							var trans_pos = row.insertCell (3);
-							if (testPos !== null) {
-								trans_pos.innerHTML = testPos;
-							}
-							trans_pos.classList.add (transPosClass);
-						});},
-						get showException () {return __get__ (this, function (self, testname, exc) {
-							var excElem = document.getElementById (excAreaId);
-							var header = document.createElement ('H2');
-							header.classList.add (excHeaderClass);
-							header.innerHTML = 'Exception Thrown in JS Runtime';
-							excElem.appendChild (header);
-							var content = document.createElement ('p');
-							content.innerHTML = 'Exception in {}: {}'.format (testname, str (exc));
-							excElem.appendChild (content);
-							var stacktrace = document.createElement ('p');
-							if (exc.stack !== null) {
-								stacktrace.innerHTML = str (exc.stack);
-							}
-							else {
-								stacktrace.innerHTML = 'No Stack Trace Available!';
-							}
-						});}
-					});
-					var TestModuleExpander = __class__ ('TestModuleExpander', [object], {
-						__module__: __name__,
-						get __init__ () {return __get__ (this, function (self) {
-							self.collapsedClass = 'collapsed';
-							self.modCollapseClass = 'mod-collapsed';
-							self._expandCollapseAllFuncs ();
-						});},
-						get setCollapsed () {return __get__ (this, function (self, row, collapse) {
-							if (collapse) {
-								row.classList.add (self.collapsedClass);
-							}
-							else {
-								row.classList.remove (self.collapsedClass);
-							}
-						});},
-						get setupCollapseableHeader () {return __get__ (this, function (self, row, startCollapsed) {
-							if (typeof startCollapsed == 'undefined' || (startCollapsed != null && startCollapsed .hasOwnProperty ("__kwargtrans__"))) {;
-								var startCollapsed = false;
-							};
-							if (startCollapsed) {
-								row.classList.add (self.modCollapseClass);
-							}
-							var toggleCollapse = function (evt) {
-								var headerRow = evt.target.parentElement;
-								var doCollapse = !(headerRow.classList.contains (self.modCollapseClass));
-								self.collapseModule (headerRow, doCollapse);
-							};
-							row.onclick = toggleCollapse;
-						});},
-						get collapseModule () {return __get__ (this, function (self, headerRow, doCollapse) {
-							var py_name = headerRow.id;
-							var table = document.getElementById (tableId);
-							var clsName = getRowClsName (py_name);
-							var allRows = table.tHead.children;
-							var rows = filter ((function __lambda__ (x) {
-								return x.classList.contains (clsName);
-							}), allRows);
-							var __iterable0__ = rows;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var row = __iterable0__ [__index0__];
-								self.setCollapsed (row, doCollapse);
-							}
-							if (doCollapse) {
-								headerRow.classList.add (self.modCollapseClass);
-							}
-							else {
-								headerRow.classList.remove (self.modCollapseClass);
-							}
-						});},
-						get _expandCollapseAllFuncs () {return __get__ (this, function (self) {
-							var applyToAll = function (evt, collapse) {
-								var table = document.getElementById (tableId);
-								var filtFunc = (function __lambda__ (x) {
-									return x.classList.contains (testletHeaderClass);
-								});
-								var headerRows = filter (filtFunc, table.tHead.children);
-								var __iterable0__ = headerRows;
-								for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-									var headerRow = __iterable0__ [__index0__];
-									self.collapseModule (headerRow, collapse);
-								}
-							};
-							var collapseAll = function (evt) {
-								evt.preventDefault ();
-								applyToAll (evt, true);
-								return false;
-							};
-							var expandAll = function (evt) {
-								evt.preventDefault ();
-								applyToAll (evt, false);
-								return false;
-							};
-							var forceCollapse = document.getElementById (forceCollapseId);
-							forceCollapse.onclick = collapseAll;
-							var forceExpand = document.getElementById (forceExpandId);
-							forceExpand.onclick = expandAll;
-						});}
-					});
-					__pragma__ ('<all>')
-						__all__.DataConverter = DataConverter;
-						__all__.HTMLGenerator = HTMLGenerator;
-						__all__.JSTesterUI = JSTesterUI;
-						__all__.TestModuleExpander = TestModuleExpander;
-						__all__.__name__ = __name__;
-						__all__.errorColor = errorColor;
-						__all__.excAreaId = excAreaId;
-						__all__.excHeaderClass = excHeaderClass;
-						__all__.faultRowClass = faultRowClass;
-						__all__.forceCollapseId = forceCollapseId;
-						__all__.forceExpandId = forceExpandId;
-						__all__.getRowClsName = getRowClsName;
-						__all__.highlightColor = highlightColor;
-						__all__.messageDivId = messageDivId;
-						__all__.okColor = okColor;
-						__all__.pyPosClass = pyPosClass;
-						__all__.pyValClass = pyValClass;
-						__all__.refPosDivId = refPosDivId;
-						__all__.refResultDivId = refResultDivId;
-						__all__.referenceDivId = referenceDivId;
-						__all__.resultsDivId = resultsDivId;
-						__all__.tableId = tableId;
-						__all__.testDivId = testDivId;
-						__all__.testletHeaderClass = testletHeaderClass;
-						__all__.testletNameColor = testletNameColor;
-						__all__.transPosClass = transPosClass;
-						__all__.transValClass = transValClass;
-					__pragma__ ('</all>')
-				}
-			}
-		}
-	);
 	(function () {
-		var basics = {};
-		var module_fft = {};
-		var module_linalg = {};
-		var org = {};
 		var __name__ = '__main__';
-		__nest__ (org, 'transcrypt.autotester', __init__ (__world__.org.transcrypt.autotester));
-		__nest__ (basics, '', __init__ (__world__.basics));
-		__nest__ (module_linalg, '', __init__ (__world__.module_linalg));
-		__nest__ (module_fft, '', __init__ (__world__.module_fft));
-		var autoTester = org.transcrypt.autotester.AutoTester ();
-		autoTester.run (basics, 'basics');
-		autoTester.run (module_linalg, 'module_linalg');
-		autoTester.run (module_fft, 'module_fft');
-		autoTester.done ();
+		if (__envir__.executor_name == __envir__.transpiler_name) {
+			var num =  __init__ (__world__.numscrypt);
+			var linalg =  __init__ (__world__.numscrypt.linalg);
+		}
+		var show = function () {
+			var args = tuple ([].slice.apply (arguments).slice (0));
+			__call__.apply (null, [print].concat ([null]).concat (args));
+		};
+		var __iterable0__ = __getslice__ (tuple ([__call__ (num.array, num, list ([list ([0, complex (0, 1.0)]), list ([__neg__ (complex (0, 1.0)), 1])]), 'complex128'), __call__ (num.array, num, list ([list ([1, __neg__ (2), 3, 1]), list ([5, 8, __neg__ (1), __neg__ (5)]), list ([2, 1, 1, 100]), list ([2, 1, __neg__ (1), 0])]), 'complex128'), __call__ (num.array, num, list ([list ([1, 1, 0, 0]), list ([0, 2, 2, 0]), list ([0, 0, 3, 3]), list ([0, 0, 0, 4])]), 'complex128')]), 1, 2, 1);
+		for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
+			var a = __getitem__ (__iterable0__, __index0__);
+			var __left0__ = __call__ (linalg.eig, linalg, a);
+			var eVals = __left0__ [0];
+			var eVecs = __left0__ [1];
+			var enumSorted = __call__ (sorted, null, __call__ (enumerate, null, __call__ (eVals.tolist, eVals)), __kwargtrans__ ({key: (function __lambda__ (elem) {
+				return __neg__ (__add__ (__getitem__ (elem, 1).real, __truediv__ (__getitem__ (elem, 1).imag, 1000)));
+			})}));
+			var indicesSorted = (function () {
+				var __accu0__ = [];
+				var __iterable1__ = enumSorted;
+				for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
+					var elem = __getitem__ (__iterable1__, __index1__);
+					__call__ (__accu0__.append, __accu0__, __getitem__ (elem, 0));
+				}
+				return __accu0__;
+			}) ();
+			var eValsSorted = (function () {
+				var __accu0__ = [];
+				var __iterable1__ = enumSorted;
+				for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
+					var elem = __getitem__ (__iterable1__, __index1__);
+					__call__ (__accu0__.append, __accu0__, __getitem__ (elem, 1));
+				}
+				return __accu0__;
+			}) ();
+			var eValsMat = __call__ (num.empty, num, a.shape, a.dtype);
+			for (var iRow = 0; iRow < __getitem__ (a.shape, 0); iRow++) {
+				for (var iCol = 0; iCol < __getitem__ (a.shape, 1); iCol++) {
+					eValsMat.__setitem__ ([iRow, iCol], __getitem__ (eVals, iCol));
+				}
+			}
+			var eVecsNorms = __call__ (num.empty, num, tuple ([__getitem__ (eVecs.shape, 1)]), a.dtype);
+			for (var iNorm = 0; iNorm < __getitem__ (eVecsNorms.shape, 0); iNorm++) {
+				__setitem__ (eVecsNorms, iNorm, __call__ (complex, null, __call__ (linalg.norm, linalg, eVecs.__getitem__ ([tuple ([0, null, 1]), iNorm]))));
+			}
+			var eVecsCanon = __call__ (num.empty, num, a.shape, a.dtype);
+			for (var iRow = 0; iRow < __getitem__ (a.shape, 0); iRow++) {
+				for (var iCol = 0; iCol < __getitem__ (a.shape, 1); iCol++) {
+					eVecsCanon.__setitem__ ([iRow, iCol], __truediv__ (eVecs.__getitem__ ([iRow, iCol]), eVecs.__getitem__ ([0, iCol])));
+				}
+			}
+			var eVecsSorted = __call__ (num.empty, num, a.shape, a.dtype);
+			for (var iRow = 0; iRow < __getitem__ (a.shape, 0); iRow++) {
+				for (var iCol = 0; iCol < __getitem__ (a.shape, 1); iCol++) {
+					eVecsSorted.__setitem__ ([iRow, iCol], eVecsCanon.__getitem__ ([iRow, __getitem__ (indicesSorted, iCol)]));
+				}
+			}
+			__call__ (show, null, '=========================================');
+			__call__ (show, null, '\n---------------- eigVecsSorted ----------');
+			__call__ (show, null, (function () {
+				var __accu0__ = [];
+				var __iterable1__ = __call__ (eVecsSorted.tolist, eVecsSorted);
+				for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
+					var row = __getitem__ (__iterable1__, __index1__);
+					__call__ (__accu0__.append, __accu0__, (function () {
+						var __accu1__ = [];
+						var __iterable2__ = row;
+						for (var __index2__ = 0; __index2__ < len (__iterable2__); __index2__++) {
+							var value = __getitem__ (__iterable2__, __index2__);
+							__call__ (__accu1__.append, __accu1__, tuple ([__call__ (round, null, __add__ (value.real, 1e-10), 3), __call__ (round, null, __add__ (value.imag, 1e-10), 3)]));
+						}
+						return __accu1__;
+					}) ());
+				}
+				return __accu0__;
+			}) ());
+			__call__ (show, null, '\n---------------- eigValsSorted ----------');
+			__call__ (show, null, (function () {
+				var __accu0__ = [];
+				var __iterable1__ = eValsSorted;
+				for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
+					var value = __getitem__ (__iterable1__, __index1__);
+					__call__ (__accu0__.append, __accu0__, tuple ([__call__ (round, null, __add__ (value.real, 1e-10), 3), __call__ (round, null, __add__ (value.imag, 1e-10), 3)]));
+				}
+				return __accu0__;
+			}) (), '\n');
+			__call__ (show, null, '=========================================');
+		}
 		__pragma__ ('<use>' +
-			'basics' +
-			'module_fft' +
-			'module_linalg' +
-			'org.transcrypt.autotester' +
+			'numscrypt' +
+			'numscrypt.linalg' +
 		'</use>')
 		__pragma__ ('<all>')
 			__all__.__name__ = __name__;
-			__all__.autoTester = autoTester;
+			__all__.a = a;
+			__all__.eVals = eVals;
+			__all__.eValsMat = eValsMat;
+			__all__.eValsSorted = eValsSorted;
+			__all__.eVecs = eVecs;
+			__all__.eVecsCanon = eVecsCanon;
+			__all__.eVecsNorms = eVecsNorms;
+			__all__.eVecsSorted = eVecsSorted;
+			__all__.enumSorted = enumSorted;
+			__all__.iCol = iCol;
+			__all__.iNorm = iNorm;
+			__all__.iRow = iRow;
+			__all__.indicesSorted = indicesSorted;
+			__all__.show = show;
 		__pragma__ ('</all>')
 	}) ();
     return __all__;
 }
-window ['autotest'] = autotest ();
+window ['test'] = test ();
