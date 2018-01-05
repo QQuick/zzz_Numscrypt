@@ -21,7 +21,7 @@ def test (relPath, fileNamePrefix, run = False):
 def autoTest (*args):
 	test (*args, True)
 	
-os.system ('python35 test_install.py')
+os.system ('python test_install.py')
 	
 for fcallSwitch in (' ', '-f '):
 	autoTest ('development/automated_tests/ndarray', 'autotest')

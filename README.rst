@@ -34,9 +34,10 @@ What's new
 
 N.B. Always use the newest version of Transcrypt to be able to use the newest features of Numscrypt.
 
-- Tested with Transcrypt Paris 3.6.69
-- Added linalg.norm and linalg.eig
-- FFT2 and IFFT2 (2D Fast Fourier Transform for complex arrays)
+- Eigenvector decomposition (numpy.linalg.eig) now supported for complex arrays
+- Added numpy.linalg.norm
+- Tested with Transcrypt Paris 3.6.80
+- FFT2 and IFFT2 (2D Fast Fourier Transform) now supported for complex arrays
 - Complete redesign
 
 Other packages you might like

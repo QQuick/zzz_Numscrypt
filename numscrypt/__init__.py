@@ -267,12 +267,12 @@ class ndarray:
                 # Element of single dim array
                 
                 if self.ns_complex:
-                    if isinstance (value, complex):
-                        self.realbuf [key] = value.real
-                        self.imagbuf [key] = value.imag
-                    else:                   
+                    if __typeof__ (value) == 'number':
                         self.realbuf [key] = value
                         self.imagbuf [key] = 0
+                    else:                   
+                        self.realbuf [key] = value.real
+                        self.imagbuf [key] = value.imag
                 else:
                     self.realbuf [key] = value
         else:
@@ -335,12 +335,12 @@ class ndarray:
                 if self.ns_complex:
                     itarget = self.ns_ncols * key [0] + key [1]
                     
-                    if isinstance (value, complex):
-                        self.realbuf [itarget] = value.real
-                        self.imagbuf [itarget] = value.imag
-                    else:
+                    if __typeof__ (value) == 'number':
                         self.realbuf [itarget] = value
                         self.imagbuf [itarget] = 0
+                    else:
+                        self.realbuf [itarget] = value.real
+                        self.imagbuf [itarget] = value.imag
                     
                 else:
                     self.realbuf [self.ns_ncols * key [0] + key [1]] = value
@@ -351,7 +351,7 @@ class ndarray:
     def imag (self):    # Returns a view, so you can assign self via it
         return ndarray (self.shape, ns_buffertype (self.dtype), self.imagbuf)
         
-    def conjugate (self):
+    def __conj__ (self):
         if self.ns_complex:
             result = empty (self.shape, self.dtype)
             result.realbuf.set (self.realbuf)
@@ -361,6 +361,9 @@ class ndarray:
             return result
         else:
             return copy (self)
+        
+    def conjugate (self):
+        return self.__conj__ ()
         
     def __neg__ (self):
         result = empty (self.shape, self.dtype)
@@ -706,3 +709,6 @@ def identity (n, dtype = 'float64'):
     
     return result
     
+def conjugate (x):
+    return x.__conj__ ()
+        

@@ -214,7 +214,7 @@ def hessenberg_reduce_1(A, T):
     A[0,1] = A[1,0] = 0
 
     for i in range(2, n):
-        if T[i] != complex (0):     # !!! Conversion shouldn't be needed
+        if T[i] != 0:     # !!! Conversion shouldn't be needed
 
             for j in range(i):
                 G = T[i] * A[i-1,j]
@@ -803,9 +803,7 @@ def eig(A, left = False, right = True, overwrite_a = False):
 
     hessenberg_qr(A, Q)
     
-    E = [complex (0) for i in range(n)]
-    for i in range(n):
-        E[i] = A[i,i]
+    E = [A[i,i] for i in range(n)]
 
     if not (left or right):
         return E

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. Currently available features &mdash; Transcrypt 0.0.37 documentation</title>
+    <title>3. Currently available features &mdash; Transcrypt 0.0.38 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.37',
+        VERSION:     '0.0.38',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Transcrypt 0.0.37 documentation" href="index.html" />
+    <link rel="top" title="Transcrypt 0.0.38 documentation" href="index.html" />
     <link rel="prev" title="2. Getting started" href="installation_use.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="installation_use.html" title="2. Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.37 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.38 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -382,9 +382,11 @@ if __envir__.executor_name == __envir__.transpiler_name:
 __pragma__ (&#39;skip&#39;)
 import numpy as num
 import numpy.linalg as linalg
+num.set_printoptions (linewidth = 240)
 __pragma__ (&#39;noskip&#39;)
 
 def run (autoTester):
+    autoTester.check (&#39;====== inverse ======&#39;)
 
     # Real
 
@@ -443,6 +445,75 @@ def run (autoTester):
     autoTester.check (&#39;c + c&#39;, num.round (c + c + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
     autoTester.check (&#39;c - c&#39;, num.round (c - c + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
     __pragma__ (&#39;noopov&#39;)
+    
+    autoTester.check (&#39;====== eigen ======&#39;)
+    
+    __pragma__ (&#39;opov&#39;)
+
+    for a in (   
+        num.array ([
+            [0, 1j],
+            [-1j, 1]
+        ], &#39;complex128&#39;),
+        num.array ([
+            [1, -2, 3, 1],
+            [5, 8, -1, -5],
+            [2, 1, 1, 100],
+            [2, 1, -1, 0]
+        ], &#39;complex128&#39;),
+    ):
+        eVals, eVecs = linalg.eig (a)
+        
+        enumSorted = sorted (
+            enumerate (eVals.tolist ()),
+            key = lambda elem: -(elem [1].real + elem [1].imag / 1000)  # Order on primarily on real, secundarily on imag, note conjugate vals
+        )
+        
+        indicesSorted = [elem [0] for elem in enumSorted]
+        eValsSorted = [elem [1] for elem in enumSorted]
+        
+        eValsMat = num.empty (a.shape, a.dtype)
+        for iRow in range (a.shape [0]):
+            for iCol in range (a.shape [1]):
+                eValsMat [iRow, iCol] = eVals [iCol]
+         
+        eVecsNorms = num.empty ((eVecs.shape [1], ), a.dtype)
+        for iNorm in range (eVecsNorms.shape [0]):
+            eVecsNorms [iNorm] = complex (linalg.norm (eVecs [:, iNorm]))
+            
+        eVecsCanon = num.empty (a.shape, a.dtype)
+        for iRow in range (a.shape [0]):
+            for iCol in range (a.shape [1]):
+                eVecsCanon [iRow, iCol] = eVecs [iRow, iCol] / eVecs [0, iCol] 
+            
+        eVecsSorted = num.empty (a.shape, a.dtype)
+        for iRow in range (a.shape [0]):
+            for iCol in range (a.shape [1]):
+                eVecsSorted [iRow, iCol] = eVecsCanon [iRow, indicesSorted [iCol]]
+            
+        &#39;&#39;&#39;
+        autoTester.check (&#39;\n---------------- a ----------------------&#39;)
+        autoTester.check (a)
+        autoTester.check (&#39;\n---------------- eigVals ----------------&#39;)
+        autoTester.check (eVals)
+        autoTester.check (&#39;\n---------------- eigValsMat--------------&#39;)
+        autoTester.check (eValsMat)
+        autoTester.check (&#39;\n---------------- eigVecs ----------------&#39;)
+        autoTester.check (eVecs)
+        autoTester.check (&#39;\n---------------- eigValsMat @ eigVecs ---&#39;)
+        autoTester.check (eValsMat * eVecs)
+        autoTester.check (&#39;\n---------------- a @ eigVecs-------------&#39;)
+        autoTester.check (a @ eVecs)
+        autoTester.check (&#39;\n---------------- eigVecsNorms -----------&#39;)
+        autoTester.check (eVecsNorms)
+        autoTester.check (&#39;\n---------------- eigVecsCanon -----------&#39;)
+        autoTester.check (eVecsCanon)
+        &#39;&#39;&#39;
+        autoTester.check (&#39;\n---------------- eigVecsSorted ----------&#39;)
+        autoTester.check ([[(round (value.real + 1e-3, 3), round (value.imag + 1e-3, 3)) for value in row] for row in eVecsSorted.tolist ()])
+        autoTester.check (&#39;\n---------------- eigValsSorted ----------&#39;)
+        autoTester.check ([(round (value.real + 1e-3, 3), round (value.imag + 1e-3, 3)) for value in eValsSorted], &#39;\n&#39;)
+        
 </pre></div>
 </div>
 </div>
@@ -622,6 +693,10 @@ for useComplex in (False, True):
         sp = a - a
         __pragma__ (&#39;noopov&#39;)
         
+        timeStartEig = __new__ (Date ())
+        if useComplex:
+            evals, evecs = linalg.eig (a [:10, :10])            
+        
         timeEnd = __new__ (Date ())
         
         result += (
@@ -631,7 +706,7 @@ a @ ai [0:5, 0:5] =
 
 {}
 &#39;&#39;&#39; 
-    ) .format (
+        ) .format (
             str (num.round (id [0:5, 0:5], 2)) .replace (&#39; &#39;, &#39;\t&#39;),
         )
 
@@ -651,6 +726,7 @@ Elementwise product (*) took: {} ms
 Division took: {} ms
 Addition took: {} ms
 Subtraction took: {} ms
+Eigenvals/vecs took: {} ms
 &lt;/pre&gt;
 &#39;&#39;&#39;
         ) .format (
@@ -659,7 +735,8 @@ Subtraction took: {} ms
             timeStartDiv - timeStartScalp,
             timeStartAdd - timeStartDiv,
             timeStartSub - timeStartAdd,
-            timeEnd - timeStartSub
+            timeStartEig - timeStartSub,
+            timeEnd - timeStartEig if useComplex else &#39;N.A.&#39;
         )
             
 document.getElementById (&#39;result&#39;) .innerHTML = result
@@ -729,7 +806,7 @@ document.getElementById (&#39;result&#39;) .innerHTML = result
         <li class="right" >
           <a href="installation_use.html" title="2. Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.37 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.38 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

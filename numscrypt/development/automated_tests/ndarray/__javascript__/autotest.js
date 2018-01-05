@@ -1,7 +1,7 @@
 "use strict";
-// Transcrypt'ed from Python, 2018-01-04 16:54:41
+// Transcrypt'ed from Python, 2018-01-05 16:37:54
 function autotest () {
-    var __symbols__ = ['__complex__', '__py3.6__', '__esv5__'];
+    var __symbols__ = ['__complex__', '__py3.6__', '__esv6__'];
     var __all__ = {};
     var __world__ = __all__;
     var __nest__ = function (headObject, tailNames, value) {
@@ -34,6 +34,7 @@ function autotest () {
         return module.__all__;
     };
     __all__.__init__ = __init__;
+    var __proxy__ = false;
     var __get__ = function (self, func, quotedFuncName) {
         if (self) {
             if (self.hasOwnProperty ('__class__') || typeof self == 'string' || self instanceof String) {
@@ -95,6 +96,10 @@ function autotest () {
                     var descrip = Object.getOwnPropertyDescriptor (base, attrib);
                     Object.defineProperty (cls, attrib, descrip);
                 }
+                for (var symbol of Object.getOwnPropertySymbols (base)) {
+                    var descrip = Object.getOwnPropertyDescriptor (base, symbol);
+                    Object.defineProperty (cls, symbol, descrip);
+                }
             }
             cls.__metaclass__ = meta;
             cls.__name__ = name.startsWith ('py_') ? name.slice (3) : name;
@@ -102,6 +107,10 @@ function autotest () {
             for (var attrib in attribs) {
                 var descrip = Object.getOwnPropertyDescriptor (attribs, attrib);
                 Object.defineProperty (cls, attrib, descrip);
+            }
+            for (var symbol of Object.getOwnPropertySymbols (attribs)) {
+                var descrip = Object.getOwnPropertyDescriptor (attribs, symbol);
+                Object.defineProperty (cls, symbol, descrip);
             }
             return cls;
         }
@@ -115,6 +124,28 @@ function autotest () {
         __bases__: [],
         __new__: function (args) {
             var instance = Object.create (this, {__class__: {value: this, enumerable: true}});
+            if ('__getattr__' in this || '__setattr__' in this) {
+                instance = new Proxy (instance, {
+                    get: function (target, name) {
+                        var result = target [name];
+                        if (result == undefined) {
+                            return target.__getattr__ (name);
+                        }
+                        else {
+                            return result;
+                        }
+                    },
+                    set: function (target, name, value) {
+                        try {
+                            target.__setattr__ (name, value);
+                        }
+                        catch (exception) {
+                            target [name] = value;
+                        }
+                        return true;
+                    }
+                })
+            }
             this.__init__.apply (null, [instance] .concat (args));
             return instance;
         }
@@ -140,9 +171,9 @@ function autotest () {
 						get __init__ () {return __get__ (this, function (self) {
 							self.interpreter_name = 'python';
 							self.transpiler_name = 'transcrypt';
-							self.transpiler_version = '3.6.69';
+							self.transpiler_version = '3.6.80';
 							self.target_subdir = '__javascript__';
-						});}
+						}, '__init__');}
 					});
 					var __envir__ = __Envir__ ();
 					__pragma__ ('<all>')
@@ -189,7 +220,7 @@ function autotest () {
 							catch (__except0__) {
 								self.stack = 'No stack trace available';
 							}
-						});},
+						}, '__init__');},
 						get __repr__ () {return __get__ (this, function (self) {
 							if (len (self.__args__)) {
 								return '{}{}'.format (self.__class__.__name__, repr (tuple (self.__args__)));
@@ -197,7 +228,7 @@ function autotest () {
 							else {
 								return '{}()'.format (self.__class__.__name__);
 							}
-						});},
+						}, '__repr__');},
 						get __str__ () {return __get__ (this, function (self) {
 							if (len (self.__args__) > 1) {
 								return str (tuple (self.__args__));
@@ -208,31 +239,31 @@ function autotest () {
 							else {
 								return '';
 							}
-						});}
+						}, '__str__');}
 					});
 					var IterableError = __class__ ('IterableError', [Exception], {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self, error) {
 							Exception.__init__ (self, "Can't iterate over non-iterable", __kwargtrans__ ({error: error}));
-						});}
+						}, '__init__');}
 					});
 					var StopIteration = __class__ ('StopIteration', [Exception], {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self, error) {
 							Exception.__init__ (self, 'Iterator exhausted', __kwargtrans__ ({error: error}));
-						});}
+						}, '__init__');}
 					});
 					var ValueError = __class__ ('ValueError', [Exception], {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self, message, error) {
 							Exception.__init__ (self, message, __kwargtrans__ ({error: error}));
-						});}
+						}, '__init__');}
 					});
 					var KeyError = __class__ ('KeyError', [Exception], {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self, message, error) {
 							Exception.__init__ (self, message, __kwargtrans__ ({error: error}));
-						});}
+						}, '__init__');}
 					});
 					var AssertionError = __class__ ('AssertionError', [Exception], {
 						__module__: __name__,
@@ -243,37 +274,31 @@ function autotest () {
 							else {
 								Exception.__init__ (self, __kwargtrans__ ({error: error}));
 							}
-						});}
+						}, '__init__');}
 					});
-					var RuntimeError = __class__ ('RuntimeError', [Exception], {
+					var NotImplementedError = __class__ ('NotImplementedError', [Exception], {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self, message, error) {
 							Exception.__init__ (self, message, __kwargtrans__ ({error: error}));
-						});}
-					});
-					var NotImplementedError = __class__ ('NotImplementedError', [RuntimeError], {
-						__module__: __name__,
-						get __init__ () {return __get__ (this, function (self, message, error) {
-							RuntimeError.__init__ (self, message, __kwargtrans__ ({error: error}));
-						});}
+						}, '__init__');}
 					});
 					var IndexError = __class__ ('IndexError', [Exception], {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self, message, error) {
 							Exception.__init__ (self, message, __kwargtrans__ ({error: error}));
-						});}
+						}, '__init__');}
 					});
 					var AttributeError = __class__ ('AttributeError', [Exception], {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self, message, error) {
 							Exception.__init__ (self, message, __kwargtrans__ ({error: error}));
-						});}
+						}, '__init__');}
 					});
 					var py_TypeError = __class__ ('py_TypeError', [Exception], {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self, message, error) {
 							Exception.__init__ (self, message, __kwargtrans__ ({error: error}));
-						});}
+						}, '__init__');}
 					});
 					var Warning = __class__ ('Warning', [Exception], {
 						__module__: __name__,
@@ -369,9 +394,7 @@ function autotest () {
 					var map = function (func, iterable) {
 						return (function () {
 							var __accu0__ = [];
-							var __iterable0__ = iterable;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var item = __iterable0__ [__index0__];
+							for (var item of iterable) {
 								__accu0__.append (func (item));
 							}
 							return __accu0__;
@@ -383,9 +406,7 @@ function autotest () {
 						}
 						return (function () {
 							var __accu0__ = [];
-							var __iterable0__ = iterable;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var item = __iterable0__ [__index0__];
+							for (var item of iterable) {
 								if (func (item)) {
 									__accu0__.append (item);
 								}
@@ -413,23 +434,23 @@ function autotest () {
 								self.real = real;
 								self.imag = imag;
 							}
-						});},
+						}, '__init__');},
 						get __neg__ () {return __get__ (this, function (self) {
 							return complex (-(self.real), -(self.imag));
-						});},
+						}, '__neg__');},
 						get __exp__ () {return __get__ (this, function (self) {
 							var modulus = Math.exp (self.real);
 							return complex (modulus * Math.cos (self.imag), modulus * Math.sin (self.imag));
-						});},
+						}, '__exp__');},
 						get __log__ () {return __get__ (this, function (self) {
 							return complex (Math.log (Math.sqrt (self.real * self.real + self.imag * self.imag)), Math.atan2 (self.imag, self.real));
-						});},
+						}, '__log__');},
 						get __pow__ () {return __get__ (this, function (self, other) {
 							return self.__log__ ().__mul__ (other).__exp__ ();
-						});},
+						}, '__pow__');},
 						get __rpow__ () {return __get__ (this, function (self, real) {
 							return self.__mul__ (Math.log (real)).__exp__ ();
-						});},
+						}, '__rpow__');},
 						get __mul__ () {return __get__ (this, function (self, other) {
 							if (typeof other === 'number') {
 								return complex (self.real * other, self.imag * other);
@@ -437,10 +458,10 @@ function autotest () {
 							else {
 								return complex (self.real * other.real - self.imag * other.imag, self.real * other.imag + self.imag * other.real);
 							}
-						});},
+						}, '__mul__');},
 						get __rmul__ () {return __get__ (this, function (self, real) {
 							return complex (self.real * real, self.imag * real);
-						});},
+						}, '__rmul__');},
 						get __div__ () {return __get__ (this, function (self, other) {
 							if (typeof other === 'number') {
 								return complex (self.real / other, self.imag / other);
@@ -449,11 +470,11 @@ function autotest () {
 								var denom = other.real * other.real + other.imag * other.imag;
 								return complex ((self.real * other.real + self.imag * other.imag) / denom, (self.imag * other.real - self.real * other.imag) / denom);
 							}
-						});},
+						}, '__div__');},
 						get __rdiv__ () {return __get__ (this, function (self, real) {
 							var denom = self.real * self.real;
 							return complex ((real * self.real) / denom, (real * self.imag) / denom);
-						});},
+						}, '__rdiv__');},
 						get __add__ () {return __get__ (this, function (self, other) {
 							if (typeof other === 'number') {
 								return complex (self.real + other, self.imag);
@@ -461,10 +482,10 @@ function autotest () {
 							else {
 								return complex (self.real + other.real, self.imag + other.imag);
 							}
-						});},
+						}, '__add__');},
 						get __radd__ () {return __get__ (this, function (self, real) {
 							return complex (self.real + real, self.imag);
-						});},
+						}, '__radd__');},
 						get __sub__ () {return __get__ (this, function (self, other) {
 							if (typeof other === 'number') {
 								return complex (self.real - other, self.imag);
@@ -472,26 +493,44 @@ function autotest () {
 							else {
 								return complex (self.real - other.real, self.imag - other.imag);
 							}
-						});},
+						}, '__sub__');},
 						get __rsub__ () {return __get__ (this, function (self, real) {
 							return complex (real - self.real, -(self.imag));
-						});},
-						get __eq__ () {return __get__ (this, function (self, other) {
-							return self.real == other.real && self.imag == other.imag;
-						});},
-						get __neq () {return __get__ (this, function (self, other) {
-							return self.real != other.real || self.imag != other.imag;
-						});},
+						}, '__rsub__');},
 						get __repr__ () {return __get__ (this, function (self) {
 							return '({}{}{}j)'.format (self.real, (self.imag >= 0 ? '+' : ''), self.imag);
-						});},
+						}, '__repr__');},
 						get __str__ () {return __get__ (this, function (self) {
 							return __repr__ (self).__getslice__ (1, -(1), 1);
-						});},
+						}, '__str__');},
+						get __eq__ () {return __get__ (this, function (self, other) {
+							if (typeof other === 'number') {
+								return self.real == other;
+							}
+							else {
+								return self.real == other.real && self.imag == other.imag;
+							}
+						}, '__eq__');},
+						get __ne__ () {return __get__ (this, function (self, other) {
+							if (typeof other === 'number') {
+								return self.real != other;
+							}
+							else {
+								return self.real != other.real || self.imag != other.imag;
+							}
+						}, '__ne__');},
 						get conjugate () {return __get__ (this, function (self) {
 							return complex (self.real, -(self.imag));
-						});}
+						}, 'conjugate');}
 					});
+					var __conj__ = function (aNumber) {
+						if (isinstance (aNumber, complex)) {
+							return complex (aNumber.real, -(aNumber.imag));
+						}
+						else {
+							return complex (aNumber, 0);
+						}
+					};
 					var __Terminal__ = __class__ ('__Terminal__', [object], {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self) {
@@ -508,7 +547,7 @@ function autotest () {
 								self.element.style.padding = '5px';
 								self.element.innerHTML = '_';
 							}
-						});},
+						}, '__init__');},
 						get print () {return __get__ (this, function (self) {
 							var sep = ' ';
 							var end = '\n';
@@ -531,9 +570,7 @@ function autotest () {
 							}
 							self.buffer = '{}{}{}'.format (self.buffer, sep.join ((function () {
 								var __accu0__ = [];
-								var __iterable0__ = args;
-								for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-									var arg = __iterable0__ [__index0__];
+								for (var arg of args) {
 									__accu0__.append (str (arg));
 								}
 								return __accu0__;
@@ -545,15 +582,13 @@ function autotest () {
 							else {
 								console.log (sep.join ((function () {
 									var __accu0__ = [];
-									var __iterable0__ = args;
-									for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-										var arg = __iterable0__ [__index0__];
+									for (var arg of args) {
 										__accu0__.append (str (arg));
 									}
 									return __accu0__;
 								}) ()));
 							}
-						});},
+						}, 'print');},
 						get input () {return __get__ (this, function (self, question) {
 							if (arguments.length) {
 								var __ilastarg0__ = arguments.length - 1;
@@ -573,7 +608,7 @@ function autotest () {
 							var answer = window.prompt ('\n'.join (self.buffer.py_split ('\n').__getslice__ (-(16), null, 1)));
 							self.print (answer);
 							return answer;
-						});}
+						}, 'input');}
 					});
 					var __terminal__ = __Terminal__ ();
 					__pragma__ ('<all>')
@@ -585,7 +620,6 @@ function autotest () {
 						__all__.IterableError = IterableError;
 						__all__.KeyError = KeyError;
 						__all__.NotImplementedError = NotImplementedError;
-						__all__.RuntimeError = RuntimeError;
 						__all__.RuntimeWarning = RuntimeWarning;
 						__all__.StopIteration = StopIteration;
 						__all__.py_TypeError = py_TypeError;
@@ -593,6 +627,7 @@ function autotest () {
 						__all__.ValueError = ValueError;
 						__all__.Warning = Warning;
 						__all__.__Terminal__ = __Terminal__;
+						__all__.__conj__ = __conj__;
 						__all__.__name__ = __name__;
 						__all__.__sort__ = __sort__;
 						__all__.__terminal__ = __terminal__;
@@ -624,7 +659,6 @@ function autotest () {
     var ValueError = __all__.ValueError;
     var KeyError = __all__.KeyError;
     var AssertionError = __all__.AssertionError;
-    var RuntimeError = __all__.RuntimeError;
     var NotImplementedError = __all__.NotImplementedError;
     var IndexError = __all__.IndexError;
     var AttributeError = __all__.AttributeError;
@@ -638,6 +672,7 @@ function autotest () {
     var map = __all__.map;
     var filter = __all__.filter;
     var complex = __all__.complex;
+    var __conj__ = __all__.__conj__;
     __all__.print = __all__.__terminal__.print;
     __all__.input = __all__.__terminal__.input;
     var __terminal__ = __all__.__terminal__;
@@ -664,8 +699,7 @@ function autotest () {
     }
     __all__.__globals__ = __globals__
     var __super__ = function (aClass, methodName) {
-        for (var index = 0; index < aClass.__bases__.length; index++) {
-            var base = aClass.__bases__ [index];
+        for (let base of aClass.__bases__) {
             if (methodName in base) {
                return base [methodName];
             }
@@ -863,8 +897,7 @@ function autotest () {
             return false;
         }
         if (classinfo instanceof Array) {
-            for (var index = 0; index < classinfo.length; index++) {
-                var aClass = classinfo [index];
+            for (let aClass of classinfo) {
                 if (isinstance (anObject, aClass)) {
                     return true;
                 }
@@ -945,11 +978,11 @@ function autotest () {
     };
     __all__.ord = ord;
     var max = function (nrOrSeq) {
-        return arguments.length == 1 ? Math.max.apply (null, nrOrSeq) : Math.max.apply (null, arguments);
+        return arguments.length == 1 ? Math.max (...nrOrSeq) : Math.max (...arguments);
     };
     __all__.max = max;
     var min = function (nrOrSeq) {
-        return arguments.length == 1 ? Math.min.apply (null, nrOrSeq) : Math.min.apply (null, arguments);
+        return arguments.length == 1 ? Math.min (...nrOrSeq) : Math.min (...arguments);
     };
     __all__.min = min;
     var abs = function (x) {
@@ -1113,25 +1146,25 @@ function autotest () {
     };
     __all__.range = range;
     function any (iterable) {
-        for (var index = 0; index < iterable.length; index++) {
-            if (bool (iterable [index])) {
+        for (let item of iterable) {
+            if (bool (item)) {
                 return true;
             }
         }
         return false;
     }
     function all (iterable) {
-        for (var index = 0; index < iterable.length; index++) {
-            if (! bool (iterable [index])) {
+        for (let item of iterable) {
+            if (! bool (item)) {
                 return false;
             }
         }
         return true;
     }
     function sum (iterable) {
-        var result = 0;
-        for (var index = 0; index < iterable.length; index++) {
-            result += iterable [index];
+        let result = 0;
+        for (let item of iterable) {
+            result += item;
         }
         return result;
     }
@@ -1173,7 +1206,7 @@ function autotest () {
     }
     __all__.deepcopy = deepcopy;
     function list (iterable) {
-        var instance = iterable ? [] .slice.apply (iterable) : [];
+        var instance = iterable ? Array.from (iterable) : [];
         return instance;
     }
     __all__.list = list;
@@ -1564,6 +1597,7 @@ function autotest () {
         return !isNaN (parseFloat (this)) && isFinite (this);
     };
     String.prototype.join = function (strings) {
+        strings = Array.from (strings);
         return strings.join (this);
     };
     String.prototype.lower = function () {
@@ -2544,16 +2578,317 @@ function autotest () {
             __all__: {
                 __inited__: false,
                 __init__: function (__all__) {
-                    var chain = function () {
-                        var args = [] .slice.apply (arguments);
-                        var result = [];
-                        for (var index = 0; index < args.length; index++) {
-                            result = result.concat (args [index]);
+                    var count = function* (start, step) {
+                        if (start == undefined) {
+                            start = 0;
+                        }
+                        if (step == undefined) {
+                            step = 1;
+                        }
+                        while (true) {
+                            yield start;
+                            start += step;
+                        }
+                    }
+                    var cycle = function* (iterable) {                      
+                        let buffer = Array.from (iterable); // Can't reset, Chrome can't obtain iter from gener
+                        while (true) {
+                            for (let item of buffer) {
+                                yield item;
+                            }
+                        }
+                    }
+                    var repeat = function* (item, n) {
+                        if (typeof n == 'undefined') {
+                            while (true) {
+                                yield item;
+                            }
+                        }
+                        else {
+                            for (let index = 0; index < n; index++) {
+                                yield item;
+                            }
+                        }
+                    }
+                    var accumulate = function* (iterable, func) {
+                        let sum;
+                        let first = true;
+                        if (func) {
+                            for (let item of iterable) {
+                                if (first) {
+                                    sum = item;
+                                    first = false;
+                                }
+                                else {
+                                    sum = func (sum, item);
+                                }
+                                yield sum;
+                            }
+                        }
+                        else {
+                            for (let item of iterable) {
+                                if (first) {
+                                    sum = item;
+                                    first = false;
+                                }
+                                else {
+                                    sum = sum + item;
+                                }
+                                yield sum;
+                            }
+                        }
+                    }
+                    var chain = function* () {
+                        let args = [] .slice.apply (arguments);                         
+                        for (let arg of args) {
+                            for (let item of arg) {
+                                yield item;
+                            }
+                        }
+                    }
+                    chain.from_iterable = function* (iterable) {                        
+                        for (let item of iterable) {
+                            for (let subItem of item) {
+                                yield subItem;
+                            }
+                        }
+                    }
+                    var compress = function* (data, selectors) {
+                        let dataIterator = data [Symbol.iterator] .call (data);
+                        let selectorsIterator = selectors [Symbol.iterator] ();
+                        while (true) {
+                            let dataItem = dataIterator.next ();
+                            let selectorsItem = selectorsIterator.next ();
+                            if (dataItem.done || selectorsItem.done) {
+                                break;
+                            }
+                            else {
+                                if (selectorsItem.value) {
+                                    yield dataItem.value;
+                                }
+                            }
+                        }
+                    }
+                    var dropwhile = function* (pred, seq) {
+                        let started = false;
+                        for (let item of seq) {
+                            if (started) {
+                                yield item;
+                            }
+                            else if (!pred (item)) {
+                                started = true;
+                                yield item;
+                            }
+                        }
+                    }
+                    var filterfalse = function* (pred, seq) {
+                        for (let item of seq) {
+                            if (!pred (item)) {
+                                yield item;
+                            }
+                        }
+                    }
+                    var groupby = function* (iterable, keyfunc) {
+                        let anIterator = iterable [Symbol.iterator] ();
+                        let item = anIterator.next ();
+                        
+                        if (item.done) {
+                            return;
+                        }
+                        
+                        let groupKey = keyfunc (item.value);
+                        let more = true;
+                        
+                        function* group () {
+                            while (true) {
+                                yield (item.value);
+                                item = anIterator.next ();
+                                
+                                if (item.done) {
+                                    more = false;
+                                    return;
+                                }
+                                
+                                let key = keyfunc (item.value);
+                                
+                                if (key != groupKey) {
+                                    groupKey = key;
+                                    return;
+                                }
+                            }
+                        }
+                        
+                        while (more) {
+                            yield tuple ([groupKey, group ()]);
+                        }
+                    }
+                    
+                    var islice = function* () {
+                        let start;  // Have to be defined at function level, or Closure compiler will loose them after a yield 
+                        let stop;   //
+                        let step;   //
+                        
+                        let args = [] .slice.apply (arguments);
+                        let anIterator = args [0][Symbol.iterator] ();
+                        if (args.length == 2) {
+                            stop = args [1];
+                            start = 0;
+                            step = 1;
+                        }
+                        else {
+                            start = args [1];
+                            stop = args [2];
+                            if (args.length == 4) {
+                                step = args [3];
+                            }
+                            else {
+                                step = 1;
+                            }
+                        }
+                        for (let index = 0; index < start; index++) {
+                            if (anIterator.next (). done) {
+                                return;
+                            }
+                        }
+                        for (let index = 0; index < stop - start; index++) {
+                            let next = anIterator.next ();
+                            if (next.done) {
+                                return;
+                            }
+                            if (index % step == 0) {
+                                yield next.value;
+                            }
+                        }
+                    }
+                    var starmap = function* (func, seq) {
+                        let anIterator = seq [Symbol.iterator] ();
+                        while (true) {
+                            let next = anIterator.next ()
+                            if (next.done) {
+                                return;
+                            }
+                            else {
+                                yield func (...next.value); 
+                            }
+                        }
+                    }
+                    var takewhile = function* (pred, seq) {
+                        for (let item of seq) {
+                            if (pred (item)) {
+                                yield item;
+                            }
+                            else {
+                                return;
+                            }
+                        }
+                    }
+                    var tee = function (iterable, n) {
+                        if (n == undefined) {
+                            n = 2;
+                        }
+                        let all = [];                               // Don't return iterator since destructuring assignment cannot yet deal with that
+                        let one = list (iterable);
+                        for (let i = 0; i < n; i++) {
+                            all.append (one [Symbol.iterator] ());  // Iterator rather than list, exhaustable for semantic equivalence
+                        }
+                        return list (all);
+                    }
+                    
+                    var product = function () {
+                        let args = [] .slice.apply (arguments);
+                        if (args.length && args [args.length - 1] .hasOwnProperty ('__kwargtrans__')) {
+                            var repeat = args.pop () ['repeat']; 
+                        }
+                        else {
+                            var repeat = 1;
+                        }
+                        
+                        let oldMolecules = [tuple ([])];
+                        for (let i = 0; i < repeat; i++) {
+                            for (let arg of args) {
+                                let newMolecules = [];
+                                for (let oldMolecule of oldMolecules) {
+                                    for (let atom of arg) {
+                                        newMolecules.append (tuple (oldMolecule.concat (atom)));
+                                    }
+                                }
+                                oldMolecules = newMolecules;
+                            }
+                        }
+                        return list (oldMolecules); // Also works if args is emptpy
+                    }
+                    var permutations = function (iterable, r) {
+                        if (r == undefined) {
+                            try {
+                                r = len (iterable);
+                            }
+                            catch (exception) {
+                                r = len (list (iterable));
+                            }
+                        }
+                        let aProduct = product (iterable, __kwargtrans__ ({repeat: r}));
+                        let result = [];
+                        for (let molecule of aProduct) {
+                            if (len (set (molecule)) == r) {    // Weed out doubles
+                                result.append (molecule);
+                            }
                         }
                         return list (result);
                     }
+                    var combinations = function (iterable, r) {
+                        let tail = list (iterable);
+                        function recurse (tail, molecule, rNext) {
+                            for (let index = 0; index < len (tail) - rNext; index++) {
+                                let newMolecule = molecule.concat (tail.slice (index, index + 1));
+
+                                if (rNext) {
+                                    recurse (tail.slice (index + 1), newMolecule, rNext - 1);
+                                }
+                                else {
+                                    result.append (tuple (newMolecule));
+                                }
+                            }
+                        }
+                        let result = [];
+                        recurse (tail, tail.slice (0, 0), r - 1);
+                        return list (result);
+                    }
+                    var combinations_with_replacement = function (iterable, r) {
+                        let tail = list (iterable);
+                        function recurse (tail, molecule, rNext) {
+                            for (let index = 0; index < len (tail); index++) {
+                                let newMolecule = molecule.concat (tail.slice (index, index + 1));
+
+                                if (rNext) {
+                                    recurse (tail.slice (index), newMolecule, rNext - 1);
+                                }
+                                else {
+                                    result.append (tuple (newMolecule));
+                                }
+                            }
+                        }
+                        let result = [];
+                        recurse (tail, tail.slice (0, 0), r - 1);
+                        return list (result);
+                    }
                     //<all>
+                    __all__.count = count;
+                    __all__.cycle = cycle;
+                    __all__.repeat = repeat;
+                    __all__.accumulate = accumulate;
                     __all__.chain = chain;
+                    __all__.compress = compress;
+                    __all__.dropwhile = dropwhile;
+                    __all__.filterfalse = filterfalse;
+                    __all__.groupby = groupby;
+                    __all__.islice = islice;
+                    __all__.starmap = starmap;
+                    __all__.takewhile = takewhile;
+                    __all__.tee = tee;
+                    __all__.product = product;
+                    __all__.permutations = permutations;
+                    __all__.combinations = combinations;
+                    __all__.combinations_with_replacement = combinations_with_replacement;
                     //</all>
                 }
             }
@@ -2684,15 +3019,13 @@ function autotest () {
 						autoTester.check ('Samples shown: {}<br>'.format (cut));
 						var orig = num.array ((function () {
 							var __accu0__ = [];
-							var __iterable0__ = (function () {
+							for (var t of (function () {
 								var __accu1__ = [];
 								for (var iSample = 0; iSample < tTotal * fSample; iSample++) {
 									__accu1__.append (iSample / fSample);
 								}
 								return __accu1__;
-							}) ();
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var t = __iterable0__ [__index0__];
+							}) ()) {
 								__accu0__.append (complex ((0.3 + sin (((2 * pi) * fSin) * t)) + 0.5 * cos (((2 * pi) * fCos) * t), 0));
 							}
 							return __accu0__;
@@ -2786,14 +3119,10 @@ function autotest () {
 						var rid = __matmul__ (r, ri);
 						autoTester.check ('r @ ri', (function () {
 							var __accu0__ = [];
-							var __iterable0__ = rid.tolist ();
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var row = __iterable0__ [__index0__];
+							for (var row of rid.tolist ()) {
 								__accu0__.append ((function () {
 									var __accu1__ = [];
-									var __iterable1__ = row;
-									for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-										var elem = __iterable1__ [__index1__];
+									for (var elem of row) {
 										__accu1__.append (int (round (elem)));
 									}
 									return __accu1__;
@@ -2946,7 +3275,7 @@ function autotest () {
 								self.imagbuf = imagbuf;
 							}
 							self.setshape (shape);
-						});},
+						}, '__init__');},
 						get setshape () {return __get__ (this, function (self, shape) {
 							self.shape = shape;
 							self.ndim = shape.length;
@@ -2958,7 +3287,7 @@ function autotest () {
 								self.ns_ncols = shape [1];
 								self.size = self.ns_nrows * self.ns_ncols;
 							}
-						});},
+						}, 'setshape');},
 						get astype () {return __get__ (this, function (self, dtype) {
 							var result = empty (self.shape, dtype);
 							result.realbuf.set (self.realbuf);
@@ -2966,16 +3295,12 @@ function autotest () {
 								result.imagbuf.set (self.imagbuf);
 							}
 							return result;
-						});},
+						}, 'astype');},
 						get tolist () {return __get__ (this, function (self) {
 							if (self.ns_complex) {
 								var flat = (function () {
 									var __accu0__ = [];
-									var __iterable0__ = zip (list (self.realbuf), list (self.imagbuf));
-									for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-										var __left0__ = __iterable0__ [__index0__];
-										var real = __left0__ [0];
-										var imag = __left0__ [1];
+									for (var [real, imag] of zip (list (self.realbuf), list (self.imagbuf))) {
 										__accu0__.append (complex (real, imag));
 									}
 									return __accu0__;
@@ -3002,10 +3327,10 @@ function autotest () {
 									return __accu0__;
 								}) ();
 							}
-						});},
+						}, 'tolist');},
 						get __repr__ () {return __get__ (this, function (self) {
 							return 'array({})'.format (repr (self.tolist ()));
-						});},
+						}, '__repr__');},
 						get __str__ () {return __get__ (this, function (self) {
 							if (self.ndim == 1) {
 								return str (self.tolist ());
@@ -3013,15 +3338,13 @@ function autotest () {
 							else {
 								return '[\n\t{}\n]\n'.format ('\n\t'.join ((function () {
 									var __accu0__ = [];
-									var __iterable0__ = self.tolist ();
-									for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-										var row = __iterable0__ [__index0__];
+									for (var row of self.tolist ()) {
 										__accu0__.append (str (row));
 									}
 									return __accu0__;
 								}) ()));
 							}
-						});},
+						}, '__str__');},
 						get reshape () {return __get__ (this, function (self, shape) {
 							if (self.ndim == 1) {
 								return tuple ([array (self, self.dtype)]);
@@ -3031,7 +3354,7 @@ function autotest () {
 								result.setshape (self.ns_ncols, self.ns_nrows);
 								return result;
 							}
-						});},
+						}, 'reshape');},
 						get transpose () {return __get__ (this, function (self) {
 							if (self.ndim == 1) {
 								var result = array (self, dtype);
@@ -3061,7 +3384,7 @@ function autotest () {
 								}
 							}
 							return result;
-						});},
+						}, 'transpose');},
 						get __getitem__ () {return __get__ (this, function (self, key) {
 							if (self.ndim == 1) {
 								if (py_typeof (key) == tuple) {
@@ -3074,17 +3397,13 @@ function autotest () {
 									var result = empty (list ([(key [1] - key [0]) / key [2]]), self.dtype);
 									var itarget = 0;
 									if (self.ns_complex) {
-										var __iterable0__ = range.apply (null, self.shape);
-										for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-											var isource = __iterable0__ [__index0__];
+										for (var isource of range (...self.shape)) {
 											result.realbuf [itarget] = self.realbuf [isource];
 											result.imagbuf [itarget++] = self.imagbuf [isource];
 										}
 									}
 									else {
-										var __iterable0__ = range.apply (null, self.shape);
-										for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-											var isource = __iterable0__ [__index0__];
+										for (var isource of range (...self.shape)) {
 											result.realbuf [itarget++] = self.realbuf [isource];
 										}
 									}
@@ -3123,18 +3442,14 @@ function autotest () {
 										var result = empty (tuple ([(colkey [1] - colkey [0]) / colkey [2]]), self.dtype);
 										var itarget = 0;
 										if (self.ns_complex) {
-											var __iterable0__ = range.apply (null, colkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var isourcecol = __iterable0__ [__index0__];
+											for (var isourcecol of range (...colkey)) {
 												var isource = self.ns_ncols * rowkey + isourcecol;
 												result.realbuf [itarget] = self.realbuf [isource];
 												result.imagbuf [itarget++] = self.imagbuf [isource];
 											}
 										}
 										else {
-											var __iterable0__ = range.apply (null, colkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var isourcecol = __iterable0__ [__index0__];
+											for (var isourcecol of range (...colkey)) {
 												result.realbuf [itarget++] = self.realbuf [self.ns_ncols * rowkey + isourcecol];
 											}
 										}
@@ -3143,18 +3458,14 @@ function autotest () {
 										var result = empty (tuple ([(rowkey [1] - rowkey [0]) / rowkey [2]]), self.dtype);
 										var itarget = 0;
 										if (self.ns_complex) {
-											var __iterable0__ = range.apply (null, rowkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var isourcerow = __iterable0__ [__index0__];
+											for (var isourcerow of range (...rowkey)) {
 												var isource = self.ns_ncols * isourcerow + colkey;
 												result.realbuf [itarget] = self.realbuf [isource];
 												result.imagbuf [itarget++] = self.imagbuf [isource];
 											}
 										}
 										else {
-											var __iterable0__ = range.apply (null, rowkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var isourcerow = __iterable0__ [__index0__];
+											for (var isourcerow of range (...rowkey)) {
 												result.realbuf [itarget++] = self.realbuf [self.ns_ncols * isourcerow + colkey];
 											}
 										}
@@ -3163,12 +3474,8 @@ function autotest () {
 										var result = empty (tuple ([(key [0] [1] - key [0] [0]) / key [0] [2], (key [1] [1] - key [1] [0]) / key [1] [2]]), self.dtype);
 										var itarget = 0;
 										if (self.ns_complex) {
-											var __iterable0__ = range.apply (null, rowkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var isourcerow = __iterable0__ [__index0__];
-												var __iterable1__ = range.apply (null, colkey);
-												for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-													var isourcecol = __iterable1__ [__index1__];
+											for (var isourcerow of range (...rowkey)) {
+												for (var isourcecol of range (...colkey)) {
 													var isource = self.ns_ncols * isourcerow + isourcecol;
 													result.realbuf [itarget] = self.realbuf [isource];
 													result.imagbuf [itarget++] = self.imagbuf [isource];
@@ -3176,12 +3483,8 @@ function autotest () {
 											}
 										}
 										else {
-											var __iterable0__ = range.apply (null, rowkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var isourcerow = __iterable0__ [__index0__];
-												var __iterable1__ = range.apply (null, colkey);
-												for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-													var isourcecol = __iterable1__ [__index1__];
+											for (var isourcerow of range (...rowkey)) {
+												for (var isourcecol of range (...colkey)) {
 													result.realbuf [itarget++] = self.realbuf [self.ns_ncols * isourcerow + isourcecol];
 												}
 											}
@@ -3197,7 +3500,7 @@ function autotest () {
 									return self.realbuf [self.ns_ncols * key [0] + key [1]];
 								}
 							}
-						});},
+						}, '__getitem__');},
 						get __setitem__ () {return __get__ (this, function (self, key, value) {
 							if (self.ndim == 1) {
 								if (py_typeof (key) == tuple) {
@@ -3209,25 +3512,27 @@ function autotest () {
 									}
 									var isource = 0;
 									if (self.ns_complex) {
-										var __iterable0__ = range.apply (null, self.shape);
-										for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-											var itarget = __iterable0__ [__index0__];
+										for (var itarget of range (...self.shape)) {
 											self.realbuf [itarget] = value.realbuf [isource];
 											self.imagbuf [itarget] = value.imagbuf [isource++];
 										}
 									}
 									else {
-										var __iterable0__ = range.apply (null, self.shape);
-										for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-											var itarget = __iterable0__ [__index0__];
+										for (var itarget of range (...self.shape)) {
 											self.realbuf [itarget] = value.realbuf [isource++];
 										}
 									}
 									return result;
 								}
 								else if (self.ns_complex) {
-									self.realbuf [key] = value.real;
-									self.imagbuf [key] = value.imag;
+									if (typeof value == 'number') {
+										self.realbuf [key] = value;
+										self.imagbuf [key] = 0;
+									}
+									else {
+										self.realbuf [key] = value.real;
+										self.imagbuf [key] = value.imag;
+									}
 								}
 								else {
 									self.realbuf [key] = value;
@@ -3258,18 +3563,14 @@ function autotest () {
 									if (!(rowistup)) {
 										var isource = 0;
 										if (self.ns_complex) {
-											var __iterable0__ = range.apply (null, colkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var itargetcol = __iterable0__ [__index0__];
+											for (var itargetcol of range (...colkey)) {
 												var itarget = self.ns_ncols * rowkey + itargetcol;
 												self.realbuf [itarget] = value.realbuf [isource];
 												self.imagbuf [itarget] = value.imagbuf [isource++];
 											}
 										}
 										else {
-											var __iterable0__ = range.apply (null, colkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var itargetcol = __iterable0__ [__index0__];
+											for (var itargetcol of range (...colkey)) {
 												result.realbuf [self.ns_ncols * rowkey + itargetcol] = self.realbuf [isource++];
 											}
 										}
@@ -3277,18 +3578,14 @@ function autotest () {
 									else if (!(colistup)) {
 										var isource = 0;
 										if (self.ns_complex) {
-											var __iterable0__ = range.apply (null, rowkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var itargetrow = __iterable0__ [__index0__];
+											for (var itargetrow of range (...rowkey)) {
 												var itarget = self.ns_ncols * itargetrow + colkey;
 												self.realbuf [itarget] = value.realbuf [isource];
 												self.imagbuf [itarget] = value.imagbuf [isource++];
 											}
 										}
 										else {
-											var __iterable0__ = range.apply (null, rowkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var isourcerow = __iterable0__ [__index0__];
+											for (var isourcerow of range (...rowkey)) {
 												self.realbuf [self.ns_ncols * isourcerow + colkey] = value [isource++];
 											}
 										}
@@ -3296,12 +3593,8 @@ function autotest () {
 									else {
 										var isource = 0;
 										if (self.ns_complex) {
-											var __iterable0__ = range.apply (null, rowkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var itargetrow = __iterable0__ [__index0__];
-												var __iterable1__ = range.apply (null, colkey);
-												for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-													var itargetcol = __iterable1__ [__index1__];
+											for (var itargetrow of range (...rowkey)) {
+												for (var itargetcol of range (...colkey)) {
 													var itarget = self.ns_ncols * itargetrow + itargetcol;
 													self.realbuf [itarget] = value.realbuf [isource];
 													self.imagbuf [itarget] = value.imagbuf [isource++];
@@ -3309,12 +3602,8 @@ function autotest () {
 											}
 										}
 										else {
-											var __iterable0__ = range.apply (null, rowkey);
-											for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-												var isourcerow = __iterable0__ [__index0__];
-												var __iterable1__ = range.apply (null, colkey);
-												for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-													var isourcecol = __iterable1__ [__index1__];
+											for (var isourcerow of range (...rowkey)) {
+												for (var isourcecol of range (...colkey)) {
 													self.realbuf [self.ns_ncols * itargetrow + itargetcol] = value.realbuf [isource++];
 												}
 											}
@@ -3323,21 +3612,27 @@ function autotest () {
 								}
 								else if (self.ns_complex) {
 									var itarget = self.ns_ncols * key [0] + key [1];
-									self.realbuf [itarget] = value.real;
-									self.imagbuf [itarget] = value.imag;
+									if (typeof value == 'number') {
+										self.realbuf [itarget] = value;
+										self.imagbuf [itarget] = 0;
+									}
+									else {
+										self.realbuf [itarget] = value.real;
+										self.imagbuf [itarget] = value.imag;
+									}
 								}
 								else {
 									self.realbuf [self.ns_ncols * key [0] + key [1]] = value;
 								}
 							}
-						});},
+						}, '__setitem__');},
 						get real () {return __get__ (this, function (self) {
 							return ndarray (self.shape, ns_buffertype (self.dtype), self.realbuf);
-						});},
+						}, 'real');},
 						get imag () {return __get__ (this, function (self) {
 							return ndarray (self.shape, ns_buffertype (self.dtype), self.imagbuf);
-						});},
-						get conjugate () {return __get__ (this, function (self) {
+						}, 'imag');},
+						get __conj__ () {return __get__ (this, function (self) {
 							if (self.ns_complex) {
 								var result = empty (self.shape, self.dtype);
 								result.realbuf.set (self.realbuf);
@@ -3350,7 +3645,10 @@ function autotest () {
 							else {
 								return copy (self);
 							}
-						});},
+						}, '__conj__');},
+						get conjugate () {return __get__ (this, function (self) {
+							return self.__conj__ ();
+						}, 'conjugate');},
 						get __neg__ () {return __get__ (this, function (self) {
 							var result = empty (self.shape, self.dtype);
 							if (self.ns_complex) {
@@ -3365,7 +3663,7 @@ function autotest () {
 								}
 							}
 							return result;
-						});},
+						}, '__neg__');},
 						get __ns_inv__ () {return __get__ (this, function (self) {
 							var result = empty (self.shape, self.dtype);
 							if (self.ns_complex) {
@@ -3383,7 +3681,7 @@ function autotest () {
 								}
 							}
 							return result;
-						});},
+						}, '__ns_inv__');},
 						get __add__ () {return __get__ (this, function (self, other) {
 							var result = empty (self.shape, self.dtype);
 							if (py_typeof (other) == ndarray) {
@@ -3411,10 +3709,10 @@ function autotest () {
 								}
 							}
 							return result;
-						});},
+						}, '__add__');},
 						get __radd__ () {return __get__ (this, function (self, scalar) {
 							return self.__add__ (scalar);
-						});},
+						}, '__radd__');},
 						get __sub__ () {return __get__ (this, function (self, other) {
 							var result = empty (self.shape, self.dtype);
 							if (py_typeof (other) == ndarray) {
@@ -3442,10 +3740,10 @@ function autotest () {
 								}
 							}
 							return result;
-						});},
+						}, '__sub__');},
 						get __rsub__ () {return __get__ (this, function (self, scalar) {
 							return self.__neg__ ().__add__ (scalar);
-						});},
+						}, '__rsub__');},
 						get __mul__ () {return __get__ (this, function (self, other) {
 							var result = empty (self.shape, self.dtype);
 							if (py_typeof (other) == ndarray) {
@@ -3473,10 +3771,10 @@ function autotest () {
 								}
 							}
 							return result;
-						});},
+						}, '__mul__');},
 						get __rmul__ () {return __get__ (this, function (self, scalar) {
 							return self.__mul__ (scalar);
-						});},
+						}, '__rmul__');},
 						get __div__ () {return __get__ (this, function (self, other) {
 							var result = empty (self.shape, self.dtype);
 							if (py_typeof (other) == ndarray) {
@@ -3510,10 +3808,10 @@ function autotest () {
 								}
 							}
 							return result;
-						});},
+						}, '__div__');},
 						get __rdiv__ () {return __get__ (this, function (self, scalar) {
 							return self.__ns_inv__ ().__mul__ (scalar);
-						});},
+						}, '__rdiv__');},
 						get __matmul__ () {return __get__ (this, function (self, other) {
 							var result = empty (tuple ([self.ns_nrows, other.ns_ncols]), self.dtype);
 							if (self.ns_complex) {
@@ -3549,7 +3847,7 @@ function autotest () {
 								}
 							}
 							return result;
-						});}
+						}, '__matmul__');}
 					});
 					var empty = function (shape, dtype) {
 						if (typeof dtype == 'undefined' || (dtype != null && dtype .hasOwnProperty ("__kwargtrans__"))) {;
@@ -3629,9 +3927,7 @@ function autotest () {
 						var isource = 0;
 						if (ary.ns_complex) {
 							for (var irow = 0; irow < ary.ns_nrows; irow++) {
-								var __iterable0__ = result;
-								for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-									var part = __iterable0__ [__index0__];
+								for (var part of result) {
 									var itarget = part.ns_ncols * irow;
 									for (var icol = 0; icol < part.ns_ncols; icol++) {
 										part.realbuf [itarget] = ary.realbuf [isource];
@@ -3642,9 +3938,7 @@ function autotest () {
 						}
 						else {
 							for (var irow = 0; irow < ary.ns_nrows; irow++) {
-								var __iterable0__ = result;
-								for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-									var part = __iterable0__ [__index0__];
+								for (var part of result) {
 									var itarget = part.ns_ncols * irow;
 									for (var icol = 0; icol < part.ns_ncols; icol++) {
 										part.realbuf [itarget++] = ary.realbuf [isource++];
@@ -3664,9 +3958,7 @@ function autotest () {
 						}) ();
 						var isource = 0;
 						if (ary.ns_complex) {
-							var __iterable0__ = result;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var part = __iterable0__ [__index0__];
+							for (var part of result) {
 								for (var itarget = 0; itarget < part.size; itarget++) {
 									part.realbuf [itarget] = ary.realbuf [isource];
 									part.imagbuf [itarget] = ary.imagbuf [isource++];
@@ -3674,9 +3966,7 @@ function autotest () {
 							}
 						}
 						else {
-							var __iterable0__ = result;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var part = __iterable0__ [__index0__];
+							for (var part of result) {
 								for (var itarget = 0; itarget < part.size; itarget++) {
 									part.realbuf [itarget] = ary.realbuf [isource++];
 								}
@@ -3686,18 +3976,14 @@ function autotest () {
 					};
 					var hstack = function (tup) {
 						var ncols = 0;
-						var __iterable0__ = tup;
-						for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-							var part = __iterable0__ [__index0__];
+						for (var part of tup) {
 							ncols += part.ns_ncols;
 						}
 						var result = empty (tuple ([tup [0].ns_nrows, ncols]), tup [0].dtype);
 						var itarget = 0;
 						if (result.ns_complex) {
 							for (var irow = 0; irow < result.ns_nrows; irow++) {
-								var __iterable0__ = tup;
-								for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-									var part = __iterable0__ [__index0__];
+								for (var part of tup) {
 									var isource = part.ns_ncols * irow;
 									for (var icol = 0; icol < part.ns_ncols; icol++) {
 										result.realbuf [itarget] = part.realbuf [isource];
@@ -3708,9 +3994,7 @@ function autotest () {
 						}
 						else {
 							for (var irow = 0; irow < result.ns_nrows; irow++) {
-								var __iterable0__ = tup;
-								for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-									var part = __iterable0__ [__index0__];
+								for (var part of tup) {
 									var isource = part.ns_ncols * irow;
 									for (var icol = 0; icol < part.ns_ncols; icol++) {
 										result.realbuf [itarget++] = part.realbuf [isource++];
@@ -3722,17 +4006,13 @@ function autotest () {
 					};
 					var vstack = function (tup) {
 						var nrows = 0;
-						var __iterable0__ = tup;
-						for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-							var part = __iterable0__ [__index0__];
+						for (var part of tup) {
 							nrows += part.ns_nrows;
 						}
 						var result = empty (tuple ([nrows, tup [0].ns_ncols]), tup [0].dtype);
 						var itarget = 0;
 						if (result.ns_complex) {
-							var __iterable0__ = tup;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var part = __iterable0__ [__index0__];
+							for (var part of tup) {
 								for (var isource = 0; isource < part.size; isource++) {
 									result.realbuf [itarget] = part.realbuf [isource];
 									result.imagbuf [itarget++] = part.imagbuf [isource];
@@ -3740,9 +4020,7 @@ function autotest () {
 							}
 						}
 						else {
-							var __iterable0__ = tup;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var part = __iterable0__ [__index0__];
+							for (var part of tup) {
 								for (var isource = 0; isource < part.size; isource++) {
 									result.realbuf [itarget++] = part.realbuf [isource];
 								}
@@ -3817,12 +4095,16 @@ function autotest () {
 						}
 						return result;
 					};
+					var conjugate = function (x) {
+						return x.__conj__ ();
+					};
 					__pragma__ ('<use>' +
 						'itertools' +
 					'</use>')
 					__pragma__ ('<all>')
 						__all__.__name__ = __name__;
 						__all__.array = array;
+						__all__.conjugate = conjugate;
 						__all__.copy = copy;
 						__all__.empty = empty;
 						__all__.hsplit = hsplit;
@@ -4241,6 +4523,7 @@ function autotest () {
 					__nest__ (cmath, '', __init__ (__world__.cmath));
 					var __name__ = __init__ (__world__.numscrypt).__name__;
 					var array = __init__ (__world__.numscrypt).array;
+					var conjugate = __init__ (__world__.numscrypt).conjugate;
 					var copy = __init__ (__world__.numscrypt).copy;
 					var empty = __init__ (__world__.numscrypt).empty;
 					var hsplit = __init__ (__world__.numscrypt).hsplit;
@@ -4285,8 +4568,8 @@ function autotest () {
 								var scale_inv = __truediv__ (1, scale);
 							}
 							if (__eq__ (scale, 0) || __call__ (isinf, null, scale_inv)) {
-								__setitem__ (T, i, __call__ (complex, null, 0));
-								A.__setitem__ ([i, __sub__ (i, 1)], __call__ (complex, null, 0));
+								__setitem__ (T, i, 0);
+								A.__setitem__ ([i, __sub__ (i, 1)], 0);
 								continue;
 							}
 							var H = 0;
@@ -4315,9 +4598,9 @@ function autotest () {
 								A.__setitem__ ([i, k], __call__ (__imul__, null, A.__getitem__ ([i, k]), H));
 							}
 							for (var j = 0; j < i; j++) {
-								var G = __mul__ (__call__ (__getitem__ (T, i).conjugate, __getitem__ (T, i)), A.__getitem__ ([j, __sub__ (i, 1)]));
+								var G = __mul__ (__call__ (__conj__, null, __getitem__ (T, i)), A.__getitem__ ([j, __sub__ (i, 1)]));
 								for (var k = 0; k < __sub__ (i, 1); k++) {
-									var G = __call__ (__iadd__, null, G, __mul__ (__call__ (A.__getitem__ ([i, k]).conjugate, A.__getitem__ ([i, k])), A.__getitem__ ([j, k])));
+									var G = __call__ (__iadd__, null, G, __mul__ (__call__ (__conj__, null, A.__getitem__ ([i, k])), A.__getitem__ ([j, k])));
 								}
 								A.__setitem__ ([j, __sub__ (i, 1)], __call__ (__isub__, null, A.__getitem__ ([j, __sub__ (i, 1)]), __mul__ (G, __getitem__ (T, i))));
 								for (var k = 0; k < __sub__ (i, 1); k++) {
@@ -4329,9 +4612,9 @@ function autotest () {
 								for (var k = 0; k < __sub__ (i, 1); k++) {
 									var G = __call__ (__iadd__, null, G, __mul__ (A.__getitem__ ([i, k]), A.__getitem__ ([k, j])));
 								}
-								A.__setitem__ ([__sub__ (i, 1), j], __call__ (__isub__, null, A.__getitem__ ([__sub__ (i, 1), j]), __mul__ (G, __call__ (__getitem__ (T, i).conjugate, __getitem__ (T, i)))));
+								A.__setitem__ ([__sub__ (i, 1), j], __call__ (__isub__, null, A.__getitem__ ([__sub__ (i, 1), j]), __mul__ (G, __call__ (__conj__, null, __getitem__ (T, i)))));
 								for (var k = 0; k < __sub__ (i, 1); k++) {
-									A.__setitem__ ([k, j], __call__ (__isub__, null, A.__getitem__ ([k, j]), __mul__ (G, __call__ (A.__getitem__ ([i, k]).conjugate, A.__getitem__ ([i, k])))));
+									A.__setitem__ ([k, j], __call__ (__isub__, null, A.__getitem__ ([k, j]), __mul__ (G, __call__ (__conj__, null, A.__getitem__ ([i, k])))));
 								}
 							}
 						}
@@ -4339,31 +4622,31 @@ function autotest () {
 					var hessenberg_reduce_1 = function (A, T) {
 						var n = __getitem__ (A.shape, 0);
 						if (__eq__ (n, 1)) {
-							A.__setitem__ ([0, 0], __call__ (complex, null, 1));
+							A.__setitem__ ([0, 0], 1);
 							return ;
 						}
-						var __left0__ = __call__ (complex, null, 1);
+						var __left0__ = 1;
 						A.__setitem__ ([0, 0], __left0__);
 						A.__setitem__ ([1, 1], __left0__);
-						var __left0__ = __call__ (complex, null, 0);
+						var __left0__ = 0;
 						A.__setitem__ ([0, 1], __left0__);
 						A.__setitem__ ([1, 0], __left0__);
 						for (var i = 2; i < n; i++) {
-							if (__ne__ (__getitem__ (T, i), __call__ (complex, null, 0))) {
+							if (__ne__ (__getitem__ (T, i), 0)) {
 								for (var j = 0; j < i; j++) {
 									var G = __mul__ (__getitem__ (T, i), A.__getitem__ ([__sub__ (i, 1), j]));
 									for (var k = 0; k < __sub__ (i, 1); k++) {
 										var G = __call__ (__iadd__, null, G, __mul__ (A.__getitem__ ([i, k]), A.__getitem__ ([k, j])));
 									}
-									A.__setitem__ ([__sub__ (i, 1), j], __call__ (__isub__, null, A.__getitem__ ([__sub__ (i, 1), j]), __mul__ (G, __call__ (__getitem__ (T, i).conjugate, __getitem__ (T, i)))));
+									A.__setitem__ ([__sub__ (i, 1), j], __call__ (__isub__, null, A.__getitem__ ([__sub__ (i, 1), j]), __mul__ (G, __call__ (__conj__, null, __getitem__ (T, i)))));
 									for (var k = 0; k < __sub__ (i, 1); k++) {
-										A.__setitem__ ([k, j], __call__ (__isub__, null, A.__getitem__ ([k, j]), __mul__ (G, __call__ (A.__getitem__ ([i, k]).conjugate, A.__getitem__ ([i, k])))));
+										A.__setitem__ ([k, j], __call__ (__isub__, null, A.__getitem__ ([k, j]), __mul__ (G, __call__ (__conj__, null, A.__getitem__ ([i, k])))));
 									}
 								}
 							}
-							A.__setitem__ ([i, i], __call__ (complex, null, 1));
+							A.__setitem__ ([i, i], 1);
 							for (var j = 0; j < i; j++) {
-								var __left0__ = __call__ (complex, null, 0);
+								var __left0__ = 0;
 								A.__setitem__ ([j, i], __left0__);
 								A.__setitem__ ([i, j], __left0__);
 							}
@@ -4398,8 +4681,8 @@ function autotest () {
 						var v = __call__ (hypot, null, __call__ (hypot, null, c.real, c.imag), __call__ (hypot, null, s.real, s.imag));
 						if (__eq__ (v, 0)) {
 							var v = 1;
-							var c = __call__ (complex, null, 1);
-							var s = __call__ (complex, null, 0);
+							var c = 1;
+							var s = 0;
 						}
 						else {
 							var c = __call__ (__idiv__, null, c, v);
@@ -4408,57 +4691,57 @@ function autotest () {
 						for (var k = n0; k < n; k++) {
 							var x = A.__getitem__ ([n0, k]);
 							var y = A.__getitem__ ([__add__ (n0, 1), k]);
-							A.__setitem__ ([n0, k], __add__ (__mul__ (__call__ (c.conjugate, c), x), __mul__ (__call__ (s.conjugate, s), y)));
+							A.__setitem__ ([n0, k], __add__ (__mul__ (__call__ (__conj__, null, c), x), __mul__ (__call__ (__conj__, null, s), y)));
 							A.__setitem__ ([__add__ (n0, 1), k], __add__ (__mul__ (__neg__ (s), x), __mul__ (c, y)));
 						}
 						for (var k = 0; k < __call__ (min, null, n1, __add__ (n0, 3)); k++) {
 							var x = A.__getitem__ ([k, n0]);
 							var y = A.__getitem__ ([k, __add__ (n0, 1)]);
 							A.__setitem__ ([k, n0], __add__ (__mul__ (c, x), __mul__ (s, y)));
-							A.__setitem__ ([k, __add__ (n0, 1)], __add__ (__mul__ (__neg__ (__call__ (s.conjugate, s)), x), __mul__ (__call__ (c.conjugate, c), y)));
+							A.__setitem__ ([k, __add__ (n0, 1)], __add__ (__mul__ (__neg__ (__call__ (__conj__, null, s)), x), __mul__ (__call__ (__conj__, null, c), y)));
 						}
 						if (!(__call__ (isinstance, null, Q, bool))) {
 							for (var k = 0; k < n; k++) {
 								var x = Q.__getitem__ ([k, n0]);
 								var y = Q.__getitem__ ([k, __add__ (n0, 1)]);
 								Q.__setitem__ ([k, n0], __add__ (__mul__ (c, x), __mul__ (s, y)));
-								Q.__setitem__ ([k, __add__ (n0, 1)], __add__ (__mul__ (__neg__ (__call__ (s.conjugate, s)), x), __mul__ (__call__ (c.conjugate, c), y)));
+								Q.__setitem__ ([k, __add__ (n0, 1)], __add__ (__mul__ (__neg__ (__call__ (__conj__, null, s)), x), __mul__ (__call__ (__conj__, null, c), y)));
 							}
 						}
 						for (var j = n0; j < __sub__ (n1, 2); j++) {
 							var c = A.__getitem__ ([__add__ (j, 1), j]);
 							var s = A.__getitem__ ([__add__ (j, 2), j]);
-							var v = __call__ (complex, null, __call__ (hypot, null, __call__ (hypot, null, c.real, c.imag), __call__ (hypot, null, s.real, s.imag)));
+							var v = __call__ (hypot, null, __call__ (hypot, null, c.real, c.imag), __call__ (hypot, null, s.real, s.imag));
 							if (__eq__ (v, 0)) {
 								A.__setitem__ ([__add__ (j, 1), j], 0);
-								var v = __call__ (complex, null, 1);
-								var c = __call__ (complex, null, 1);
-								var s = __call__ (complex, null, 0);
+								var v = 1;
+								var c = 1;
+								var s = 0;
 							}
 							else {
 								A.__setitem__ ([__add__ (j, 1), j], v);
 								var c = __call__ (__idiv__, null, c, v);
 								var s = __call__ (__idiv__, null, s, v);
 							}
-							A.__setitem__ ([__add__ (j, 2), j], __call__ (complex, null, 0));
+							A.__setitem__ ([__add__ (j, 2), j], 0);
 							for (var k = __add__ (j, 1); k < n; k++) {
 								var x = A.__getitem__ ([__add__ (j, 1), k]);
 								var y = A.__getitem__ ([__add__ (j, 2), k]);
-								A.__setitem__ ([__add__ (j, 1), k], __add__ (__mul__ (__call__ (c.conjugate, c), x), __mul__ (__call__ (s.conjugate, s), y)));
+								A.__setitem__ ([__add__ (j, 1), k], __add__ (__mul__ (__call__ (__conj__, null, c), x), __mul__ (__call__ (__conj__, null, s), y)));
 								A.__setitem__ ([__add__ (j, 2), k], __add__ (__mul__ (__neg__ (s), x), __mul__ (c, y)));
 							}
 							for (var k = 0; k < __call__ (min, null, n1, __add__ (j, 4)); k++) {
 								var x = A.__getitem__ ([k, __add__ (j, 1)]);
 								var y = A.__getitem__ ([k, __add__ (j, 2)]);
 								A.__setitem__ ([k, __add__ (j, 1)], __add__ (__mul__ (c, x), __mul__ (s, y)));
-								A.__setitem__ ([k, __add__ (j, 2)], __add__ (__mul__ (__neg__ (__call__ (s.conjugate, s)), x), __mul__ (__call__ (c.conjugate, c), y)));
+								A.__setitem__ ([k, __add__ (j, 2)], __add__ (__mul__ (__neg__ (__call__ (__conj__, null, s)), x), __mul__ (__call__ (__conj__, null, c), y)));
 							}
 							if (!(__call__ (isinstance, null, Q, bool))) {
 								for (var k = 0; k < n; k++) {
 									var x = Q.__getitem__ ([k, __add__ (j, 1)]);
 									var y = Q.__getitem__ ([k, __add__ (j, 2)]);
 									Q.__setitem__ ([k, __add__ (j, 1)], __add__ (__mul__ (c, x), __mul__ (s, y)));
-									Q.__setitem__ ([k, __add__ (j, 2)], __add__ (__mul__ (__neg__ (__call__ (s.conjugate, s)), x), __mul__ (__call__ (c.conjugate, c), y)));
+									Q.__setitem__ ([k, __add__ (j, 2)], __add__ (__mul__ (__neg__ (__call__ (__conj__, null, s)), x), __mul__ (__call__ (__conj__, null, c), y)));
 								}
 							}
 						}
@@ -4495,7 +4778,7 @@ function autotest () {
 								var k = __call__ (__iadd__, null, k, 1);
 							}
 							if (__lt__ (__add__ (k, 1), n1)) {
-								A.__setitem__ ([__add__ (k, 1), k], __call__ (complex, null, 0));
+								A.__setitem__ ([__add__ (k, 1), k], 0);
 								var n0 = __add__ (k, 1);
 								var its = 0;
 								if (__ge__ (__add__ (n0, 1), n1)) {
@@ -4589,7 +4872,7 @@ function autotest () {
 									var t = smin;
 								}
 								var r = __truediv__ (__neg__ (r), t);
-								ER.__setitem__ ([j, i], __call__ (complex, null, r));
+								ER.__setitem__ ([j, i], r);
 								var rmax = __call__ (max, null, rmax, __call__ (abs, null, r));
 								if (__gt__ (rmax, simin)) {
 									for (var k = j; k < __add__ (i, 1); k++) {
@@ -4678,26 +4961,23 @@ function autotest () {
 						}
 						for (var x = 0; x < n; x++) {
 							for (var y = __add__ (x, 2); y < n; y++) {
-								A.__setitem__ ([y, x], __call__ (complex, null, 0));
+								A.__setitem__ ([y, x], 0);
 							}
 						}
 						__call__ (hessenberg_qr, null, A, Q);
 						var E = (function () {
 							var __accu0__ = [];
 							for (var i = 0; i < n; i++) {
-								__call__ (__accu0__.append, __accu0__, __call__ (complex, null, 0));
+								__call__ (__accu0__.append, __accu0__, A.__getitem__ ([i, i]));
 							}
 							return __accu0__;
 						}) ();
-						for (var i = 0; i < n; i++) {
-							__setitem__ (E, i, A.__getitem__ ([i, i]));
-						}
 						if (!(left || right)) {
 							return E;
 						}
 						if (left) {
 							var EL = __call__ (eig_tr_l, null, A);
-							var EL = __matmul__ (EL, __call__ (__call__ (Q.conjugate, Q).transpose, __call__ (Q.conjugate, Q)));
+							var EL = __matmul__ (EL, __call__ (__call__ (__conj__, null, Q).transpose, __call__ (__conj__, null, Q)));
 						}
 						if (right) {
 							var ER = __call__ (eig_tr_r, null, A);
@@ -4727,6 +5007,7 @@ function autotest () {
 						__all__.atan2 = atan2;
 						__all__.atanh = atanh;
 						__all__.ceil = ceil;
+						__all__.conjugate = conjugate;
 						__all__.copy = copy;
 						__all__.cos = cos;
 						__all__.cosh = cosh;
@@ -4855,7 +5136,7 @@ function autotest () {
 							else {
 								self.ui = null;
 							}
-						});},
+						}, '__init__');},
 						get sortedRepr () {return __get__ (this, function (self, any) {
 							var tryGetNumKey = function (key) {
 								if (py_typeof (key) == str) {
@@ -4878,21 +5159,15 @@ function autotest () {
 							if (py_typeof (any) == dict) {
 								return ('{' + ', '.join ((function () {
 									var __accu0__ = [];
-									var __iterable0__ = enumerate (sorted ((function () {
+									for (var [index, key] of enumerate (sorted ((function () {
 										var __accu1__ = [];
-										var __iterable1__ = any.py_keys ();
-										for (var __index0__ = 0; __index0__ < len (__iterable1__); __index0__++) {
-											var key = __iterable1__ [__index0__];
+										for (var key of any.py_keys ()) {
 											__accu1__.append (tryGetNumKey (key));
 										}
 										return __accu1__;
 									}) (), __kwargtrans__ ({key: (function __lambda__ (aKey) {
 										return str (aKey);
-									})})));
-									for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-										var __left0__ = __iterable0__ [__index0__];
-										var index = __left0__ [0];
-										var key = __left0__ [1];
+									})})))) {
 										__accu0__.append ('{}: {}'.format (repr (key), repr (any [key])));
 									}
 									return __accu0__;
@@ -4902,9 +5177,7 @@ function autotest () {
 								if (len (any)) {
 									return ('{' + ', '.join (sorted ((function () {
 										var __accu0__ = [];
-										var __iterable0__ = list (any);
-										for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-											var item = __iterable0__ [__index0__];
+										for (var item of list (any)) {
 											__accu0__.append (str (item));
 										}
 										return __accu0__;
@@ -4920,7 +5193,7 @@ function autotest () {
 							else {
 								return repr (any);
 							}
-						});},
+						}, 'sortedRepr');},
 						get check () {return __get__ (this, function (self) {
 							var ancestor = 2;
 							if (arguments.length) {
@@ -4942,9 +5215,7 @@ function autotest () {
 							var position = getFileLocation (ancestor);
 							var item = ' '.join ((function () {
 								var __accu0__ = [];
-								var __iterable0__ = args;
-								for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-									var arg = __iterable0__ [__index0__];
+								for (var arg of args) {
 									__accu0__.append (self.sortedRepr (arg));
 								}
 								return __accu0__;
@@ -4955,7 +5226,7 @@ function autotest () {
 							else {
 								self.refDict [self._currTestlet].append (tuple ([position, item]));
 							}
-						});},
+						}, 'check');},
 						get expectException () {return __get__ (this, function (self, func) {
 							try {
 								func ();
@@ -4970,7 +5241,7 @@ function autotest () {
 									throw __except0__;
 								}
 							}
-						});},
+						}, 'expectException');},
 						get throwToError () {return __get__ (this, function (self, func) {
 							try {
 								return func ();
@@ -4984,24 +5255,19 @@ function autotest () {
 									throw __except0__;
 								}
 							}
-						});},
+						}, 'throwToError');},
 						get checkEval () {return __get__ (this, function (self, func) {
 							var ret = self.throwToError (func);
 							self.check (ret, __kwargtrans__ ({ancestor: 3}));
-						});},
+						}, 'checkEval');},
 						get checkPad () {return __get__ (this, function (self, val, count) {
 							for (var i = 0; i < count; i++) {
 								self.check (val);
 							}
-						});},
+						}, 'checkPad');},
 						get _getTotalErrorCnt () {return __get__ (this, function (self, testData, refData) {
 							var errCount = 0;
-							var __iterable0__ = enumerate (refData);
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var __left0__ = __iterable0__ [__index0__];
-								var i = __left0__ [0];
-								var refPos = __left0__ [1][0];
-								var refItem = __left0__ [1][1];
+							for (var [i, [refPos, refItem]] of enumerate (refData)) {
 								try {
 									var __left0__ = testData [i];
 									var testPos = __left0__ [0];
@@ -5015,15 +5281,13 @@ function autotest () {
 								}
 							}
 							return errCount;
-						});},
+						}, '_getTotalErrorCnt');},
 						get compare () {return __get__ (this, function (self) {
 							var dc = DataConverter ();
 							self.refDict = dc.getPythonResults ();
 							var totalErrors = 0;
 							var sKeys = sorted (self.refDict.py_keys ());
-							var __iterable0__ = sKeys;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var key = __iterable0__ [__index0__];
+							for (var key of sKeys) {
 								var refData = self.refDict [key];
 								try {
 									var testData = self.testDict [key];
@@ -5036,12 +5300,7 @@ function autotest () {
 								catch (__except0__) {
 									if (isinstance (__except0__, KeyError)) {
 										self.ui.appendSeqRowName (key, len (refData));
-										var __iterable1__ = enumerate (refData);
-										for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-											var __left0__ = __iterable1__ [__index1__];
-											var i = __left0__ [0];
-											var refPos = __left0__ [1][0];
-											var refItem = __left0__ [1][1];
+										for (var [i, [refPos, refItem]] of enumerate (refData)) {
 											self.ui.appendTableResult (key, null, null, refPos, refItem, false);
 										}
 										continue;
@@ -5053,12 +5312,7 @@ function autotest () {
 								var errCount = self._getTotalErrorCnt (testData, refData);
 								var collapse = errCount == 0;
 								self.ui.appendSeqRowName (key, errCount);
-								var __iterable1__ = enumerate (refData);
-								for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-									var __left0__ = __iterable1__ [__index1__];
-									var i = __left0__ [0];
-									var refPos = __left0__ [1][0];
-									var refItem = __left0__ [1][1];
+								for (var [i, [refPos, refItem]] of enumerate (refData)) {
 									try {
 										var __left0__ = testData [i];
 										var testPos = __left0__ [0];
@@ -5073,17 +5327,15 @@ function autotest () {
 								totalErrors += errCount;
 							}
 							self.ui.setOutputStatus (totalErrors == 0);
-						});},
+						}, 'compare');},
 						get _cleanName () {return __get__ (this, function (self, py_name) {
 							var ret = py_name;
 							var invalidChars = list (['~', '!', '@', '$', '%', '^', '&', '*', '(', ')', '+', '=', ',', '.', '/', "'", ';', ':', '"', '?', '>', '<', '[', ']', '\\', '{', '}', '|', '`', '#', ' ']);
-							var __iterable0__ = invalidChars;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var ch = __iterable0__ [__index0__];
+							for (var ch of invalidChars) {
 								var ret = ret.py_replace (ch, '_');
 							}
 							return ret;
-						});},
+						}, '_cleanName');},
 						get run () {return __get__ (this, function (self, testlet, testletName) {
 							var testletName = self._cleanName (testletName);
 							self._currTestlet = testletName;
@@ -5112,7 +5364,7 @@ function autotest () {
 									throw __except0__;
 								}
 							}
-						});},
+						}, 'run');},
 						get done () {return __get__ (this, function (self) {
 							if (__envir__.executor_name == __envir__.transpiler_name) {
 								self.compare ();
@@ -5120,13 +5372,11 @@ function autotest () {
 							else {
 								var fnameBase = __main__.__file__.__getslice__ (0, -(3), 1).py_replace ('\\', '/').rsplit ('/', 1) [-(1)];
 								var hg = HTMLGenerator (fnameBase);
-								var __iterable0__ = tuple ([false, true]);
-								for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-									var minified = __iterable0__ [__index0__];
+								for (var minified of tuple ([false, true])) {
 									hg.generate_html (self.refDict, minified);
 								}
 							}
-						});}
+						}, 'done');}
 					});
 					__pragma__ ('<use>' +
 						'itertools' +
@@ -5179,7 +5429,7 @@ function autotest () {
 								var filenameBase = null;
 							};
 							self._fnameBase = filenameBase;
-						});},
+						}, '__init__');},
 						get generate_html () {return __get__ (this, function (self, refDict, minified) {
 							if (typeof minified == 'undefined' || (minified != null && minified .hasOwnProperty ("__kwargtrans__"))) {;
 								var minified = false;
@@ -5204,15 +5454,15 @@ function autotest () {
 							f.write ('<script src="{}"></script>\n\n'.format (jsPath));
 							f.write ('</body></html>');
 							f.close ();
-						});},
+						}, 'generate_html');},
 						get _writeCSS () {return __get__ (this, function (self, f) {
 							var cssOut = '\n\t\t<style>\n\t\t  body {\n\t\t    max-width: 100%;\n\t\t  }\n\t\t  .faultrow > td {\n\t\t     background-color: LightCoral;\n\t\t  }\n\t\t  #resulttable {\n\t\t    border-collapse: collapse;\n\t\t    width: 100%;\n\t\t    table-layout: fixed;\n\t\t  }\n\t\t  #resulttable th, #resulttable td {\n\t\t    border: 1px solid grey;\n\t\t  }\n\t\t  .testletheader > td {\n\t\t    background-color: LightSkyBlue;\n\t\t  }\n\t\t  .header-pos {\n\t\t    width: 20%;\n\t\t  }\n\t\t  .header-val {\n\t\t    width: 30%;\n\t\t  }\n\t\t  .py-pos,.trans-pos {\n\t\t    width: 20%;\n\t\t    overflow: hidden;\n\t\t  }\n\t\t  .py-val, .trans-val {\n\t\t    width: 30%;\n\t\t    overflow-x: auto;\n\t\t  }\n\t\t  .exc-header {\n\t      color: red;\n\t\t  }\n\t\t  .collapsed {\n\t\t    display: None;\n\t\t  }\n\t\t</style>\n\t\t';
 							f.write (cssOut);
-						});},
+						}, '_writeCSS');},
 						get _writeStatusHeaderTemplate () {return __get__ (this, function (self, f) {
 							f.write ('<b>Status:</b>\n');
 							f.write ('<div id="{}"></div><br><br>\n\n'.format (messageDivId));
-						});},
+						}, '_writeStatusHeaderTemplate');},
 						get _writeTableArea () {return __get__ (this, function (self, f) {
 							f.write ('<div id="{}"></div>'.format (excAreaId));
 							f.write ('<div id="{}">'.format (resultsDivId));
@@ -5221,29 +5471,23 @@ function autotest () {
 							f.write ('<tr> <th class="header-pos"> Location </th> <th class="header-val"> Value </th> <th class="header-val"> Value </th> <th class="header-pos"> Location </th> </tr></thead><tbody></tbody>');
 							f.write ('</table>');
 							f.write ('</div>');
-						});}
+						}, '_writeTableArea');}
 					});
 					var DataConverter = __class__ ('DataConverter', [object], {
 						__module__: __name__,
 						get writeHiddenResults () {return __get__ (this, function (self, f, refDict) {
 							f.write ('<div id="{}" style="display: None">'.format (referenceDivId));
-							var __iterable0__ = refDict.py_keys ();
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var key = __iterable0__ [__index0__];
+							for (var key of refDict.py_keys ()) {
 								var itemData = ' | '.join ((function () {
 									var __accu0__ = [];
-									var __iterable1__ = refDict [key];
-									for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-										var x = __iterable1__ [__index1__];
+									for (var x of refDict [key]) {
 										__accu0__.append (x [1]);
 									}
 									return __accu0__;
 								}) ());
 								var posContent = ' | '.join ((function () {
 									var __accu0__ = [];
-									var __iterable1__ = refDict [key];
-									for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-										var x = __iterable1__ [__index1__];
+									for (var x of refDict [key]) {
 										__accu0__.append (x [0]);
 									}
 									return __accu0__;
@@ -5254,13 +5498,11 @@ function autotest () {
 								f.write ('</div>\n');
 							}
 							f.write ('</div></div>\n');
-						});},
+						}, 'writeHiddenResults');},
 						get getPythonResults () {return __get__ (this, function (self) {
 							var refData = document.getElementById (referenceDivId);
 							var refDict = dict ({});
-							var __iterable0__ = refData.children;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var child = __iterable0__ [__index0__];
+							for (var child of refData.children) {
 								var keyName = child.getAttribute ('id');
 								var __left0__ = self._extractPosResult (child);
 								var posData = __left0__ [0];
@@ -5268,13 +5510,11 @@ function autotest () {
 								refDict [keyName] = zip (posData, resultData);
 							}
 							return refDict;
-						});},
+						}, 'getPythonResults');},
 						get _extractPosResult () {return __get__ (this, function (self, elem) {
 							var resultData = null;
 							var posData = null;
-							var __iterable0__ = elem.children;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var e = __iterable0__ [__index0__];
+							for (var e of elem.children) {
 								var idStr = e.getAttribute ('id');
 								if (idStr == refResultDivId) {
 									var resultData = e.innerHTML.py_split (' | ');
@@ -5287,7 +5527,7 @@ function autotest () {
 								}
 							}
 							return tuple ([posData, resultData]);
-						});}
+						}, '_extractPosResult');}
 					});
 					var getRowClsName = function (py_name) {
 						return 'mod-' + py_name;
@@ -5296,7 +5536,7 @@ function autotest () {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self) {
 							self.expander = TestModuleExpander ();
-						});},
+						}, '__init__');},
 						get setOutputStatus () {return __get__ (this, function (self, success) {
 							if (success) {
 								document.getElementById (messageDivId).innerHTML = '<div style="color: {}">Test succeeded</div>'.format (okColor);
@@ -5304,7 +5544,7 @@ function autotest () {
 							else {
 								document.getElementById (messageDivId).innerHTML = '<div style="color: {}"><b>Test failed</b></div>'.format (errorColor);
 							}
-						});},
+						}, 'setOutputStatus');},
 						get appendSeqRowName () {return __get__ (this, function (self, py_name, errCount) {
 							var table = document.getElementById (tableId);
 							var row = table.insertRow (-(1));
@@ -5315,7 +5555,7 @@ function autotest () {
 							headerCell.innerHTML = (py_name + ' | Errors = ') + str (errCount);
 							headerCell.colSpan = 4;
 							headerCell.style.textAlign = 'center';
-						});},
+						}, 'appendSeqRowName');},
 						get appendTableResult () {return __get__ (this, function (self, py_name, testPos, testItem, refPos, refItem, collapse) {
 							if (typeof collapse == 'undefined' || (collapse != null && collapse .hasOwnProperty ("__kwargtrans__"))) {;
 								var collapse = false;
@@ -5347,7 +5587,7 @@ function autotest () {
 								trans_pos.innerHTML = testPos;
 							}
 							trans_pos.classList.add (transPosClass);
-						});},
+						}, 'appendTableResult');},
 						get showException () {return __get__ (this, function (self, testname, exc) {
 							var excElem = document.getElementById (excAreaId);
 							var header = document.createElement ('H2');
@@ -5364,7 +5604,7 @@ function autotest () {
 							else {
 								stacktrace.innerHTML = 'No Stack Trace Available!';
 							}
-						});}
+						}, 'showException');}
 					});
 					var TestModuleExpander = __class__ ('TestModuleExpander', [object], {
 						__module__: __name__,
@@ -5372,7 +5612,7 @@ function autotest () {
 							self.collapsedClass = 'collapsed';
 							self.modCollapseClass = 'mod-collapsed';
 							self._expandCollapseAllFuncs ();
-						});},
+						}, '__init__');},
 						get setCollapsed () {return __get__ (this, function (self, row, collapse) {
 							if (collapse) {
 								row.classList.add (self.collapsedClass);
@@ -5380,7 +5620,7 @@ function autotest () {
 							else {
 								row.classList.remove (self.collapsedClass);
 							}
-						});},
+						}, 'setCollapsed');},
 						get setupCollapseableHeader () {return __get__ (this, function (self, row, startCollapsed) {
 							if (typeof startCollapsed == 'undefined' || (startCollapsed != null && startCollapsed .hasOwnProperty ("__kwargtrans__"))) {;
 								var startCollapsed = false;
@@ -5394,7 +5634,7 @@ function autotest () {
 								self.collapseModule (headerRow, doCollapse);
 							};
 							row.onclick = toggleCollapse;
-						});},
+						}, 'setupCollapseableHeader');},
 						get collapseModule () {return __get__ (this, function (self, headerRow, doCollapse) {
 							var py_name = headerRow.id;
 							var table = document.getElementById (tableId);
@@ -5403,9 +5643,7 @@ function autotest () {
 							var rows = filter ((function __lambda__ (x) {
 								return x.classList.contains (clsName);
 							}), allRows);
-							var __iterable0__ = rows;
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var row = __iterable0__ [__index0__];
+							for (var row of rows) {
 								self.setCollapsed (row, doCollapse);
 							}
 							if (doCollapse) {
@@ -5414,7 +5652,7 @@ function autotest () {
 							else {
 								headerRow.classList.remove (self.modCollapseClass);
 							}
-						});},
+						}, 'collapseModule');},
 						get _expandCollapseAllFuncs () {return __get__ (this, function (self) {
 							var applyToAll = function (evt, collapse) {
 								var table = document.getElementById (tableId);
@@ -5422,9 +5660,7 @@ function autotest () {
 									return x.classList.contains (testletHeaderClass);
 								});
 								var headerRows = filter (filtFunc, table.tHead.children);
-								var __iterable0__ = headerRows;
-								for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-									var headerRow = __iterable0__ [__index0__];
+								for (var headerRow of headerRows) {
 									self.collapseModule (headerRow, collapse);
 								}
 							};
@@ -5442,7 +5678,7 @@ function autotest () {
 							forceCollapse.onclick = collapseAll;
 							var forceExpand = document.getElementById (forceExpandId);
 							forceExpand.onclick = expandAll;
-						});}
+						}, '_expandCollapseAllFuncs');}
 					});
 					__pragma__ ('<all>')
 						__all__.DataConverter = DataConverter;

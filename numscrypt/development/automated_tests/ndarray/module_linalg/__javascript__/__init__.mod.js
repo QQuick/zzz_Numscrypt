@@ -18,14 +18,10 @@
 						var rid = __matmul__ (r, ri);
 						autoTester.check ('r @ ri', (function () {
 							var __accu0__ = [];
-							var __iterable0__ = rid.tolist ();
-							for (var __index0__ = 0; __index0__ < len (__iterable0__); __index0__++) {
-								var row = __iterable0__ [__index0__];
+							for (var row of rid.tolist ()) {
 								__accu0__.append ((function () {
 									var __accu1__ = [];
-									var __iterable1__ = row;
-									for (var __index1__ = 0; __index1__ < len (__iterable1__); __index1__++) {
-										var elem = __iterable1__ [__index1__];
+									for (var elem of row) {
 										__accu1__.append (int (round (elem)));
 									}
 									return __accu1__;
