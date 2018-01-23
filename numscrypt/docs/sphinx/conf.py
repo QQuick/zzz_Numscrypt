@@ -17,7 +17,7 @@ import __base__
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import os
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -46,7 +46,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Transcrypt'
+project = u'Numscrypt'
 copyright = u'2016, Jacques de Hooge'
 
 # The version info for the project you're documenting, acts as replacement for

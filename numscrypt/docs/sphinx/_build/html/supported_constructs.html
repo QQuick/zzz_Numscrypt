@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. Currently available features &mdash; Transcrypt 0.0.38 documentation</title>
+    <title>3. Currently available features &#8212; Numscrypt 0.0.40 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,19 +14,21 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.38',
+        VERSION:     '0.0.40',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Transcrypt 0.0.38 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="2. Getting started" href="installation_use.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -36,7 +38,7 @@
         <li class="right" >
           <a href="installation_use.html" title="2. Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.38 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Numscrypt 0.0.40 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -48,10 +50,10 @@
   <div class="section" id="currently-available-features">
 <h1>3. Currently available features<a class="headerlink" href="#currently-available-features" title="Permalink to this headline">¶</a></h1>
 <p>Numscrypt currently supports:</p>
-<ul>
+<ul class="simple">
 <li><dl class="first docutils">
 <dt>ndarray with</dt>
-<dd><ul class="first last simple">
+<dd><ul class="first last">
 <li>one or two dimensions</li>
 <li>dtype int32, float32, float64, complex32 and complex64</li>
 <li>indexing</li>
@@ -67,25 +69,22 @@
 </dd>
 </dl>
 </li>
-<li><p class="first">empty, array, copy</p>
-</li>
-<li><p class="first">hsplit, vsplit</p>
-</li>
-<li><p class="first">hstack, vstack</p>
-</li>
-<li><p class="first">zeros, ones, identity</p>
-</li>
+<li>empty, array, copy</li>
+<li>hsplit, vsplit</li>
+<li>hstack, vstack</li>
+<li>zeros, ones, identity</li>
 <li><dl class="first docutils">
 <dt>linalg with</dt>
-<dd><ul class="first last simple">
+<dd><ul class="first last">
 <li>matrix inversion</li>
+<li>eigenvalue / eigenvector decomposition</li>
 </ul>
 </dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt>FFT with</dt>
-<dd><ul class="first last simple">
+<dd><ul class="first last">
 <li>FFT for 2^n complex samples</li>
 <li>IFFT for 2^n complex samples</li>
 <li>FFT2 for 2^n x 2^n complex samples</li>
@@ -100,9 +99,9 @@
 <h1>4. Systematic code examples: a guided tour of Numscrypt<a class="headerlink" href="#systematic-code-examples-a-guided-tour-of-numscrypt" title="Permalink to this headline">¶</a></h1>
 <p>One ready-to-run code example is worth more than ten lengthy descriptions. The <em>autotest and demo suite</em>, that is part of the distribution, is a collection of sourcecode fragments called <em>testlets</em>. These testlets are used for automated regression testing of Numscrypt against NumPy.
 Since they systematically cover all the library constructs, they are also very effective as a learning tool. The testlets are arranged alphabetically by subject.</p>
-<div class="literal-block-wrapper container" id="autotest-numscrypt-autotest-demo-suite">
-<div class="code-block-caption"><span class="caption-text">Autotest: Numscrypt autotest demo suite</span><a class="headerlink" href="#autotest-numscrypt-autotest-demo-suite" title="Permalink to this code">¶</a></div>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.transcrypt.autotester</span>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Autotest: Numscrypt autotest demo suite</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">org.transcrypt.autotester</span>
 
 <span class="kn">import</span> <span class="nn">basics</span>
 <span class="kn">import</span> <span class="nn">module_linalg</span>
@@ -110,9 +109,9 @@ Since they systematically cover all the library constructs, they are also very e
 
 <span class="n">autoTester</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="n">transcrypt</span><span class="o">.</span><span class="n">autotester</span><span class="o">.</span><span class="n">AutoTester</span> <span class="p">()</span>
 
-<span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">basics</span><span class="p">,</span> <span class="s">&#39;basics&#39;</span><span class="p">)</span>
-<span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">module_linalg</span><span class="p">,</span> <span class="s">&#39;module_linalg&#39;</span><span class="p">)</span>
-<span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">module_fft</span><span class="p">,</span> <span class="s">&#39;module_fft&#39;</span><span class="p">)</span>
+<span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">basics</span><span class="p">,</span> <span class="s1">&#39;basics&#39;</span><span class="p">)</span>
+<span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">module_linalg</span><span class="p">,</span> <span class="s1">&#39;module_linalg&#39;</span><span class="p">)</span>
+<span class="n">autoTester</span><span class="o">.</span><span class="n">run</span> <span class="p">(</span><span class="n">module_fft</span><span class="p">,</span> <span class="s1">&#39;module_fft&#39;</span><span class="p">)</span>
 
 <span class="n">autoTester</span><span class="o">.</span><span class="n">done</span> <span class="p">()</span>
 </pre></div>
@@ -120,399 +119,399 @@ Since they systematically cover all the library constructs, they are also very e
 </div>
 <div class="section" id="basics-creating-and-using-arrays">
 <h2>4.1. Basics: creating and using arrays<a class="headerlink" href="#basics-creating-and-using-arrays" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper container" id="testlet-basics">
-<div class="code-block-caption"><span class="caption-text">Testlet: basics</span><a class="headerlink" href="#testlet-basics" title="Permalink to this code">¶</a></div>
-<div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
-from org.transcrypt.stubs.browser import __main__, __envir__, __pragma__
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Testlet: basics</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="k">import</span> <span class="n">__main__</span><span class="p">,</span> <span class="n">__envir__</span><span class="p">,</span> <span class="n">__pragma__</span>
 
-# Imports for Transcrypt, resolved run time
-if __envir__.executor_name == __envir__.transpiler_name:
-    import numscrypt as num
+<span class="c1"># Imports for Transcrypt, skipped runtime by CPython</span>
+<span class="k">if</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">executor_name</span> <span class="o">==</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">transpiler_name</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">numscrypt</span> <span class="k">as</span> <span class="nn">num</span>
 
-# Imports for CPython, resolved compile time
-__pragma__ (&#39;skip&#39;)
-import numpy as num
-__pragma__ (&#39;noskip&#39;)
+<span class="c1"># Imports for CPython, skipped compile time by Transcrypt</span>
+<span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">num</span>
+<span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noskip&#39;</span><span class="p">)</span>
 
-def run (autoTester):
-    z = num.zeros ((4, 3), &#39;int32&#39;)
-    autoTester.check (&#39;Zeros&#39;, z.tolist (), &#39;&lt;br&gt;&#39;)
+<span class="k">def</span> <span class="nf">run</span> <span class="p">(</span><span class="n">autoTester</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">zeros</span> <span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s1">&#39;int32&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Zeros&#39;</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    o = num.ones ((4, 5))
-    autoTester.check (&#39;Ones&#39;, o.astype (&#39;int32&#39;) .tolist ())
+    <span class="n">o</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">ones</span> <span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Ones&#39;</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">astype</span> <span class="p">(</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">())</span>
     
-    i = num.identity (3, &#39;int32&#39;)
-    autoTester.check (&#39;Identity&#39;, i.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">i</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">identity</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;int32&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Identity&#39;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    a = num.array ([
-        [1, 1, 2, 3],
-        [4, 5, 6, 7],
-        [8, 9, 10, 12]
-    ])
+    <span class="n">a</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
+    <span class="p">])</span>
     
-    autoTester.check (&#39;Matrix a&#39;, a.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix a&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;Transpose of a&#39;, a.transpose () .tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Transpose of a&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">transpose</span> <span class="p">()</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    b = num.array ([
-        [2, 2, 4, 6],
-        [8, 10, 12, 14],
-        [16, 18, 20, 24]
-    ])
+    <span class="n">b</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+        <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">24</span><span class="p">]</span>
+    <span class="p">])</span>
     
-    bp =  b.transpose ()
+    <span class="n">bp</span> <span class="o">=</span>  <span class="n">b</span><span class="o">.</span><span class="n">transpose</span> <span class="p">()</span>
     
-    autoTester.check (&#39;Matrix b&#39;, b.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Permutation of b&#39;, bp.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix b&#39;</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Permutation of b&#39;</span><span class="p">,</span> <span class="n">bp</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
         
-    c = num.array ([
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11, 12],
-    ], &#39;int32&#39;)
+    <span class="n">c</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+    <span class="p">],</span> <span class="s1">&#39;int32&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;Shape c&#39;, tuple (c.shape), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix c&#39;, c.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Shape c&#39;</span><span class="p">,</span> <span class="nb">tuple</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix c&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    ct = c.transpose ()
-    autoTester.check (&#39;Shape ct&#39;, tuple (ct.shape), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Transpose of c&#39;, ct .tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">ct</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">transpose</span> <span class="p">()</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Shape ct&#39;</span><span class="p">,</span> <span class="nb">tuple</span> <span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Transpose of c&#39;</span><span class="p">,</span> <span class="n">ct</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
 
-    cs0, cs1 = num.hsplit (c, 2)
-    autoTester.check (&#39;Matrix cs0&#39;, cs0.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix cs1&#39;, cs1.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">cs0</span><span class="p">,</span> <span class="n">cs1</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">hsplit</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix cs0&#39;</span><span class="p">,</span> <span class="n">cs0</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix cs1&#39;</span><span class="p">,</span> <span class="n">cs1</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
 
-    ci = num.hstack ((cs1, cs0))
-    autoTester.check (&#39;Matrix ci&#39;, ci.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">ci</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">hstack</span> <span class="p">((</span><span class="n">cs1</span><span class="p">,</span> <span class="n">cs0</span><span class="p">))</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix ci&#39;</span><span class="p">,</span> <span class="n">ci</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    cts0, cts1, cts2 = num.hsplit (ct, 3)
-    autoTester.check (&#39;Matrix cts0&#39;, cts0.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix cts1&#39;, cts1.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix cts2&#39;, cts2.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">cts0</span><span class="p">,</span> <span class="n">cts1</span><span class="p">,</span> <span class="n">cts2</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">hsplit</span> <span class="p">(</span><span class="n">ct</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix cts0&#39;</span><span class="p">,</span> <span class="n">cts0</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix cts1&#39;</span><span class="p">,</span> <span class="n">cts1</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix cts2&#39;</span><span class="p">,</span> <span class="n">cts2</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
 
-    cti = num.hstack ((cts2, cts1, cts0))
-    autoTester.check (&#39;Matrix ci&#39;, cti.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">cti</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">hstack</span> <span class="p">((</span><span class="n">cts2</span><span class="p">,</span> <span class="n">cts1</span><span class="p">,</span> <span class="n">cts0</span><span class="p">))</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix ci&#39;</span><span class="p">,</span> <span class="n">cti</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    d = num.array ([
-        [13, 14],
-        [15, 16],
-        [17, 18],
-        [19, 20]
-    ], &#39;int32&#39;)
+    <span class="n">d</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+        <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+    <span class="p">],</span> <span class="s1">&#39;int32&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;Matrix d&#39;, d.tolist (), &#39;&lt;br&gt;&#39;)
-    dt = d.transpose ()
-    autoTester.check (&#39;Permutation of d&#39;, dt.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix d&#39;</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">transpose</span> <span class="p">()</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Permutation of d&#39;</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    ds0, ds1, ds2, ds3 = num.vsplit (d, 4)
-    autoTester.check (&#39;Matrix ds0&#39;, ds0.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix ds1&#39;, ds1.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix ds2&#39;, ds2.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix ds3&#39;, ds3.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">ds0</span><span class="p">,</span> <span class="n">ds1</span><span class="p">,</span> <span class="n">ds2</span><span class="p">,</span> <span class="n">ds3</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">vsplit</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix ds0&#39;</span><span class="p">,</span> <span class="n">ds0</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix ds1&#39;</span><span class="p">,</span> <span class="n">ds1</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix ds2&#39;</span><span class="p">,</span> <span class="n">ds2</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix ds3&#39;</span><span class="p">,</span> <span class="n">ds3</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
 
-    di = num.vstack ((ds3, ds2, ds1, ds0))
-    autoTester.check (&#39;Matrix di&#39;, di.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">di</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">vstack</span> <span class="p">((</span><span class="n">ds3</span><span class="p">,</span> <span class="n">ds2</span><span class="p">,</span> <span class="n">ds1</span><span class="p">,</span> <span class="n">ds0</span><span class="p">))</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix di&#39;</span><span class="p">,</span> <span class="n">di</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    dts0, dts1 = num.vsplit (dt, 2)
-    autoTester.check (&#39;Matrix dts0&#39;, dts0.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix dts1&#39;, dts1.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">dts0</span><span class="p">,</span> <span class="n">dts1</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">vsplit</span> <span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix dts0&#39;</span><span class="p">,</span> <span class="n">dts0</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix dts1&#39;</span><span class="p">,</span> <span class="n">dts1</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
 
-    dti = num.vstack ((dts1, dts0))
-    autoTester.check (&#39;Matrix dti&#39;, dti.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">dti</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">vstack</span> <span class="p">((</span><span class="n">dts1</span><span class="p">,</span> <span class="n">dts0</span><span class="p">))</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix dti&#39;</span><span class="p">,</span> <span class="n">dti</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    v0 = num.array (range (10)) 
-    v1 = num.array ((1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
+    <span class="n">v0</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">(</span><span class="nb">range</span> <span class="p">(</span><span class="mi">10</span><span class="p">))</span> 
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
-    __pragma__ (&#39;opov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
     
-    a [1, 0] = 177
-    el = b [1, 2]
+    <span class="n">a</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">177</span>
+    <span class="n">el</span> <span class="o">=</span> <span class="n">b</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
     
-    bsl0 = b [1, 1 : 3]
-    bsl1 = b [1 : 2, 1 : 3]
-    bsl2 = b [1 : 2, 1]
-    bsl3 = b [1, 1 : 3]
-    bsl4 = b [ : , 1]
-    bsl5 = b [1, 1 : 3]
-    bsl6 = b [1, 1 : 3]
-    bsl7 = b [1, 2 : 3]
+    <span class="n">bsl0</span> <span class="o">=</span> <span class="n">b</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">bsl1</span> <span class="o">=</span> <span class="n">b</span> <span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">bsl2</span> <span class="o">=</span> <span class="n">b</span> <span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">bsl3</span> <span class="o">=</span> <span class="n">b</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">bsl4</span> <span class="o">=</span> <span class="n">b</span> <span class="p">[</span> <span class="p">:</span> <span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">bsl5</span> <span class="o">=</span> <span class="n">b</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">bsl6</span> <span class="o">=</span> <span class="n">b</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">bsl7</span> <span class="o">=</span> <span class="n">b</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
 
-    bpsl0 = bp [1, 1 : 3]
-    bpsl1 = bp [1 : 2, 1 : 3]
-    bpsl2 = bp [1, 0 : ]
-    bpsl3 = bp [1, 1 : 3]
-    bpsl4 = bp [ : , 1]
-    bpsl5 = bp [3, 1 : 3]
-    bpsl6 = bp [2 : 4, 1 : 3]
-    bpsl7 = bp [2 : 4, 2 : 3]
+    <span class="n">bpsl0</span> <span class="o">=</span> <span class="n">bp</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">bpsl1</span> <span class="o">=</span> <span class="n">bp</span> <span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">bpsl2</span> <span class="o">=</span> <span class="n">bp</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span> <span class="p">:</span> <span class="p">]</span>
+    <span class="n">bpsl3</span> <span class="o">=</span> <span class="n">bp</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">bpsl4</span> <span class="o">=</span> <span class="n">bp</span> <span class="p">[</span> <span class="p">:</span> <span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">bpsl5</span> <span class="o">=</span> <span class="n">bp</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">bpsl6</span> <span class="o">=</span> <span class="n">bp</span> <span class="p">[</span><span class="mi">2</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">bpsl7</span> <span class="o">=</span> <span class="n">bp</span> <span class="p">[</span><span class="mi">2</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
     
-    sum = a + b
-    dif = a - b
-    prod = a * b
-    quot = a / b
-    dot = c @ d
-    vsum = v0 + v1
-    vel = vsum [6]
-    vsum [6] = 70
+    <span class="nb">sum</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">dif</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+    <span class="n">prod</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+    <span class="n">quot</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+    <span class="n">dot</span> <span class="o">=</span> <span class="n">c</span> <span class="o">@</span> <span class="n">d</span>
+    <span class="n">vsum</span> <span class="o">=</span> <span class="n">v0</span> <span class="o">+</span> <span class="n">v1</span>
+    <span class="n">vel</span> <span class="o">=</span> <span class="n">vsum</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">vsum</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">70</span>
     
-    mul_a3 = a * 3
-    mul_3a = 3 * a
-    div_a3 = a / 3.1234567
-    div_3a = 3.1234567 / a
-    add_a3 = a + 3
-    add_3a = 3 + a
-    sub_a3 = a - 3
-    sub_3a = 3 - a
-    neg_a = -a
+    <span class="n">mul_a3</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">3</span>
+    <span class="n">mul_3a</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">a</span>
+    <span class="n">div_a3</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="mf">3.1234567</span>
+    <span class="n">div_3a</span> <span class="o">=</span> <span class="mf">3.1234567</span> <span class="o">/</span> <span class="n">a</span>
+    <span class="n">add_a3</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">3</span>
+    <span class="n">add_3a</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">a</span>
+    <span class="n">sub_a3</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="mi">3</span>
+    <span class="n">sub_3a</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">a</span>
+    <span class="n">neg_a</span> <span class="o">=</span> <span class="o">-</span><span class="n">a</span>
     
-    __pragma__ (&#39;noopov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
         
-    autoTester.check (&#39;El a [1, 2, 3] alt&#39;, a.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;El b [1, 2, 3]&#39;, el, &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;El a [1, 2, 3] alt&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;El b [1, 2, 3]&#39;</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;Sl b0&#39;, bsl0.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl b1&#39;, bsl1.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl b2&#39;, bsl2.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl b3&#39;, bsl3.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl b4&#39;, bsl4.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl b5&#39;, bsl5.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl b6&#39;, bsl6.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl b7&#39;, bsl7.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl b0&#39;</span><span class="p">,</span> <span class="n">bsl0</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl b1&#39;</span><span class="p">,</span> <span class="n">bsl1</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl b2&#39;</span><span class="p">,</span> <span class="n">bsl2</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl b3&#39;</span><span class="p">,</span> <span class="n">bsl3</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl b4&#39;</span><span class="p">,</span> <span class="n">bsl4</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl b5&#39;</span><span class="p">,</span> <span class="n">bsl5</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl b6&#39;</span><span class="p">,</span> <span class="n">bsl6</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl b7&#39;</span><span class="p">,</span> <span class="n">bsl7</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;Sl bp0&#39;, bpsl0.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl bp1&#39;, bpsl1.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl bp2&#39;, bpsl2.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl bp3&#39;, bpsl3.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl bp4&#39;, bpsl4.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl bp5&#39;, bpsl5.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl bp6&#39;, bpsl6.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Sl bp7&#39;, bpsl7.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl bp0&#39;</span><span class="p">,</span> <span class="n">bpsl0</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl bp1&#39;</span><span class="p">,</span> <span class="n">bpsl1</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl bp2&#39;</span><span class="p">,</span> <span class="n">bpsl2</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl bp3&#39;</span><span class="p">,</span> <span class="n">bpsl3</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl bp4&#39;</span><span class="p">,</span> <span class="n">bpsl4</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl bp5&#39;</span><span class="p">,</span> <span class="n">bpsl5</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl bp6&#39;</span><span class="p">,</span> <span class="n">bpsl6</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Sl bp7&#39;</span><span class="p">,</span> <span class="n">bpsl7</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;Matrix sum&#39;, sum.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix difference&#39;, dif.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix product&#39;, prod.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix quotient&#39;, quot.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Matrix dotproduct&#39;, dot.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix sum&#39;</span><span class="p">,</span> <span class="nb">sum</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix difference&#39;</span><span class="p">,</span> <span class="n">dif</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix product&#39;</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix quotient&#39;</span><span class="p">,</span> <span class="n">quot</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix dotproduct&#39;</span><span class="p">,</span> <span class="n">dot</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;Vector&#39;, v0.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Vector&#39;, v1.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;El sum old&#39;, vel, &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;Vector sum new&#39;, vsum.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Vector&#39;</span><span class="p">,</span> <span class="n">v0</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Vector&#39;</span><span class="p">,</span> <span class="n">v1</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;El sum old&#39;</span><span class="p">,</span> <span class="n">vel</span><span class="p">,</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Vector sum new&#39;</span><span class="p">,</span> <span class="n">vsum</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;mul_a3&#39;, mul_a3.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;mul_3a&#39;, mul_3a.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;div_a3&#39;, num.round (div_a3, 2).tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;div_3a&#39;, num.round (div_3a, 2).tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;add_a3&#39;, add_a3.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;add_3a&#39;, add_3a.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;sub_a3&#39;, sub_a3.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;sub_3a&#39;, sub_3a.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;neg_a&#39;, neg_a.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;mul_a3&#39;</span><span class="p">,</span> <span class="n">mul_a3</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;mul_3a&#39;</span><span class="p">,</span> <span class="n">mul_3a</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;div_a3&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">div_a3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;div_3a&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">div_3a</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;add_a3&#39;</span><span class="p">,</span> <span class="n">add_a3</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;add_3a&#39;</span><span class="p">,</span> <span class="n">add_3a</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;sub_a3&#39;</span><span class="p">,</span> <span class="n">sub_a3</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;sub_3a&#39;</span><span class="p">,</span> <span class="n">sub_3a</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;neg_a&#39;</span><span class="p">,</span> <span class="n">neg_a</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    __pragma__ (&#39;opov&#39;)
-    comp_a = num.array ([
-        [1 + 2j, 2 - 1j, 3],
-        [4, 5 + 3j, 7]
-    ], &#39;complex128&#39;)    
-    comp_b = num.array ([
-        [6, 8 - 1j],
-        [9 + 3j, 10],
-        [11, 12 - 6j]
-    ], &#39;complex128&#39;)
-    comp_c = comp_a @ comp_b
-    __pragma__ (&#39;noopov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+    <span class="n">comp_a</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+        <span class="p">[</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span> <span class="o">+</span> <span class="mi">3</span><span class="n">j</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+    <span class="p">],</span> <span class="s1">&#39;complex128&#39;</span><span class="p">)</span>    
+    <span class="n">comp_b</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+        <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">3</span><span class="n">j</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span> <span class="o">-</span> <span class="mi">6</span><span class="n">j</span><span class="p">]</span>
+    <span class="p">],</span> <span class="s1">&#39;complex128&#39;</span><span class="p">)</span>
+    <span class="n">comp_c</span> <span class="o">=</span> <span class="n">comp_a</span> <span class="o">@</span> <span class="n">comp_b</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;comp_a&#39;, comp_a.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;comp_b&#39;, comp_b.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;comp_c&#39;, comp_c.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;comp_a&#39;</span><span class="p">,</span> <span class="n">comp_a</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;comp_b&#39;</span><span class="p">,</span> <span class="n">comp_b</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;comp_c&#39;</span><span class="p">,</span> <span class="n">comp_c</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    __pragma__ (&#39;opov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
     
-    comp_a_square = comp_a [ : , : 2]
-    comp_b_square = comp_b [1 : , : ]
+    <span class="n">comp_a_square</span> <span class="o">=</span> <span class="n">comp_a</span> <span class="p">[</span> <span class="p">:</span> <span class="p">,</span> <span class="p">:</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">comp_b_square</span> <span class="o">=</span> <span class="n">comp_b</span> <span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="p">,</span> <span class="p">:</span> <span class="p">]</span>
     
-    comp_c_square = comp_a_square * comp_b_square
-    comp_d_square = comp_a_square / comp_b_square
-    comp_e_square = comp_a_square + comp_b_square
-    comp_f_square = comp_a_square - comp_b_square
+    <span class="n">comp_c_square</span> <span class="o">=</span> <span class="n">comp_a_square</span> <span class="o">*</span> <span class="n">comp_b_square</span>
+    <span class="n">comp_d_square</span> <span class="o">=</span> <span class="n">comp_a_square</span> <span class="o">/</span> <span class="n">comp_b_square</span>
+    <span class="n">comp_e_square</span> <span class="o">=</span> <span class="n">comp_a_square</span> <span class="o">+</span> <span class="n">comp_b_square</span>
+    <span class="n">comp_f_square</span> <span class="o">=</span> <span class="n">comp_a_square</span> <span class="o">-</span> <span class="n">comp_b_square</span>
     
-    __pragma__ (&#39;noopov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;comp_a_square&#39;, comp_a_square.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;comp_b_square&#39;, comp_b_square.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;comp_c_square&#39;, comp_c_square.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;comp_d_square&#39;, num.round (comp_d_square, 2).tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;comp_e_square&#39;, comp_e_square.tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;comp_f_square&#39;, comp_f_square.tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;comp_a_square&#39;</span><span class="p">,</span> <span class="n">comp_a_square</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;comp_b_square&#39;</span><span class="p">,</span> <span class="n">comp_b_square</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;comp_c_square&#39;</span><span class="p">,</span> <span class="n">comp_c_square</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;comp_d_square&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">comp_d_square</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;comp_e_square&#39;</span><span class="p">,</span> <span class="n">comp_e_square</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;comp_f_square&#39;</span><span class="p">,</span> <span class="n">comp_f_square</span><span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    __pragma__ (&#39;opov&#39;)
-    sliceable_a = num.array ([
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11, 12],
-        [13, 14, 15, 16]
-    ])
-    autoTester.check (&#39;sliceable_a&#39;, sliceable_a.tolist ())
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+    <span class="n">sliceable_a</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
+    <span class="p">])</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;sliceable_a&#39;</span><span class="p">,</span> <span class="n">sliceable_a</span><span class="o">.</span><span class="n">tolist</span> <span class="p">())</span>
 
-    slice_a = sliceable_a [1 : , 1 : ]
-    autoTester.check (&#39;slice_a&#39;)
+    <span class="n">slice_a</span> <span class="o">=</span> <span class="n">sliceable_a</span> <span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="p">]</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;slice_a&#39;</span><span class="p">)</span>
     
-    sliceable_at = sliceable_a.transpose ()
-    slice_at = sliceable_at [1 : ]
+    <span class="n">sliceable_at</span> <span class="o">=</span> <span class="n">sliceable_a</span><span class="o">.</span><span class="n">transpose</span> <span class="p">()</span>
+    <span class="n">slice_at</span> <span class="o">=</span> <span class="n">sliceable_at</span> <span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="p">]</span>
     
-    __pragma__ (&#39;noopov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
     
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="linalg-matrix-inversion">
-<h2>4.2. Linalg: matrix inversion<a class="headerlink" href="#linalg-matrix-inversion" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper container" id="testlet-module-linalg">
-<div class="code-block-caption"><span class="caption-text">Testlet: module_linalg</span><a class="headerlink" href="#testlet-module-linalg" title="Permalink to this code">¶</a></div>
-<div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
-from org.transcrypt.stubs.browser import __main__, __envir__, __pragma__
+<div class="section" id="linalg-matrix-inversion-and-eigen-decomposition">
+<h2>4.2. Linalg: matrix inversion and eigen decomposition<a class="headerlink" href="#linalg-matrix-inversion-and-eigen-decomposition" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Testlet: module_linalg</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="k">import</span> <span class="n">__main__</span><span class="p">,</span> <span class="n">__envir__</span><span class="p">,</span> <span class="n">__pragma__</span>
 
-# Imports for Transcrypt, resolved run time
-if __envir__.executor_name == __envir__.transpiler_name:
-    import numscrypt as num
-    import numscrypt.linalg as linalg
+<span class="c1"># Imports for Transcrypt, skipped run time by CPython</span>
+<span class="k">if</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">executor_name</span> <span class="o">==</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">transpiler_name</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">numscrypt</span> <span class="k">as</span> <span class="nn">num</span>
+    <span class="kn">import</span> <span class="nn">numscrypt.linalg</span> <span class="k">as</span> <span class="nn">linalg</span>
 
-# Imports for CPython, resolved compile time
-__pragma__ (&#39;skip&#39;)
-import numpy as num
-import numpy.linalg as linalg
-num.set_printoptions (linewidth = 240)
-__pragma__ (&#39;noskip&#39;)
+<span class="c1"># Imports for CPython, skipped compile time by Transcrypt</span>
+<span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">num</span>
+<span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">linalg</span>
+<span class="n">num</span><span class="o">.</span><span class="n">set_printoptions</span> <span class="p">(</span><span class="n">linewidth</span> <span class="o">=</span> <span class="mi">240</span><span class="p">)</span>
+<span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noskip&#39;</span><span class="p">)</span>
 
-def run (autoTester):
-    autoTester.check (&#39;====== inverse ======&#39;)
+<span class="k">def</span> <span class="nf">run</span> <span class="p">(</span><span class="n">autoTester</span><span class="p">):</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;====== inverse ======&#39;</span><span class="p">)</span>
 
-    # Real
+    <span class="c1"># Real</span>
 
-    r = num.array ([
-        [2.12, -2.11, -1.23], 
-        [2.31, 1.14, 3.15], 
-        [1.13, 1.98, 2.81]
-    ])
+    <span class="n">r</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+        <span class="p">[</span><span class="mf">2.12</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.11</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.23</span><span class="p">],</span> 
+        <span class="p">[</span><span class="mf">2.31</span><span class="p">,</span> <span class="mf">1.14</span><span class="p">,</span> <span class="mf">3.15</span><span class="p">],</span> 
+        <span class="p">[</span><span class="mf">1.13</span><span class="p">,</span> <span class="mf">1.98</span><span class="p">,</span> <span class="mf">2.81</span><span class="p">]</span>
+    <span class="p">])</span>
     
-    autoTester.check (&#39;Matrix r&#39;, num.round (r, 2) .tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix r&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    ri = linalg.inv (r)
+    <span class="n">ri</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">inv</span> <span class="p">(</span><span class="n">r</span><span class="p">)</span>
     
-    autoTester.check (&#39;Matrix ri&#39;, num.round (ri, 2) .tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix ri&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">ri</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    __pragma__ (&#39;opov&#39;)
-    rid = r @ ri
-    __pragma__ (&#39;noopov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+    <span class="n">rid</span> <span class="o">=</span> <span class="n">r</span> <span class="o">@</span> <span class="n">ri</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;r @ ri&#39;, [[int (round (elem)) for elem in row] for row in rid.tolist ()], &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;r @ ri&#39;</span><span class="p">,</span> <span class="p">[[</span><span class="nb">int</span> <span class="p">(</span><span class="nb">round</span> <span class="p">(</span><span class="n">elem</span><span class="p">))</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rid</span><span class="o">.</span><span class="n">tolist</span> <span class="p">()],</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    __pragma__ (&#39;opov&#39;)
-    delta = 0.001
-    autoTester.check (&#39;r * r&#39;, num.round (r * r + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;r / r&#39;, num.round (r / r + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;r + r&#39;, num.round (r + r + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;r - r&#39;, num.round (r - r + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
-    __pragma__ (&#39;noopov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;r * r&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">r</span> <span class="o">*</span> <span class="n">r</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;r / r&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="n">r</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;r + r&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="n">r</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;r - r&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">r</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
 
-    # Complex
+    <span class="c1"># Complex</span>
     
-    __pragma__ (&#39;opov&#39;)
-    c = num.array ([
-        [2.12 - 3.15j, -2.11, -1.23], 
-        [2.31, 1.14, 3.15 + 2.75j], 
-        [1.13, 1.98 - 4.33j, 2.81]
-    ], &#39;complex128&#39;)
-    __pragma__ (&#39;noopov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+        <span class="p">[</span><span class="mf">2.12</span> <span class="o">-</span> <span class="mf">3.15</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.11</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.23</span><span class="p">],</span> 
+        <span class="p">[</span><span class="mf">2.31</span><span class="p">,</span> <span class="mf">1.14</span><span class="p">,</span> <span class="mf">3.15</span> <span class="o">+</span> <span class="mf">2.75</span><span class="n">j</span><span class="p">],</span> 
+        <span class="p">[</span><span class="mf">1.13</span><span class="p">,</span> <span class="mf">1.98</span> <span class="o">-</span> <span class="mf">4.33</span><span class="n">j</span><span class="p">,</span> <span class="mf">2.81</span><span class="p">]</span>
+    <span class="p">],</span> <span class="s1">&#39;complex128&#39;</span><span class="p">)</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;Matrix c&#39;,  num.round (c, 2) .tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix c&#39;</span><span class="p">,</span>  <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    ci = linalg.inv (c)
+    <span class="n">ci</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">inv</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span>
     
-    autoTester.check (&#39;Matrix ci&#39;, num.round (ci, 2) .tolist (), &#39;&lt;br&gt;&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Matrix ci&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">ci</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    __pragma__ (&#39;opov&#39;)
-    cid = c @ ci
-    __pragma__ (&#39;noopov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+    <span class="n">cid</span> <span class="o">=</span> <span class="n">c</span> <span class="o">@</span> <span class="n">ci</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
     
-    # autoTester.check (&#39;c @ ci&#39;, [[&#39;{} + j{}&#39;.format (int (round (elem.real)), int (round (elem.imag))) for elem in row] for row in cid.tolist ()], &#39;&lt;br&gt;&#39;)
+    <span class="c1"># autoTester.check (&#39;c @ ci&#39;, [[&#39;{} + j{}&#39;.format (int (round (elem.real)), int (round (elem.imag))) for elem in row] for row in cid.tolist ()], &#39;&lt;br&gt;&#39;)</span>
     
-    __pragma__ (&#39;opov&#39;)
-    delta = 0.001 + 0.001j
-    autoTester.check (&#39;c * c&#39;, num.round (c * c + delta , 3) .tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;c / c&#39;, num.round (c / c + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;c + c&#39;, num.round (c + c + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
-    autoTester.check (&#39;c - c&#39;, num.round (c - c + delta, 3) .tolist (), &#39;&lt;br&gt;&#39;)
-    __pragma__ (&#39;noopov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="o">+</span> <span class="mf">0.001</span><span class="n">j</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;c * c&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">c</span> <span class="o">+</span> <span class="n">delta</span> <span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;c / c&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">c</span> <span class="o">/</span> <span class="n">c</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;c + c&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;c - c&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="n">c</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
     
-    autoTester.check (&#39;====== eigen ======&#39;)
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;====== eigen ======&#39;</span><span class="p">)</span>
     
-    __pragma__ (&#39;opov&#39;)
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
 
-    for a in (   
-        num.array ([
-            [0, 1j],
-            [-1j, 1]
-        ], &#39;complex128&#39;),
-        num.array ([
-            [1, -2, 3, 1],
-            [5, 8, -1, -5],
-            [2, 1, 1, 100],
-            [2, 1, -1, 0]
-        ], &#39;complex128&#39;),
-    ):
-        eVals, eVecs = linalg.eig (a)
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">(</span>   
+        <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="n">j</span><span class="p">],</span>
+            <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="p">],</span> <span class="s1">&#39;complex128&#39;</span><span class="p">),</span>
+        <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="p">],</span> <span class="s1">&#39;complex128&#39;</span><span class="p">),</span>
+    <span class="p">):</span>
+        <span class="n">eVals</span><span class="p">,</span> <span class="n">eVecs</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eig</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span>
         
-        enumSorted = sorted (
-            enumerate (eVals.tolist ()),
-            key = lambda elem: -(elem [1].real + elem [1].imag / 1000)  # Order on primarily on real, secundarily on imag, note conjugate vals
-        )
+        <span class="n">enumSorted</span> <span class="o">=</span> <span class="nb">sorted</span> <span class="p">(</span>
+            <span class="nb">enumerate</span> <span class="p">(</span><span class="n">eVals</span><span class="o">.</span><span class="n">tolist</span> <span class="p">()),</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">elem</span><span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">elem</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="n">elem</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>  <span class="c1"># Order on primarily on real, secundarily on imag, note conjugate vals</span>
+        <span class="p">)</span>
         
-        indicesSorted = [elem [0] for elem in enumSorted]
-        eValsSorted = [elem [1] for elem in enumSorted]
+        <span class="n">indicesSorted</span> <span class="o">=</span> <span class="p">[</span><span class="n">elem</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">enumSorted</span><span class="p">]</span>
+        <span class="n">eValsSorted</span> <span class="o">=</span> <span class="p">[</span><span class="n">elem</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">enumSorted</span><span class="p">]</span>
         
-        eValsMat = num.empty (a.shape, a.dtype)
-        for iRow in range (a.shape [0]):
-            for iCol in range (a.shape [1]):
-                eValsMat [iRow, iCol] = eVals [iCol]
+        <span class="n">eValsMat</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">empty</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">iRow</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span> <span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">iCol</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span> <span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">eValsMat</span> <span class="p">[</span><span class="n">iRow</span><span class="p">,</span> <span class="n">iCol</span><span class="p">]</span> <span class="o">=</span> <span class="n">eVals</span> <span class="p">[</span><span class="n">iCol</span><span class="p">]</span>
          
-        eVecsNorms = num.empty ((eVecs.shape [1], ), a.dtype)
-        for iNorm in range (eVecsNorms.shape [0]):
-            eVecsNorms [iNorm] = complex (linalg.norm (eVecs [:, iNorm]))
+        <span class="n">eVecsNorms</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">empty</span> <span class="p">((</span><span class="n">eVecs</span><span class="o">.</span><span class="n">shape</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">),</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">iNorm</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">eVecsNorms</span><span class="o">.</span><span class="n">shape</span> <span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">eVecsNorms</span> <span class="p">[</span><span class="n">iNorm</span><span class="p">]</span> <span class="o">=</span> <span class="nb">complex</span> <span class="p">(</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span> <span class="p">(</span><span class="n">eVecs</span> <span class="p">[:,</span> <span class="n">iNorm</span><span class="p">]))</span>
             
-        eVecsCanon = num.empty (a.shape, a.dtype)
-        for iRow in range (a.shape [0]):
-            for iCol in range (a.shape [1]):
-                eVecsCanon [iRow, iCol] = eVecs [iRow, iCol] / eVecs [0, iCol] 
+        <span class="n">eVecsCanon</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">empty</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">iRow</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span> <span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">iCol</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span> <span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">eVecsCanon</span> <span class="p">[</span><span class="n">iRow</span><span class="p">,</span> <span class="n">iCol</span><span class="p">]</span> <span class="o">=</span> <span class="n">eVecs</span> <span class="p">[</span><span class="n">iRow</span><span class="p">,</span> <span class="n">iCol</span><span class="p">]</span> <span class="o">/</span> <span class="n">eVecs</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">iCol</span><span class="p">]</span> 
             
-        eVecsSorted = num.empty (a.shape, a.dtype)
-        for iRow in range (a.shape [0]):
-            for iCol in range (a.shape [1]):
-                eVecsSorted [iRow, iCol] = eVecsCanon [iRow, indicesSorted [iCol]]
+        <span class="n">eVecsSorted</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">empty</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">iRow</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span> <span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">iCol</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span> <span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">eVecsSorted</span> <span class="p">[</span><span class="n">iRow</span><span class="p">,</span> <span class="n">iCol</span><span class="p">]</span> <span class="o">=</span> <span class="n">eVecsCanon</span> <span class="p">[</span><span class="n">iRow</span><span class="p">,</span> <span class="n">indicesSorted</span> <span class="p">[</span><span class="n">iCol</span><span class="p">]]</span>
             
-        &#39;&#39;&#39;
-        autoTester.check (&#39;\n---------------- a ----------------------&#39;)
-        autoTester.check (a)
-        autoTester.check (&#39;\n---------------- eigVals ----------------&#39;)
-        autoTester.check (eVals)
-        autoTester.check (&#39;\n---------------- eigValsMat--------------&#39;)
-        autoTester.check (eValsMat)
-        autoTester.check (&#39;\n---------------- eigVecs ----------------&#39;)
-        autoTester.check (eVecs)
-        autoTester.check (&#39;\n---------------- eigValsMat @ eigVecs ---&#39;)
-        autoTester.check (eValsMat * eVecs)
-        autoTester.check (&#39;\n---------------- a @ eigVecs-------------&#39;)
-        autoTester.check (a @ eVecs)
-        autoTester.check (&#39;\n---------------- eigVecsNorms -----------&#39;)
-        autoTester.check (eVecsNorms)
-        autoTester.check (&#39;\n---------------- eigVecsCanon -----------&#39;)
-        autoTester.check (eVecsCanon)
-        &#39;&#39;&#39;
-        autoTester.check (&#39;\n---------------- eigVecsSorted ----------&#39;)
-        autoTester.check ([[(round (value.real + 1e-3, 3), round (value.imag + 1e-3, 3)) for value in row] for row in eVecsSorted.tolist ()])
-        autoTester.check (&#39;\n---------------- eigValsSorted ----------&#39;)
-        autoTester.check ([(round (value.real + 1e-3, 3), round (value.imag + 1e-3, 3)) for value in eValsSorted], &#39;\n&#39;)
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        autoTester.check (&#39;\n---------------- a ----------------------&#39;)</span>
+<span class="sd">        autoTester.check (a)</span>
+<span class="sd">        autoTester.check (&#39;\n---------------- eigVals ----------------&#39;)</span>
+<span class="sd">        autoTester.check (eVals)</span>
+<span class="sd">        autoTester.check (&#39;\n---------------- eigValsMat--------------&#39;)</span>
+<span class="sd">        autoTester.check (eValsMat)</span>
+<span class="sd">        autoTester.check (&#39;\n---------------- eigVecs ----------------&#39;)</span>
+<span class="sd">        autoTester.check (eVecs)</span>
+<span class="sd">        autoTester.check (&#39;\n---------------- eigValsMat @ eigVecs ---&#39;)</span>
+<span class="sd">        autoTester.check (eValsMat * eVecs)</span>
+<span class="sd">        autoTester.check (&#39;\n---------------- a @ eigVecs-------------&#39;)</span>
+<span class="sd">        autoTester.check (a @ eVecs)</span>
+<span class="sd">        autoTester.check (&#39;\n---------------- eigVecsNorms -----------&#39;)</span>
+<span class="sd">        autoTester.check (eVecsNorms)</span>
+<span class="sd">        autoTester.check (&#39;\n---------------- eigVecsCanon -----------&#39;)</span>
+<span class="sd">        autoTester.check (eVecsCanon)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">---------------- eigVecsSorted ----------&#39;</span><span class="p">)</span>
+        <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">([[(</span><span class="nb">round</span> <span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="nb">round</span> <span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">imag</span> <span class="o">+</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">eVecsSorted</span><span class="o">.</span><span class="n">tolist</span> <span class="p">()])</span>
+        <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">---------------- eigValsSorted ----------&#39;</span><span class="p">)</span>
+        <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">([(</span><span class="nb">round</span> <span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="nb">round</span> <span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">imag</span> <span class="o">+</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">eValsSorted</span><span class="p">],</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         
 </pre></div>
 </div>
@@ -520,48 +519,48 @@ def run (autoTester):
 </div>
 <div class="section" id="fourier-transform-fft-2-and-ifft-2-for-2-n-x-2-n-samples-using-complex-arrays">
 <h2>4.3. Fourier transform: FFT(2) and IFFT(2) for 2^n (x 2^n) samples, using complex arrays<a class="headerlink" href="#fourier-transform-fft-2-and-ifft-2-for-2-n-x-2-n-samples-using-complex-arrays" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper container" id="testlet-module-fft">
-<div class="code-block-caption"><span class="caption-text">Testlet: module_fft</span><a class="headerlink" href="#testlet-module-fft" title="Permalink to this code">¶</a></div>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="kn">import</span> <span class="n">__main__</span><span class="p">,</span> <span class="n">__envir__</span><span class="p">,</span> <span class="n">__pragma__</span>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Testlet: module_fft</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="k">import</span> <span class="n">__main__</span><span class="p">,</span> <span class="n">__envir__</span><span class="p">,</span> <span class="n">__pragma__</span>
 
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">pi</span>
 
 <span class="n">transpiled</span> <span class="o">=</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">executor_name</span> <span class="o">==</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">transpiler_name</span>
 
-<span class="c"># Imports for Transcrypt, resolved run time</span>
+<span class="c1"># Imports for Transcrypt, skipped run time by CPython</span>
 <span class="k">if</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">executor_name</span> <span class="o">==</span> <span class="n">__envir__</span><span class="o">.</span><span class="n">transpiler_name</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">numscrypt</span> <span class="kn">as</span> <span class="nn">num</span>
-    <span class="kn">import</span> <span class="nn">numscrypt.fft</span> <span class="kn">as</span> <span class="nn">fft</span>
+    <span class="kn">import</span> <span class="nn">numscrypt</span> <span class="k">as</span> <span class="nn">num</span>
+    <span class="kn">import</span> <span class="nn">numscrypt.fft</span> <span class="k">as</span> <span class="nn">fft</span>
 
-<span class="c"># Imports for CPython, resolved compile time</span>
-<span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;skip&#39;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">num</span>
-<span class="kn">import</span> <span class="nn">numpy.fft</span> <span class="kn">as</span> <span class="nn">fft</span>
-<span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;noskip&#39;</span><span class="p">)</span>
+<span class="c1"># Imports for CPython, skipped compile time by Transcrypt</span>
+<span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">num</span>
+<span class="kn">import</span> <span class="nn">numpy.fft</span> <span class="k">as</span> <span class="nn">fft</span>
+<span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noskip&#39;</span><span class="p">)</span>
 
 <span class="n">fSample</span> <span class="o">=</span> <span class="mi">4096</span>
 <span class="n">tTotal</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">fSin</span> <span class="o">=</span> <span class="mi">30</span>
 <span class="n">fCos</span> <span class="o">=</span> <span class="mi">50</span>
 
-<span class="k">def</span> <span class="nf">getNow</span> <span class="p">():</span>  <span class="c"># Avoid operator overloading, which would result in the dysfunctional: __new__ __call__ (Date)</span>
-    <span class="k">return</span> <span class="n">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span>
+<span class="k">def</span> <span class="nf">getNow</span> <span class="p">():</span>  <span class="c1"># Avoid operator overloading, which would result in the dysfunctional: __new__ __call__ (Date)</span>
+    <span class="k">return</span> <span class="fm">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span>
 
 <span class="k">def</span> <span class="nf">tCurrent</span> <span class="p">(</span><span class="n">iCurrent</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">iCurrent</span> <span class="o">/</span> <span class="n">fSample</span>
 
 <span class="k">def</span> <span class="nf">run</span> <span class="p">(</span><span class="n">autoTester</span><span class="p">):</span>
-    <span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;opov&#39;</span><span class="p">)</span>
-    <span class="n">delta</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="o">+</span> <span class="mf">0.001j</span>
-    <span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;noopov&#39;</span><span class="p">)</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="o">+</span> <span class="mf">0.001</span><span class="n">j</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
     
-    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;&lt;br&gt;------ 1D ------&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;&lt;br&gt;------ 1D ------&lt;br&gt;&#39;</span><span class="p">)</span>
     
     <span class="n">cut</span> <span class="o">=</span> <span class="mi">102</span>
 
-    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Samples computed: {}&lt;br&gt;&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">tTotal</span>  <span class="o">*</span> <span class="n">fSample</span><span class="p">))</span>
-    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Samples shown: {}&lt;br&gt;&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">cut</span><span class="p">))</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Samples computed: </span><span class="si">{}</span><span class="s1">&lt;br&gt;&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">tTotal</span>  <span class="o">*</span> <span class="n">fSample</span><span class="p">))</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Samples shown: </span><span class="si">{}</span><span class="s1">&lt;br&gt;&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">cut</span><span class="p">))</span>
 
     <span class="n">orig</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
         <span class="nb">complex</span> <span class="p">(</span><span class="mf">0.3</span> <span class="o">+</span> <span class="n">sin</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">fSin</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">cos</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">fCos</span> <span class="o">*</span> <span class="n">t</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
@@ -569,11 +568,11 @@ def run (autoTester):
             <span class="n">iSample</span> <span class="o">/</span> <span class="n">fSample</span>
             <span class="k">for</span> <span class="n">iSample</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">tTotal</span> <span class="o">*</span> <span class="n">fSample</span><span class="p">)</span>
         <span class="p">]</span>
-    <span class="p">],</span> <span class="s">&#39;complex128&#39;</span><span class="p">)</span>
+    <span class="p">],</span> <span class="s1">&#39;complex128&#39;</span><span class="p">)</span>
     
-    <span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;opov&#39;</span><span class="p">)</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
 
-    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Original samples&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">orig</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">()[</span> <span class="p">:</span> <span class="n">cut</span><span class="p">],</span> <span class="s">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Original samples&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">orig</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">()[</span> <span class="p">:</span> <span class="n">cut</span><span class="p">],</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
         <span class="n">timeStartFft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span>
@@ -581,7 +580,7 @@ def run (autoTester):
     <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
         <span class="n">timeStopFft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span> 
         
-    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Frequencies&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">()[</span> <span class="p">:</span> <span class="n">cut</span><span class="p">],</span> <span class="s">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Frequencies&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">()[</span> <span class="p">:</span> <span class="n">cut</span><span class="p">],</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
     <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
         <span class="n">timeStartIfft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span>   
@@ -589,22 +588,22 @@ def run (autoTester):
     <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
         <span class="n">timeStopIfft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span>    
     
-    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Reconstructed samples&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">reconstr</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">()[</span> <span class="p">:</span> <span class="n">cut</span><span class="p">],</span> <span class="s">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Reconstructed samples&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">reconstr</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">()[</span> <span class="p">:</span> <span class="n">cut</span><span class="p">],</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    <span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;noopov&#39;</span><span class="p">)</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
         
     <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
-        <span class="k">print</span> <span class="p">(</span><span class="s">&#39;FFT for {} samples took {} ms&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">tTotal</span> <span class="o">*</span> <span class="n">fSample</span><span class="p">,</span> <span class="n">timeStopFft</span> <span class="o">-</span> <span class="n">timeStartFft</span><span class="p">))</span>
-        <span class="k">print</span> <span class="p">(</span><span class="s">&#39;IFFT for {} samples took {} ms&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">tTotal</span> <span class="o">*</span> <span class="n">fSample</span><span class="p">,</span> <span class="n">timeStopIfft</span> <span class="o">-</span> <span class="n">timeStartIfft</span><span class="p">))</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;FFT for </span><span class="si">{}</span><span class="s1"> samples took </span><span class="si">{}</span><span class="s1"> ms&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">tTotal</span> <span class="o">*</span> <span class="n">fSample</span><span class="p">,</span> <span class="n">timeStopFft</span> <span class="o">-</span> <span class="n">timeStartFft</span><span class="p">))</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;IFFT for </span><span class="si">{}</span><span class="s1"> samples took </span><span class="si">{}</span><span class="s1"> ms&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">tTotal</span> <span class="o">*</span> <span class="n">fSample</span><span class="p">,</span> <span class="n">timeStopIfft</span> <span class="o">-</span> <span class="n">timeStartIfft</span><span class="p">))</span>
         
-    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;&lt;br&gt;------ 2D ------&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;&lt;br&gt;------ 2D ------&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    <span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;opov&#39;</span><span class="p">)</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
 
-    <span class="n">orig2</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">zeros</span> <span class="p">((</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span> <span class="s">&#39;complex128&#39;</span><span class="p">)</span>
-    <span class="n">orig2</span> <span class="p">[</span><span class="mi">32</span> <span class="p">:</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">32</span> <span class="p">:</span> <span class="mi">96</span><span class="p">]</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">ones</span> <span class="p">((</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="s">&#39;complex128&#39;</span><span class="p">)</span>
+    <span class="n">orig2</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">zeros</span> <span class="p">((</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span> <span class="s1">&#39;complex128&#39;</span><span class="p">)</span>
+    <span class="n">orig2</span> <span class="p">[</span><span class="mi">32</span> <span class="p">:</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">32</span> <span class="p">:</span> <span class="mi">96</span><span class="p">]</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">ones</span> <span class="p">((</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="s1">&#39;complex128&#39;</span><span class="p">)</span>
     
-    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Original samples&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">orig2</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="p">[</span><span class="mi">64</span> <span class="p">:</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">16</span> <span class="p">:</span> <span class="mi">112</span><span class="p">]</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Original samples&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">orig2</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="p">[</span><span class="mi">64</span> <span class="p">:</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">16</span> <span class="p">:</span> <span class="mi">112</span><span class="p">]</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
     <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
         <span class="n">timeStartFft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span>
@@ -613,7 +612,7 @@ def run (autoTester):
     <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
         <span class="n">timeStopFft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span> 
         
-    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Frequencies&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">freqs2</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="p">[</span><span class="mi">64</span> <span class="p">:</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">16</span> <span class="p">:</span> <span class="mi">112</span><span class="p">]</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Frequencies&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">freqs2</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="p">[</span><span class="mi">64</span> <span class="p">:</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">16</span> <span class="p">:</span> <span class="mi">112</span><span class="p">]</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
     <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
         <span class="n">timeStartIfft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span>
@@ -622,12 +621,12 @@ def run (autoTester):
         <span class="n">timeStopIfft</span> <span class="o">=</span> <span class="n">getNow</span> <span class="p">()</span>    
     
     <span class="k">if</span> <span class="n">transpiled</span><span class="p">:</span>
-        <span class="k">print</span> <span class="p">(</span><span class="s">&#39;FFT2 for {} samples took {} ms&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">orig2</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">timeStopFft</span> <span class="o">-</span> <span class="n">timeStartFft</span><span class="p">))</span>
-        <span class="k">print</span> <span class="p">(</span><span class="s">&#39;IFFT2 for {} samples took {} ms&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">orig2</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">timeStopIfft</span> <span class="o">-</span> <span class="n">timeStartIfft</span><span class="p">))</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;FFT2 for </span><span class="si">{}</span><span class="s1"> samples took </span><span class="si">{}</span><span class="s1"> ms&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">orig2</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">timeStopFft</span> <span class="o">-</span> <span class="n">timeStartFft</span><span class="p">))</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;IFFT2 for </span><span class="si">{}</span><span class="s1"> samples took </span><span class="si">{}</span><span class="s1"> ms&#39;</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span><span class="n">orig2</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">timeStopIfft</span> <span class="o">-</span> <span class="n">timeStartIfft</span><span class="p">))</span>
         
-    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s">&#39;Reconstructed samples&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">reconstr2</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="p">[</span><span class="mi">64</span> <span class="p">:</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">16</span> <span class="p">:</span> <span class="mi">112</span><span class="p">]</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
+    <span class="n">autoTester</span><span class="o">.</span><span class="n">check</span> <span class="p">(</span><span class="s1">&#39;Reconstructed samples&#39;</span><span class="p">,</span> <span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="n">reconstr2</span> <span class="o">+</span> <span class="n">delta</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="p">[</span><span class="mi">64</span> <span class="p">:</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">16</span> <span class="p">:</span> <span class="mi">112</span><span class="p">]</span> <span class="o">.</span><span class="n">tolist</span> <span class="p">(),</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">)</span>
     
-    <span class="n">__pragma__</span> <span class="p">(</span><span class="s">&#39;noopov&#39;</span><span class="p">)</span>
+    <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
     
 </pre></div>
 </div>
@@ -639,107 +638,107 @@ def run (autoTester):
 <div class="section" id="benchmark">
 <h2>5.1. Benchmark<a class="headerlink" href="#benchmark" title="Permalink to this headline">¶</a></h2>
 <p>Performance of operations like <em>&#64;</em> and <em>inv</em></p>
-<div class="literal-block-wrapper container" id="benchmark-slicing-optimization">
-<div class="code-block-caption"><span class="caption-text">Benchmark: slicing_optimization</span><a class="headerlink" href="#benchmark-slicing-optimization" title="Permalink to this code">¶</a></div>
-<div class="highlight-python"><div class="highlight"><pre>from org.transcrypt.stubs.browser import *
-from org.transcrypt.stubs.browser import __pragma__
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Benchmark: slicing_optimization</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">org.transcrypt.stubs.browser</span> <span class="k">import</span> <span class="n">__pragma__</span>
 
-import numscrypt as num
-import numscrypt.random as num_rand
-import numscrypt.linalg as linalg
-import random
+<span class="kn">import</span> <span class="nn">numscrypt</span> <span class="k">as</span> <span class="nn">num</span>
+<span class="kn">import</span> <span class="nn">numscrypt.random</span> <span class="k">as</span> <span class="nn">num_rand</span>
+<span class="kn">import</span> <span class="nn">numscrypt.linalg</span> <span class="k">as</span> <span class="nn">linalg</span>
+<span class="kn">import</span> <span class="nn">random</span>
 
-result = &#39;&#39;
+<span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
-for useComplex in (False, True):
-    for transpose in (False, True):
-        if useComplex:
-            a = num.array ([
-                [complex (random.random (), random.random ()) for iCol in range (30)]
-                for iRow in range (30)
-            ], &#39;complex128&#39;)
-        else:
-            a = num_rand.rand (30, 30)
+<span class="k">for</span> <span class="n">useComplex</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">transpose</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">useComplex</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">num</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span>
+                <span class="p">[</span><span class="nb">complex</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span> <span class="p">(),</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span> <span class="p">())</span> <span class="k">for</span> <span class="n">iCol</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">30</span><span class="p">)]</span>
+                <span class="k">for</span> <span class="n">iRow</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+            <span class="p">],</span> <span class="s1">&#39;complex128&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">num_rand</span><span class="o">.</span><span class="n">rand</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
         
-        timeStartTranspose = __new__ (Date ())
-        if transpose:
-            a = a.transpose ()
+        <span class="n">timeStartTranspose</span> <span class="o">=</span> <span class="fm">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span>
+        <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">transpose</span> <span class="p">()</span>
 
-        timeStartInv = __new__ (Date ())
-        ai = linalg.inv (a)
+        <span class="n">timeStartInv</span> <span class="o">=</span> <span class="fm">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span>
+        <span class="n">ai</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">inv</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span>
         
-        timeStartMul = __new__ (Date ()) 
-        __pragma__ (&#39;opov&#39;)
-        id = a @ ai
-        __pragma__ (&#39;noopov&#39;)
+        <span class="n">timeStartMul</span> <span class="o">=</span> <span class="fm">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span> 
+        <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">a</span> <span class="o">@</span> <span class="n">ai</span>
+        <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
         
-        timeStartScalp = __new__ (Date ()) 
-        __pragma__ (&#39;opov&#39;)
-        sp = a * a
-        __pragma__ (&#39;noopov&#39;)
+        <span class="n">timeStartScalp</span> <span class="o">=</span> <span class="fm">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span> 
+        <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span>
+        <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
         
-        timeStartDiv = __new__ (Date ()) 
-        __pragma__ (&#39;opov&#39;)
-        sp = a / a
-        __pragma__ (&#39;noopov&#39;)
+        <span class="n">timeStartDiv</span> <span class="o">=</span> <span class="fm">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span> 
+        <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">a</span>
+        <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
         
-        timeStartAdd = __new__ (Date ()) 
-        __pragma__ (&#39;opov&#39;)
-        sp = a + a
-        __pragma__ (&#39;noopov&#39;)
+        <span class="n">timeStartAdd</span> <span class="o">=</span> <span class="fm">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span> 
+        <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">a</span>
+        <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
         
-        timeStartSub = __new__ (Date ()) 
-        __pragma__ (&#39;opov&#39;)
-        sp = a - a
-        __pragma__ (&#39;noopov&#39;)
+        <span class="n">timeStartSub</span> <span class="o">=</span> <span class="fm">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span> 
+        <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;opov&#39;</span><span class="p">)</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">a</span>
+        <span class="n">__pragma__</span> <span class="p">(</span><span class="s1">&#39;noopov&#39;</span><span class="p">)</span>
         
-        timeStartEig = __new__ (Date ())
-        if useComplex:
-            evals, evecs = linalg.eig (a [:10, :10])            
+        <span class="n">timeStartEig</span> <span class="o">=</span> <span class="fm">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span>
+        <span class="k">if</span> <span class="n">useComplex</span><span class="p">:</span>
+            <span class="n">evals</span><span class="p">,</span> <span class="n">evecs</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">eig</span> <span class="p">(</span><span class="n">a</span> <span class="p">[:</span><span class="mi">10</span><span class="p">,</span> <span class="p">:</span><span class="mi">10</span><span class="p">])</span>            
         
-        timeEnd = __new__ (Date ())
+        <span class="n">timeEnd</span> <span class="o">=</span> <span class="fm">__new__</span> <span class="p">(</span><span class="n">Date</span> <span class="p">())</span>
         
-        result += (
-&#39;&#39;&#39;
-&lt;pre&gt;
-a @ ai [0:5, 0:5] =
+        <span class="n">result</span> <span class="o">+=</span> <span class="p">(</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&lt;pre&gt;</span>
+<span class="sd">a @ ai [0:5, 0:5] =</span>
 
-{}
-&#39;&#39;&#39; 
-        ) .format (
-            str (num.round (id [0:5, 0:5], 2)) .replace (&#39; &#39;, &#39;\t&#39;),
-        )
+<span class="sd">{}</span>
+<span class="sd">&#39;&#39;&#39;</span> 
+        <span class="p">)</span> <span class="o">.</span><span class="n">format</span> <span class="p">(</span>
+            <span class="nb">str</span> <span class="p">(</span><span class="n">num</span><span class="o">.</span><span class="n">round</span> <span class="p">(</span><span class="nb">id</span> <span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span> <span class="o">.</span><span class="n">replace</span> <span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">),</span>
+        <span class="p">)</span>
 
-        if transpose:
-            result += (
-&#39;&#39;&#39;
-Transpose took: {} ms&#39;&#39;&#39;
-            ).format (
-                timeStartInv - timeStartTranspose
-            )
+        <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="p">(</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Transpose took: {} ms&#39;&#39;&#39;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span> <span class="p">(</span>
+                <span class="n">timeStartInv</span> <span class="o">-</span> <span class="n">timeStartTranspose</span>
+            <span class="p">)</span>
             
-        result += (
-&#39;&#39;&#39;
-Inverse took: {} ms
-Matrix product (@) took: {} ms
-Elementwise product (*) took: {} ms
-Division took: {} ms
-Addition took: {} ms
-Subtraction took: {} ms
-Eigenvals/vecs took: {} ms
-&lt;/pre&gt;
-&#39;&#39;&#39;
-        ) .format (
-            timeStartMul - timeStartInv,
-            timeStartScalp - timeStartMul,
-            timeStartDiv - timeStartScalp,
-            timeStartAdd - timeStartDiv,
-            timeStartSub - timeStartAdd,
-            timeStartEig - timeStartSub,
-            timeEnd - timeStartEig if useComplex else &#39;N.A.&#39;
-        )
+        <span class="n">result</span> <span class="o">+=</span> <span class="p">(</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Inverse took: {} ms</span>
+<span class="sd">Matrix product (@) took: {} ms</span>
+<span class="sd">Elementwise product (*) took: {} ms</span>
+<span class="sd">Division took: {} ms</span>
+<span class="sd">Addition took: {} ms</span>
+<span class="sd">Subtraction took: {} ms</span>
+<span class="sd">Eigenvals/vecs took: {} ms</span>
+<span class="sd">&lt;/pre&gt;</span>
+<span class="sd">&#39;&#39;&#39;</span>
+        <span class="p">)</span> <span class="o">.</span><span class="n">format</span> <span class="p">(</span>
+            <span class="n">timeStartMul</span> <span class="o">-</span> <span class="n">timeStartInv</span><span class="p">,</span>
+            <span class="n">timeStartScalp</span> <span class="o">-</span> <span class="n">timeStartMul</span><span class="p">,</span>
+            <span class="n">timeStartDiv</span> <span class="o">-</span> <span class="n">timeStartScalp</span><span class="p">,</span>
+            <span class="n">timeStartAdd</span> <span class="o">-</span> <span class="n">timeStartDiv</span><span class="p">,</span>
+            <span class="n">timeStartSub</span> <span class="o">-</span> <span class="n">timeStartAdd</span><span class="p">,</span>
+            <span class="n">timeStartEig</span> <span class="o">-</span> <span class="n">timeStartSub</span><span class="p">,</span>
+            <span class="n">timeEnd</span> <span class="o">-</span> <span class="n">timeStartEig</span> <span class="k">if</span> <span class="n">useComplex</span> <span class="k">else</span> <span class="s1">&#39;N.A.&#39;</span>
+        <span class="p">)</span>
             
-document.getElementById (&#39;result&#39;) .innerHTML = result
+<span class="n">document</span><span class="o">.</span><span class="n">getElementById</span> <span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">)</span> <span class="o">.</span><span class="n">innerHTML</span> <span class="o">=</span> <span class="n">result</span>
 </pre></div>
 </div>
 </div>
@@ -760,7 +759,7 @@ document.getElementById (&#39;result&#39;) .innerHTML = result
 <li><a class="reference internal" href="#">3. Currently available features</a></li>
 <li><a class="reference internal" href="#systematic-code-examples-a-guided-tour-of-numscrypt">4. Systematic code examples: a guided tour of Numscrypt</a><ul>
 <li><a class="reference internal" href="#basics-creating-and-using-arrays">4.1. Basics: creating and using arrays</a></li>
-<li><a class="reference internal" href="#linalg-matrix-inversion">4.2. Linalg: matrix inversion</a></li>
+<li><a class="reference internal" href="#linalg-matrix-inversion-and-eigen-decomposition">4.2. Linalg: matrix inversion and eigen decomposition</a></li>
 <li><a class="reference internal" href="#fourier-transform-fft-2-and-ifft-2-for-2-n-x-2-n-samples-using-complex-arrays">4.3. Fourier transform: FFT(2) and IFFT(2) for 2^n (x 2^n) samples, using complex arrays</a></li>
 </ul>
 </li>
@@ -776,21 +775,18 @@ document.getElementById (&#39;result&#39;) .innerHTML = result
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/supported_constructs.txt"
+      <li><a href="_sources/supported_constructs.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -806,12 +802,12 @@ document.getElementById (&#39;result&#39;) .innerHTML = result
         <li class="right" >
           <a href="installation_use.html" title="2. Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Transcrypt 0.0.38 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Numscrypt 0.0.40 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, Jacques de Hooge.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+        &#169; Copyright 2016, Jacques de Hooge.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
     </div>
   </body>
 </html>

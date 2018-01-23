@@ -5,12 +5,12 @@ from math import sin, cos, pi
 
 transpiled = __envir__.executor_name == __envir__.transpiler_name
 
-# Imports for Transcrypt, resolved run time
+# Imports for Transcrypt, skipped run time by CPython
 if __envir__.executor_name == __envir__.transpiler_name:
 	import numscrypt as num
 	import numscrypt.fft as fft
 
-# Imports for CPython, resolved compile time
+# Imports for CPython, skipped compile time by Transcrypt
 __pragma__ ('skip')
 import numpy as num
 import numpy.fft as fft

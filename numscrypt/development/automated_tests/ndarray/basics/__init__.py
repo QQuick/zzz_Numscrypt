@@ -1,11 +1,11 @@
 from org.transcrypt.stubs.browser import *
 from org.transcrypt.stubs.browser import __main__, __envir__, __pragma__
 
-# Imports for Transcrypt, resolved run time
+# Imports for Transcrypt, skipped runtime by CPython
 if __envir__.executor_name == __envir__.transpiler_name:
 	import numscrypt as num
 
-# Imports for CPython, resolved compile time
+# Imports for CPython, skipped compile time by Transcrypt
 __pragma__ ('skip')
 import numpy as num
 __pragma__ ('noskip')

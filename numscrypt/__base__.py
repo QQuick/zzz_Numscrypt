@@ -1,1 +1,1 @@
-ns_version = '0.0.38'
+ns_version = '0.0.40'

@@ -1,7 +1,7 @@
 "use strict";
-// Transcrypt'ed from Python, 2018-01-04 18:28:29
+// Transcrypt'ed from Python, 2018-01-07 09:35:42
 function test () {
-    var __symbols__ = ['__complex__', '__py3.6__', '__esv5__'];
+    var __symbols__ = ['__py3.6__', '__esv5__'];
     var __all__ = {};
     var __world__ = __all__;
     var __nest__ = function (headObject, tailNames, value) {
@@ -140,7 +140,7 @@ function test () {
 						get __init__ () {return __get__ (this, function (self) {
 							self.interpreter_name = 'python';
 							self.transpiler_name = 'transcrypt';
-							self.transpiler_version = '3.6.69';
+							self.transpiler_version = '3.6.82';
 							self.target_subdir = '__javascript__';
 						});}
 					});
@@ -245,16 +245,10 @@ function test () {
 							}
 						});}
 					});
-					var RuntimeError = __class__ ('RuntimeError', [Exception], {
+					var NotImplementedError = __class__ ('NotImplementedError', [Exception], {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self, message, error) {
 							Exception.__init__ (self, message, __kwargtrans__ ({error: error}));
-						});}
-					});
-					var NotImplementedError = __class__ ('NotImplementedError', [RuntimeError], {
-						__module__: __name__,
-						get __init__ () {return __get__ (this, function (self, message, error) {
-							RuntimeError.__init__ (self, message, __kwargtrans__ ({error: error}));
 						});}
 					});
 					var IndexError = __class__ ('IndexError', [Exception], {
@@ -393,105 +387,6 @@ function test () {
 							return __accu0__;
 						}) ();
 					};
-					var complex = __class__ ('complex', [object], {
-						__module__: __name__,
-						get __init__ () {return __get__ (this, function (self, real, imag) {
-							if (typeof imag == 'undefined' || (imag != null && imag .hasOwnProperty ("__kwargtrans__"))) {;
-								var imag = null;
-							};
-							if (imag == null) {
-								if (py_typeof (real) == complex) {
-									self.real = real.real;
-									self.imag = real.imag;
-								}
-								else {
-									self.real = real;
-									self.imag = 0;
-								}
-							}
-							else {
-								self.real = real;
-								self.imag = imag;
-							}
-						});},
-						get __neg__ () {return __get__ (this, function (self) {
-							return complex (-(self.real), -(self.imag));
-						});},
-						get __exp__ () {return __get__ (this, function (self) {
-							var modulus = Math.exp (self.real);
-							return complex (modulus * Math.cos (self.imag), modulus * Math.sin (self.imag));
-						});},
-						get __log__ () {return __get__ (this, function (self) {
-							return complex (Math.log (Math.sqrt (self.real * self.real + self.imag * self.imag)), Math.atan2 (self.imag, self.real));
-						});},
-						get __pow__ () {return __get__ (this, function (self, other) {
-							return self.__log__ ().__mul__ (other).__exp__ ();
-						});},
-						get __rpow__ () {return __get__ (this, function (self, real) {
-							return self.__mul__ (Math.log (real)).__exp__ ();
-						});},
-						get __mul__ () {return __get__ (this, function (self, other) {
-							if (typeof other === 'number') {
-								return complex (self.real * other, self.imag * other);
-							}
-							else {
-								return complex (self.real * other.real - self.imag * other.imag, self.real * other.imag + self.imag * other.real);
-							}
-						});},
-						get __rmul__ () {return __get__ (this, function (self, real) {
-							return complex (self.real * real, self.imag * real);
-						});},
-						get __div__ () {return __get__ (this, function (self, other) {
-							if (typeof other === 'number') {
-								return complex (self.real / other, self.imag / other);
-							}
-							else {
-								var denom = other.real * other.real + other.imag * other.imag;
-								return complex ((self.real * other.real + self.imag * other.imag) / denom, (self.imag * other.real - self.real * other.imag) / denom);
-							}
-						});},
-						get __rdiv__ () {return __get__ (this, function (self, real) {
-							var denom = self.real * self.real;
-							return complex ((real * self.real) / denom, (real * self.imag) / denom);
-						});},
-						get __add__ () {return __get__ (this, function (self, other) {
-							if (typeof other === 'number') {
-								return complex (self.real + other, self.imag);
-							}
-							else {
-								return complex (self.real + other.real, self.imag + other.imag);
-							}
-						});},
-						get __radd__ () {return __get__ (this, function (self, real) {
-							return complex (self.real + real, self.imag);
-						});},
-						get __sub__ () {return __get__ (this, function (self, other) {
-							if (typeof other === 'number') {
-								return complex (self.real - other, self.imag);
-							}
-							else {
-								return complex (self.real - other.real, self.imag - other.imag);
-							}
-						});},
-						get __rsub__ () {return __get__ (this, function (self, real) {
-							return complex (real - self.real, -(self.imag));
-						});},
-						get __eq__ () {return __get__ (this, function (self, other) {
-							return self.real == other.real && self.imag == other.imag;
-						});},
-						get __neq () {return __get__ (this, function (self, other) {
-							return self.real != other.real || self.imag != other.imag;
-						});},
-						get __repr__ () {return __get__ (this, function (self) {
-							return '({}{}{}j)'.format (self.real, (self.imag >= 0 ? '+' : ''), self.imag);
-						});},
-						get __str__ () {return __get__ (this, function (self) {
-							return __repr__ (self).__getslice__ (1, -(1), 1);
-						});},
-						get conjugate () {return __get__ (this, function (self) {
-							return complex (self.real, -(self.imag));
-						});}
-					});
 					var __Terminal__ = __class__ ('__Terminal__', [object], {
 						__module__: __name__,
 						get __init__ () {return __get__ (this, function (self) {
@@ -585,7 +480,6 @@ function test () {
 						__all__.IterableError = IterableError;
 						__all__.KeyError = KeyError;
 						__all__.NotImplementedError = NotImplementedError;
-						__all__.RuntimeError = RuntimeError;
 						__all__.RuntimeWarning = RuntimeWarning;
 						__all__.StopIteration = StopIteration;
 						__all__.py_TypeError = py_TypeError;
@@ -596,7 +490,6 @@ function test () {
 						__all__.__name__ = __name__;
 						__all__.__sort__ = __sort__;
 						__all__.__terminal__ = __terminal__;
-						__all__.complex = complex;
 						__all__.filter = filter;
 						__all__.map = map;
 						__all__.sorted = sorted;
@@ -624,7 +517,6 @@ function test () {
     var ValueError = __all__.ValueError;
     var KeyError = __all__.KeyError;
     var AssertionError = __all__.AssertionError;
-    var RuntimeError = __all__.RuntimeError;
     var NotImplementedError = __all__.NotImplementedError;
     var IndexError = __all__.IndexError;
     var AttributeError = __all__.AttributeError;
@@ -637,7 +529,6 @@ function test () {
     var sorted = __all__.sorted;
     var map = __all__.map;
     var filter = __all__.filter;
-    var complex = __all__.complex;
     __all__.print = __all__.__terminal__.print;
     __all__.input = __all__.__terminal__.input;
     var __terminal__ = __all__.__terminal__;
@@ -952,14 +843,8 @@ function test () {
         return arguments.length == 1 ? Math.min.apply (null, nrOrSeq) : Math.min.apply (null, arguments);
     };
     __all__.min = min;
-    var abs = function (x) {
-        try {
-            return Math.abs (x);
-        }
-        catch (exception) {
-            return Math.sqrt (x.real * x.real + x.imag * x.imag);
-        }
-    };
+    var abs = Math.abs;
+    __all__.abs = abs;
     var round = function (number, ndigits) {
         if (ndigits) {
             var scale = Math.pow (10, ndigits);
@@ -2792,13 +2677,13 @@ function test () {
 									return result;
 								}
 								else if (self.ns_complex) {
-									if (isinstance (value, complex)) {
-										self.realbuf [key] = value.real;
-										self.imagbuf [key] = value.imag;
-									}
-									else {
+									if (typeof value == 'number') {
 										self.realbuf [key] = value;
 										self.imagbuf [key] = 0;
+									}
+									else {
+										self.realbuf [key] = value.real;
+										self.imagbuf [key] = value.imag;
 									}
 								}
 								else {
@@ -2895,13 +2780,13 @@ function test () {
 								}
 								else if (self.ns_complex) {
 									var itarget = self.ns_ncols * key [0] + key [1];
-									if (isinstance (value, complex)) {
-										self.realbuf [itarget] = value.real;
-										self.imagbuf [itarget] = value.imag;
-									}
-									else {
+									if (typeof value == 'number') {
 										self.realbuf [itarget] = value;
 										self.imagbuf [itarget] = 0;
+									}
+									else {
+										self.realbuf [itarget] = value.real;
+										self.imagbuf [itarget] = value.imag;
 									}
 								}
 								else {
@@ -2915,7 +2800,7 @@ function test () {
 						get imag () {return __get__ (this, function (self) {
 							return ndarray (self.shape, ns_buffertype (self.dtype), self.imagbuf);
 						});},
-						get conjugate () {return __get__ (this, function (self) {
+						get __conj__ () {return __get__ (this, function (self) {
 							if (self.ns_complex) {
 								var result = empty (self.shape, self.dtype);
 								result.realbuf.set (self.realbuf);
@@ -2928,6 +2813,9 @@ function test () {
 							else {
 								return copy (self);
 							}
+						});},
+						get conjugate () {return __get__ (this, function (self) {
+							return self.__conj__ ();
 						});},
 						get __neg__ () {return __get__ (this, function (self) {
 							var result = empty (self.shape, self.dtype);
@@ -3395,12 +3283,16 @@ function test () {
 						}
 						return result;
 					};
+					var conjugate = function (x) {
+						return x.__conj__ ();
+					};
 					__pragma__ ('<use>' +
 						'itertools' +
 					'</use>')
 					__pragma__ ('<all>')
 						__all__.__name__ = __name__;
 						__all__.array = array;
+						__all__.conjugate = conjugate;
 						__all__.copy = copy;
 						__all__.empty = empty;
 						__all__.hsplit = hsplit;
@@ -3626,6 +3518,7 @@ function test () {
 					__nest__ (cmath, '', __init__ (__world__.cmath));
 					var __name__ = __init__ (__world__.numscrypt).__name__;
 					var array = __init__ (__world__.numscrypt).array;
+					var conjugate = __init__ (__world__.numscrypt).conjugate;
 					var copy = __init__ (__world__.numscrypt).copy;
 					var empty = __init__ (__world__.numscrypt).empty;
 					var hsplit = __init__ (__world__.numscrypt).hsplit;
@@ -3700,9 +3593,9 @@ function test () {
 								A.__setitem__ ([i, k], __call__ (__imul__, null, A.__getitem__ ([i, k]), H));
 							}
 							for (var j = 0; j < i; j++) {
-								var G = __mul__ (__call__ (__getitem__ (T, i).conjugate, __getitem__ (T, i)), A.__getitem__ ([j, __sub__ (i, 1)]));
+								var G = __mul__ (__call__ (__conj__, null, __getitem__ (T, i)), A.__getitem__ ([j, __sub__ (i, 1)]));
 								for (var k = 0; k < __sub__ (i, 1); k++) {
-									var G = __call__ (__iadd__, null, G, __mul__ (__call__ (A.__getitem__ ([i, k]).conjugate, A.__getitem__ ([i, k])), A.__getitem__ ([j, k])));
+									var G = __call__ (__iadd__, null, G, __mul__ (__call__ (__conj__, null, A.__getitem__ ([i, k])), A.__getitem__ ([j, k])));
 								}
 								A.__setitem__ ([j, __sub__ (i, 1)], __call__ (__isub__, null, A.__getitem__ ([j, __sub__ (i, 1)]), __mul__ (G, __getitem__ (T, i))));
 								for (var k = 0; k < __sub__ (i, 1); k++) {
@@ -3714,9 +3607,9 @@ function test () {
 								for (var k = 0; k < __sub__ (i, 1); k++) {
 									var G = __call__ (__iadd__, null, G, __mul__ (A.__getitem__ ([i, k]), A.__getitem__ ([k, j])));
 								}
-								A.__setitem__ ([__sub__ (i, 1), j], __call__ (__isub__, null, A.__getitem__ ([__sub__ (i, 1), j]), __mul__ (G, __call__ (__getitem__ (T, i).conjugate, __getitem__ (T, i)))));
+								A.__setitem__ ([__sub__ (i, 1), j], __call__ (__isub__, null, A.__getitem__ ([__sub__ (i, 1), j]), __mul__ (G, __call__ (__conj__, null, __getitem__ (T, i)))));
 								for (var k = 0; k < __sub__ (i, 1); k++) {
-									A.__setitem__ ([k, j], __call__ (__isub__, null, A.__getitem__ ([k, j]), __mul__ (G, __call__ (A.__getitem__ ([i, k]).conjugate, A.__getitem__ ([i, k])))));
+									A.__setitem__ ([k, j], __call__ (__isub__, null, A.__getitem__ ([k, j]), __mul__ (G, __call__ (__conj__, null, A.__getitem__ ([i, k])))));
 								}
 							}
 						}
@@ -3734,15 +3627,15 @@ function test () {
 						A.__setitem__ ([0, 1], __left0__);
 						A.__setitem__ ([1, 0], __left0__);
 						for (var i = 2; i < n; i++) {
-							if (__ne__ (__getitem__ (T, i), __call__ (complex, null, 0))) {
+							if (__ne__ (__getitem__ (T, i), 0)) {
 								for (var j = 0; j < i; j++) {
 									var G = __mul__ (__getitem__ (T, i), A.__getitem__ ([__sub__ (i, 1), j]));
 									for (var k = 0; k < __sub__ (i, 1); k++) {
 										var G = __call__ (__iadd__, null, G, __mul__ (A.__getitem__ ([i, k]), A.__getitem__ ([k, j])));
 									}
-									A.__setitem__ ([__sub__ (i, 1), j], __call__ (__isub__, null, A.__getitem__ ([__sub__ (i, 1), j]), __mul__ (G, __call__ (__getitem__ (T, i).conjugate, __getitem__ (T, i)))));
+									A.__setitem__ ([__sub__ (i, 1), j], __call__ (__isub__, null, A.__getitem__ ([__sub__ (i, 1), j]), __mul__ (G, __call__ (__conj__, null, __getitem__ (T, i)))));
 									for (var k = 0; k < __sub__ (i, 1); k++) {
-										A.__setitem__ ([k, j], __call__ (__isub__, null, A.__getitem__ ([k, j]), __mul__ (G, __call__ (A.__getitem__ ([i, k]).conjugate, A.__getitem__ ([i, k])))));
+										A.__setitem__ ([k, j], __call__ (__isub__, null, A.__getitem__ ([k, j]), __mul__ (G, __call__ (__conj__, null, A.__getitem__ ([i, k])))));
 									}
 								}
 							}
@@ -3793,21 +3686,21 @@ function test () {
 						for (var k = n0; k < n; k++) {
 							var x = A.__getitem__ ([n0, k]);
 							var y = A.__getitem__ ([__add__ (n0, 1), k]);
-							A.__setitem__ ([n0, k], __add__ (__mul__ (__call__ (c.conjugate, c), x), __mul__ (__call__ (s.conjugate, s), y)));
+							A.__setitem__ ([n0, k], __add__ (__mul__ (__call__ (__conj__, null, c), x), __mul__ (__call__ (__conj__, null, s), y)));
 							A.__setitem__ ([__add__ (n0, 1), k], __add__ (__mul__ (__neg__ (s), x), __mul__ (c, y)));
 						}
 						for (var k = 0; k < __call__ (min, null, n1, __add__ (n0, 3)); k++) {
 							var x = A.__getitem__ ([k, n0]);
 							var y = A.__getitem__ ([k, __add__ (n0, 1)]);
 							A.__setitem__ ([k, n0], __add__ (__mul__ (c, x), __mul__ (s, y)));
-							A.__setitem__ ([k, __add__ (n0, 1)], __add__ (__mul__ (__neg__ (__call__ (s.conjugate, s)), x), __mul__ (__call__ (c.conjugate, c), y)));
+							A.__setitem__ ([k, __add__ (n0, 1)], __add__ (__mul__ (__neg__ (__call__ (__conj__, null, s)), x), __mul__ (__call__ (__conj__, null, c), y)));
 						}
 						if (!(__call__ (isinstance, null, Q, bool))) {
 							for (var k = 0; k < n; k++) {
 								var x = Q.__getitem__ ([k, n0]);
 								var y = Q.__getitem__ ([k, __add__ (n0, 1)]);
 								Q.__setitem__ ([k, n0], __add__ (__mul__ (c, x), __mul__ (s, y)));
-								Q.__setitem__ ([k, __add__ (n0, 1)], __add__ (__mul__ (__neg__ (__call__ (s.conjugate, s)), x), __mul__ (__call__ (c.conjugate, c), y)));
+								Q.__setitem__ ([k, __add__ (n0, 1)], __add__ (__mul__ (__neg__ (__call__ (__conj__, null, s)), x), __mul__ (__call__ (__conj__, null, c), y)));
 							}
 						}
 						for (var j = n0; j < __sub__ (n1, 2); j++) {
@@ -3829,21 +3722,21 @@ function test () {
 							for (var k = __add__ (j, 1); k < n; k++) {
 								var x = A.__getitem__ ([__add__ (j, 1), k]);
 								var y = A.__getitem__ ([__add__ (j, 2), k]);
-								A.__setitem__ ([__add__ (j, 1), k], __add__ (__mul__ (__call__ (c.conjugate, c), x), __mul__ (__call__ (s.conjugate, s), y)));
+								A.__setitem__ ([__add__ (j, 1), k], __add__ (__mul__ (__call__ (__conj__, null, c), x), __mul__ (__call__ (__conj__, null, s), y)));
 								A.__setitem__ ([__add__ (j, 2), k], __add__ (__mul__ (__neg__ (s), x), __mul__ (c, y)));
 							}
 							for (var k = 0; k < __call__ (min, null, n1, __add__ (j, 4)); k++) {
 								var x = A.__getitem__ ([k, __add__ (j, 1)]);
 								var y = A.__getitem__ ([k, __add__ (j, 2)]);
 								A.__setitem__ ([k, __add__ (j, 1)], __add__ (__mul__ (c, x), __mul__ (s, y)));
-								A.__setitem__ ([k, __add__ (j, 2)], __add__ (__mul__ (__neg__ (__call__ (s.conjugate, s)), x), __mul__ (__call__ (c.conjugate, c), y)));
+								A.__setitem__ ([k, __add__ (j, 2)], __add__ (__mul__ (__neg__ (__call__ (__conj__, null, s)), x), __mul__ (__call__ (__conj__, null, c), y)));
 							}
 							if (!(__call__ (isinstance, null, Q, bool))) {
 								for (var k = 0; k < n; k++) {
 									var x = Q.__getitem__ ([k, __add__ (j, 1)]);
 									var y = Q.__getitem__ ([k, __add__ (j, 2)]);
 									Q.__setitem__ ([k, __add__ (j, 1)], __add__ (__mul__ (c, x), __mul__ (s, y)));
-									Q.__setitem__ ([k, __add__ (j, 2)], __add__ (__mul__ (__neg__ (__call__ (s.conjugate, s)), x), __mul__ (__call__ (c.conjugate, c), y)));
+									Q.__setitem__ ([k, __add__ (j, 2)], __add__ (__mul__ (__neg__ (__call__ (__conj__, null, s)), x), __mul__ (__call__ (__conj__, null, c), y)));
 								}
 							}
 						}
@@ -4070,19 +3963,16 @@ function test () {
 						var E = (function () {
 							var __accu0__ = [];
 							for (var i = 0; i < n; i++) {
-								__call__ (__accu0__.append, __accu0__, __call__ (complex, null, 0));
+								__call__ (__accu0__.append, __accu0__, A.__getitem__ ([i, i]));
 							}
 							return __accu0__;
 						}) ();
-						for (var i = 0; i < n; i++) {
-							__setitem__ (E, i, A.__getitem__ ([i, i]));
-						}
 						if (!(left || right)) {
 							return E;
 						}
 						if (left) {
 							var EL = __call__ (eig_tr_l, null, A);
-							var EL = __matmul__ (EL, __call__ (__call__ (Q.conjugate, Q).transpose, __call__ (Q.conjugate, Q)));
+							var EL = __matmul__ (EL, __call__ (__call__ (__conj__, null, Q).transpose, __call__ (__conj__, null, Q)));
 						}
 						if (right) {
 							var ER = __call__ (eig_tr_r, null, A);
@@ -4112,6 +4002,7 @@ function test () {
 						__all__.atan2 = atan2;
 						__all__.atanh = atanh;
 						__all__.ceil = ceil;
+						__all__.conjugate = conjugate;
 						__all__.copy = copy;
 						__all__.cos = cos;
 						__all__.cosh = cosh;
@@ -4287,3 +4178,5 @@ function test () {
     return __all__;
 }
 window ['test'] = test ();
+
+//# sourceMappingURL=extra/sourcemap/test.js.map

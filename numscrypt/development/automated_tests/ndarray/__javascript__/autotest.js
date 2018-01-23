@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2018-01-05 16:37:54
+// Transcrypt'ed from Python, 2018-01-23 20:37:29
 function autotest () {
     var __symbols__ = ['__complex__', '__py3.6__', '__esv6__'];
     var __all__ = {};
@@ -171,7 +171,7 @@ function autotest () {
 						get __init__ () {return __get__ (this, function (self) {
 							self.interpreter_name = 'python';
 							self.transpiler_name = 'transcrypt';
-							self.transpiler_version = '3.6.80';
+							self.transpiler_version = '3.6.84';
 							self.target_subdir = '__javascript__';
 						}, '__init__');}
 					});
@@ -914,7 +914,7 @@ function autotest () {
     };
     __all__.isinstance = isinstance;
     var callable = function (anObject) {
-        if ( typeof anObject == 'object' && '__call__' in anObject ) {
+        if (anObject && typeof anObject == 'object' && '__call__' in anObject) {
             return true;
         }
         else {
