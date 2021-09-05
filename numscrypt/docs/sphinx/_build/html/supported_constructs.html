@@ -94,6 +94,10 @@
 </dl>
 </li>
 </ul>
+<p>Note that all operations where the distinction between row vectors and column vectors matters, only work on ndarrays with two dimensions.
+Such operations are e.g. <em>&#64;</em>, <em>hstack</em>, <em>vstack</em>, <em>hsplit</em> and <em>vsplit</em>.
+When used with these operations, a row vector should have shape <em>(1,n)</em> and a column vector should have shape <em>(n,1)</em>.
+Furthermore views and broadcasting are not supported.</p>
 </div>
 <div class="section" id="systematic-code-examples-a-guided-tour-of-numscrypt">
 <h1>4. Systematic code examples: a guided tour of Numscrypt<a class="headerlink" href="#systematic-code-examples-a-guided-tour-of-numscrypt" title="Permalink to this headline">¶</a></h1>

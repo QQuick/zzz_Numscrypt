@@ -76,19 +76,19 @@ function FFTNayuki(n) {
 		// Cooley-Tukey decimation-in-time radix-2 FFT
 		for (var size = 2; size <= n; size *= 2) {
 			var halfsize = size / 2;
-				var tablestep = n / size;
-				for (var i = 0; i < n; i += size) {
-					for (var j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
-						var tpre =	real[j+halfsize] * this.cosTable[k] +
-						imag[j+halfsize] * this.sinTable[k];
-						var tpim = -real[j+halfsize] * this.sinTable[k] +
-						imag[j+halfsize] * this.cosTable[k];
-						real[j + halfsize] = real[j] - tpre;
-						imag[j + halfsize] = imag[j] - tpim;
-						real[j] += tpre;
-						imag[j] += tpim;
-			}
-				}
+            var tablestep = n / size;
+            for (var i = 0; i < n; i += size) {
+                for (var j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
+                    var tpre =	real[j+halfsize] * this.cosTable[k] +
+                    imag[j+halfsize] * this.sinTable[k];
+                    var tpim = -real[j+halfsize] * this.sinTable[k] +
+                    imag[j+halfsize] * this.cosTable[k];
+                    real[j + halfsize] = real[j] - tpre;
+                    imag[j + halfsize] = imag[j] - tpim;
+                    real[j] += tpre;
+                    imag[j] += tpim;
+                }
+            }
 		}
 		
 		// Returns the integer whose value is the reverse of the lowest 'bits' bits of the integer 'x'.

@@ -73,6 +73,7 @@ class ndarray:
         self.ns_nrows = shape [0]
         
         if self.ndim == 1:
+            self.ns_ncols = 1    # Make self look like a 2D matrix for the @ operator
             self.size = self.ns_nrows
         else:
             self.ns_ncols = shape [1]
@@ -117,7 +118,7 @@ class ndarray:
             
     def transpose (self):
         if self.ndim == 1:
-            result = array (self, dtype)
+            result = array (self, self.dtype)
         else:
             result = empty ((self.ns_ncols, self.ns_nrows), self.dtype)
                 
@@ -504,6 +505,7 @@ class ndarray:
         
     def __matmul__ (self, other):
         result = empty ((self.ns_nrows, other.ns_ncols), self.dtype)
+        result.ndim = other.ndim    # Make sure that M @ <column vector> = <column vector>
         
         if self.ns_complex:
             iresult = 0

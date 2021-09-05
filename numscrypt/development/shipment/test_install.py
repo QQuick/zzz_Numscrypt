@@ -3,24 +3,31 @@ import site
 
 sitepackagesDir = os.path.dirname (site.__file__) + '/site-packages'
 	
-shipDir = os.path.dirname (os.path.abspath (__file__)) .replace ('\\', '/')
+shipDir = os.path.dirname (os.path.abspath (__file__))
 appRootDir = '/'.join  (shipDir.split ('/')[ : -2])
 distributionDir = '/'.join  (appRootDir.split ('/')[ : -1])
+
+'''
+print ()
+print (sitepackagesDir)
+print (shipDir)
+print (appRootDir)
+print (distributionDir)
+print ()
+'''
 
 def getAbsPath (rootDir, relPath):
 	return '{}/{}'.format (rootDir, relPath)
 
 def copyCode (relPath):
-	relPath = relPath.replace ('\\', '/')
-	
 	if '/' in relPath:
 		relDir = '{}/'.format (relPath .rsplit ('/', 1) [0])
 	else:
 		relDir = ''
 
-	os.system ('xcopy /Y {} {}'.format (
-		getAbsPath (appRootDir, relPath) .replace ('/', '\\'),
-		getAbsPath (sitepackagesDir, 'numscrypt/{}'.format (relDir)) .replace ('/', '\\')
+	os.system ('cp -f {} {}'.format (
+		getAbsPath (appRootDir, relPath),
+		getAbsPath (sitepackagesDir, 'numscrypt/{}'.format (relDir))
 	))
 
 copyCode ('__init__.py')

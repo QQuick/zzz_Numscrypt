@@ -1,9 +1,25 @@
+# ====== File extensions anywhere
 *.nogit
 *.pyc
 *.npp
-**.__pycache__/
+*.log
+*.egg-info/
+*.min.html/
+.DS_Store
+
+# ======= Directories anywhere
+__target__/
+__javascript__/
+__pycache__/
+.mypy_cache/
 dist/
-numscrypt.egg-info/
-numscrypt/development/attic/
-numscrypt/development/docs/
-numscrypt/development/experiments/
+build/
+node_modules/
+package-lock/
+
+# ======== Directories at specific locations
+transcrypt/docs/sphinx/_build/
+transcrypt/development/attic/
+transcrypt/development/docs/
+transcrypt/development/experiments/
+transcrypt/development/automated_tests/*/autotest.html

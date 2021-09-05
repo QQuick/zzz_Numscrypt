@@ -31,6 +31,11 @@ Numscrypt currently supports:
     - FFT2 for 2^n x 2^n complex samples
     - IFFT2 for 2^n x 2^n complex samples
     
+Note that all operations where the distinction between row vectors and column vectors matters, only work on ndarrays with two dimensions.
+Such operations are e.g. *@*, *hstack*, *vstack*, *hsplit* and *vsplit*.
+When used with these operations, a row vector should have shape *(1,n)* and a column vector should have shape *(n,1)*.
+Furthermore views and broadcasting are not supported.
+    
 Systematic code examples: a guided tour of Numscrypt
 =====================================================
 
