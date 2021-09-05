@@ -470,7 +470,7 @@ class ndarray:
     def __rmul__ (self, scalar):    # scalar * array -> array.__rmul__ (scalar)
         return self.__mul__ (scalar)
         
-    def __div__ (self, other):
+    def __truediv__ (self, other):
         result = empty (self.shape, self.dtype)
         
         if type (other) == ndarray:
@@ -500,8 +500,15 @@ class ndarray:
                     
         return result
         
-    def __rdiv__ (self, scalar):    # scalar / array -> array.__rdiv__ (scalar)
+    def __rtruediv__ (self, scalar):    # scalar / array -> array.__rdiv__ (scalar)
         return self.__ns_inv__ () .__mul__ (scalar)
+
+    # prefer the python 3 __truediv__, but retain __div__ for compatibility
+    def __div__(self, other):
+        return self.__truediv__(other)
+
+    def __rdiv__(self, other):
+        return self.__rtruediv__(other)
         
     def __matmul__ (self, other):
         result = empty ((self.ns_nrows, other.ns_ncols), self.dtype)
